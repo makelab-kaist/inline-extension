@@ -108,10 +108,9 @@ case 14:
 
     const fullName= $$[$0-1]+'_'+this._$.first_line+'_'+this._$.first_column+'_'+this._$.last_column;
 
-    this.$= { id: counterID++,
-          md5: MD5(fullName).toString(),
-          fullname: fullName,
-          name: $$[$0-1],
+    this.$= { id: "$"+counterID++,
+          md5: MD5(fullName).toString().substring(0, 6),
+          functionName: $$[$0-1],
           args: $$[$0], 
           location: {
             lineNo: this._$.first_line,

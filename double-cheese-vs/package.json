@@ -12,9 +12,10 @@
   ],
   "activationEvents": [
     "onCommand:double-cheese.initProject",
+    "onCommand:double-cheese.configureConnection",
     "onCommand:double-cheese.openConnection",
-    "onCommand:double-cheese.compileUpload",
-    "onCommand:double-cheese.closeConnection"
+    "onCommand:double-cheese.closeConnection",
+    "onCommand:double-cheese.compileUpload"
   ],
   "main": "./out/main.js",
   "contributes": {
@@ -25,26 +26,32 @@
         "title": "Initialize the project"
       },
       {
+        "command": "double-cheese.configureConnection",
+        "category": "doublecheese",
+        "title": "Configure the connection"
+      },
+      {
         "command": "double-cheese.openConnection",
         "category": "doublecheese",
-        "title": "Configure and connect to your baord"
+        "title": "Open serial connection"
+      },
+      {
+        "command": "double-cheese.closeConnection",
+        "category": "doublecheese",
+        "title": "Close serial connection"
       },
       {
         "command": "double-cheese.compileUpload",
         "category": "doublecheese",
         "title": "Compile and upload sketch"
-      },
-      {
-        "command": "double-cheese.closeConnection",
-        "category": "doublecheese",
-        "title": "Close connection"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "compile_grammars": "npx jison ./src/parsers/grammar_tokens.jison -o ./src/parsers/grammar_tokens.js && npx jison ./src/parsers/grammar_comments.jison -o ./src/parsers/grammar_comments.js && cp -rf ./src/parsers ./out"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",

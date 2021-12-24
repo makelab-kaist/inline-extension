@@ -5,8 +5,10 @@ const socket_io_client_1 = require("socket.io-client");
 const SERVER = 'http://localhost:3000';
 class VirtualArduino {
     constructor() {
-        this._baud = 9600;
+        this._baud = 115200;
         this._port = '';
+        // private _callback: (data: string) => void = (data) => {};
+        this._connected = false;
         this.socket = (0, socket_io_client_1.io)(SERVER, {
             reconnection: true,
         });
@@ -15,9 +17,6 @@ class VirtualArduino {
         });
         this.socket.once('connect_error', () => {
             console.log('Not connected!');
-            if (this.socket?.connected)
-                this.socket?.disconnect();
-            this.socket?.connect();
         });
     }
     static getInstance() {
@@ -25,22 +24,51 @@ class VirtualArduino {
             this.instance = new VirtualArduino();
         return this.instance;
     }
+    connectToServer() {
+        if (this.socket.connected)
+            return; //done
+        this.socket.connect();
+        if (this.socket.disconnected)
+            throw new Error('Cannot connet to server');
+    }
     getAvailableBuadRate() {
         const baudRates = ['115200', '57600', '38400', '9600'];
         return baudRates;
     }
-    connect(baud, port, onDataCallback) {
+    configure(baud, port, onDataCallback) {
+        if (this.socket.disconnected)
+            throw new Error('Cannot connet to server');
         if (!this.getAvailableBuadRate().includes(baud.toString()))
             throw new Error('Baud rate not available');
-        if (this.socket?.disconnected)
-            this.socket.connect();
-        this.sendCommand('connectSerial', { port: port, baud: baud });
+        this._baud = baud;
+        this._port = port;
+        this.socket.removeAllListeners();
         this.socket.on('serialData', onDataCallback);
     }
-    disconnect() {
-        this.socket?.disconnect();
+    connectSerial() {
+        if (this.socket.disconnected)
+            throw new Error('Cannot connet to server');
+        if (this._connected) {
+            throw new Error('Already connected');
+        }
+        if (this._port === '') {
+            throw new Error('Hardware not configured');
+        }
+        this.sendCommand('connectSerial', { port: this._port, baud: this._baud });
+        this._connected = true;
     }
-    sendCommand(cmd, params) {
+    disconnectSerial() {
+        if (this.socket.disconnected)
+            throw new Error('Cannot connet to server');
+        if (this._connected) {
+            this.sendCommand('disconnectSerial');
+            this._connected = false;
+        }
+        else {
+            throw new Error('Already not connected');
+        }
+    }
+    sendCommand(cmd, params = {}) {
         this.socket?.emit(cmd, params);
     }
 }

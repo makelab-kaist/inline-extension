@@ -71,13 +71,13 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var grammar_tokens = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,8],$V2=[1,9],$V3=[1,10],$V4=[1,11],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[5,8,9,10,11,12,13,14,17],$V9=[1,29],$Va=[1,26],$Vb=[1,27],$Vc=[1,28],$Vd=[13,14];
+var grammar_comments = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,8],$V2=[1,9],$V3=[1,6],$V4=[1,11],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,20],$Ve=[1,21],$Vf=[5,8,9,10,12,17,18,19,20,21,22,23,24,25,26,27],$Vg=[1,30],$Vh=[1,29],$Vi=[13,17,18,19,20,21,22,23,24,25,26,27];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"primary_expression":3,"statements":4,"EOF":5,"function_call":6,"anything_else":7,"STRING":8,"IDENTIFIER":9,"NUM":10,"-":11,"(":12,")":13,",":14,"fun_name":15,"fun_arg_list":16,"FN_NAME":17,"arg_list":18,"arg":19,"id":20,"number":21,"string_literal":22,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",8:"STRING",9:"IDENTIFIER",10:"NUM",11:"-",12:"(",13:")",14:",",17:"FN_NAME"},
-productions_: [0,[3,2],[3,1],[4,1],[4,2],[4,1],[4,2],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[6,2],[15,1],[16,2],[16,3],[18,1],[18,3],[19,1],[19,1],[19,1],[22,1],[21,1],[21,2],[20,1]],
+symbols_: {"error":2,"primary_expression":3,"query_expressions":4,"EOF":5,"query_expression":6,"anything_else":7,"NUM":8,",":9,"$":10,"binary_op":11,"COMMENT":12,"?":13,"expression":14,"id":15,"number":16,"+":17,"-":18,"*":19,"/":20,"%":21,"==":22,"!=":23,"<":24,"<=":25,">":26,">=":27,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",8:"NUM",9:",",10:"$",12:"COMMENT",13:"?",17:"+",18:"-",19:"*",20:"/",21:"%",22:"==",23:"!=",24:"<",25:"<=",26:">",27:">="},
+productions_: [0,[3,2],[3,1],[4,1],[4,2],[4,1],[4,2],[7,1],[7,1],[7,1],[7,1],[6,2],[6,3],[14,1],[14,1],[14,3],[14,3],[15,2],[16,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -89,62 +89,71 @@ break;
 case 2:
  return []; 
 break;
-case 3: case 18:
- this.$= [$$[$0]] 
+case 3:
+ this.$ = [$$[$0]]; 
 break;
 case 4:
- 
-    if($$[$0]) this.$= [...$$[$0-1], $$[$0]]
-    else this.$= $$[$0-1]
-  
+ this.$.push ($$[$0]); 
 break;
-case 5: case 16:
+case 5:
  this.$= [] 
 break;
-case 6: case 17:
+case 6:
  this.$=$$[$0-1] 
 break;
+case 11:
+ this.$ = {
+        line: this._$.first_line,
+        position: this._$.last_column,
+        expr: ''
+      }
+    
+break;
+case 12:
+ this.$ = {
+        line: this._$.first_line,
+        position: this._$.last_column,
+        ...$$[$0-1]
+      } 
+    
+break;
+case 13:
+
+      this.$ = { ids: [$$[$0]], expr: $$[$0]  }
+     
+break;
 case 14:
-
-    const fullName= $$[$0-1]+'_'+this._$.first_line+'_'+this._$.first_column+'_'+this._$.last_column;
-
-    this.$= { id: "$"+counterID++,
-          md5: MD5(fullName).toString().substring(0, 6),
-          functionName: $$[$0-1],
-          args: $$[$0], 
-          location: {
-            lineNo: this._$.first_line,
-            startCol: this._$.first_column,
-            endCol: this._$.last_column
-          }
-        }
-  
+ this.$= {ids: [], expr: $$[$0] } 
 break;
 case 15:
- this.$ = yytext
+ 
+      $$[$0-2].ids.push($$[$0])
+      $$[$0-2].ids= [...new Set($$[$0-2].ids)] // make sure all elements are unique
+      this.$= { ids: $$[$0-2].ids,
+        expr: `${$$[$0-2].expr} ${$$[$0-1]} ${$$[$0]}`
+      }
+    
 break;
-case 19:
- this.$ = [...$$[$0-2], $$[$0]] 
+case 16:
+ 
+      this.$= { ids: $$[$0-2].ids,
+        expr: `${$$[$0-2].expr} ${$$[$0-1]} ${$$[$0]}`
+      }
+    
 break;
-case 20: case 22: case 23:
- this.$= $$[$0] 
+case 17:
+ this.$ = '$'+$$[$0] 
 break;
-case 21:
- this.$= ""+$$[$0] 
-break;
-case 24:
+case 18:
  this.$= Number($$[$0])  
 break;
-case 25:
- this.$= - Number($$[$0]) 
-break;
-case 26:
- this.$ = yytext; 
+case 29:
+ this.$= $$[$0] 
 break;
 }
 },
-table: [{3:1,4:2,5:[1,3],6:4,7:5,8:$V0,9:$V1,10:$V2,11:$V3,12:$V4,13:$V5,14:$V6,15:6,17:$V7},{1:[3]},{5:[1,15],6:16,7:17,8:$V0,9:$V1,10:$V2,11:$V3,12:$V4,13:$V5,14:$V6,15:6,17:$V7},{1:[2,2]},o($V8,[2,3]),o($V8,[2,5]),{12:[1,19],16:18},o($V8,[2,7]),o($V8,[2,8]),o($V8,[2,9]),o($V8,[2,10]),o($V8,[2,11]),o($V8,[2,12]),o($V8,[2,13]),{12:[2,15]},{1:[2,1]},o($V8,[2,4]),o($V8,[2,6]),o($V8,[2,14]),{8:$V9,9:$Va,10:$Vb,11:$Vc,13:[1,20],18:21,19:22,20:23,21:24,22:25},o($V8,[2,16]),{13:[1,30],14:[1,31]},o($Vd,[2,18]),o($Vd,[2,20]),o($Vd,[2,21]),o($Vd,[2,22]),o($Vd,[2,26]),o($Vd,[2,24]),{10:[1,32]},o($Vd,[2,23]),o($V8,[2,17]),{8:$V9,9:$Va,10:$Vb,11:$Vc,19:33,20:23,21:24,22:25},o($Vd,[2,25]),o($Vd,[2,19])],
-defaultActions: {3:[2,2],14:[2,15],15:[2,1]},
+table: [{3:1,4:2,5:[1,3],6:4,7:5,8:$V0,9:$V1,10:$V2,11:10,12:$V3,17:$V4,18:$V5,19:$V6,20:$V7,21:$V8,22:$V9,23:$Va,24:$Vb,25:$Vc,26:$Vd,27:$Ve},{1:[3]},{5:[1,22],6:23,7:24,8:$V0,9:$V1,10:$V2,11:10,12:$V3,17:$V4,18:$V5,19:$V6,20:$V7,21:$V8,22:$V9,23:$Va,24:$Vb,25:$Vc,26:$Vd,27:$Ve},{1:[2,2]},o($Vf,[2,3]),o($Vf,[2,5]),{8:$Vg,10:$Vh,13:[1,25],14:26,15:27,16:28},o($Vf,[2,7]),o($Vf,[2,8]),o($Vf,[2,9]),o($Vf,[2,10]),o($Vf,[2,19]),o($Vf,[2,20]),o($Vf,[2,21]),o($Vf,[2,22]),o($Vf,[2,23]),o($Vf,[2,24]),o($Vf,[2,25]),o($Vf,[2,26]),o($Vf,[2,27]),o($Vf,[2,28]),o($Vf,[2,29]),{1:[2,1]},o($Vf,[2,4]),o($Vf,[2,6]),o($Vf,[2,11]),{11:32,13:[1,31],17:$V4,18:$V5,19:$V6,20:$V7,21:$V8,22:$V9,23:$Va,24:$Vb,25:$Vc,26:$Vd,27:$Ve},o($Vi,[2,13]),o($Vi,[2,14]),{8:$Vg,16:33},o($Vi,[2,18]),o($Vf,[2,12]),{8:$Vg,10:$Vh,15:34,16:35},o($Vi,[2,17]),o($Vi,[2,15]),o($Vi,[2,16])],
+defaultActions: {3:[2,2],22:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -292,8 +301,6 @@ parse: function parse(input) {
     return true;
 }};
 
-  var MD5 = require("crypto-js/md5");
-  let counterID = 0;
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -624,48 +631,46 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: return 5; 
 break;
-case 1: /* LINE COMMENT */ 
+case 1: /* MULTILINE COMNT */
 break;
-case 2: /* MULTILINE COMNT */
+case 2: return 12
 break;
-case 3: /* ignore spaces */ 
+case 3: return 13
 break;
-case 4: return 17
+case 4: return 10
 break;
-case 5: return 17
+case 5: return 8; 
 break;
 case 6: return 17
 break;
-case 7: return 17
+case 7: return 18
 break;
-case 8: return 17
+case 8: return 19
 break;
-case 9: return 17
+case 9: return 20
 break;
-case 10: return 17
+case 10: return 21
 break;
-case 11: return 17
+case 11: return 22
 break;
-case 12: return 8 
+case 12: return 23
 break;
-case 13: return 9; 
+case 13: return 24
 break;
-case 14: return 10; 
+case 14: return 25
 break;
-case 15: return 11 
+case 15: return 26
 break;
-case 16: return 12 
+case 16: return 27
 break;
-case 17: return 13 
+case 17: /* ignore spaces */ 
 break;
-case 18: return 14 
-break;
-case 19: /* ignore others */
+case 18: /* ignore others */
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:\s+)/,/^(?:digitalRead\b)/,/^(?:analogRead\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:pulseIn\b)/,/^(?:pulseInLong\b)/,/^(?:"(\\.|[^"\\])*")/,/^(?:[a-zA-Z]+[a-zA-Z0-9]*)/,/^(?:[1-9]+[0-9]*)/,/^(?:-)/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:\/\/)/,/^(?:\?)/,/^(?:\$)/,/^(?:0|[1-9]+[0-9]*)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:%)/,/^(?:==)/,/^(?:!=)/,/^(?:<)/,/^(?:<=)/,/^(?:>)/,/^(?:>=)/,/^(?:\s+)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"inclusive":true}}
 });
 return lexer;
 })();
@@ -679,9 +684,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = grammar_tokens;
-exports.Parser = grammar_tokens.Parser;
-exports.parse = function () { return grammar_tokens.parse.apply(grammar_tokens, arguments); };
+exports.parser = grammar_comments;
+exports.Parser = grammar_comments.Parser;
+exports.parse = function () { return grammar_comments.parse.apply(grammar_comments, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

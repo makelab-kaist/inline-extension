@@ -1,15 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
+const virtual_arduino_1 = require("./virtual-arduino");
+const ui = require("./ui");
 const extension_1 = require("./extension");
 function activate(context) {
-    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.initProject', extension_1.initProject));
-    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.openConnection', extension_1.configureAndConnect));
-    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
-    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.closeConnection', extension_1.closeConnection));
+    // Connect to server
+    try {
+        virtual_arduino_1.VirtualArduino.getInstance().connectToServer();
+    }
+    catch (err) {
+        ui.vsError(err.message);
+    }
+    // Registering commands
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.initProject', extension_1.initializeProject));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.configureConnection', extension_1.configureConnection));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.openConnection', extension_1.connectSerial));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.closeConnection', extension_1.disconnectSerial));
+    // context.subscriptions.push(
+    //   vscode.commands.registerCommand(
+    //     'double-cheese.compileUpload',
+    //     compileAndUpload
+    //   )
+    // );
 }
 exports.activate = activate;
 /**

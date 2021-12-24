@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const serial_1 = require("./serial");
 const s = new serial_1.SimpleSerial();
+// Disconnect serial on connection
+if (s.isConnected())
+    s.disconnect();
 // Server
 const port = process.env.PORT || 3000;
 const app = (0, express_1.default)();
@@ -31,8 +34,9 @@ io.on('connection', function (socket) {
         const ls = yield s.listAvailablePorts();
         socket.emit('listSerialsData', ls);
     }));
-    socket.on('connectSerial', ({ port, baud }) => __awaiter(this, void 0, void 0, function* () {
+    socket.on('connectSerial', ({ port, baud = 115200 }) => __awaiter(this, void 0, void 0, function* () {
         console.log('connectSerial');
+        console.log(port, baud);
         try {
             if (s.isConnected())
                 return;
@@ -43,7 +47,7 @@ io.on('connection', function (socket) {
         }
         catch (error) {
             console.log(error);
-            throw error;
+            // throw error;
         }
     }));
     socket.on('disconnectSerial', () => {
@@ -59,31 +63,4 @@ io.on('connection', function (socket) {
 http.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
-const Arduino = {
-    productId: 0x2341,
-    vendorId: 0x0043,
-};
-/*
-(async () => {
-  
-  const ls: string[] = await s.listAvailablePorts();
-  console.log(ls);
-
-  await s.connect(ls[1], 115200);
-  console.log(s.isConnected());
-  s.onReadData((data) => {
-    console.log(data);
-  });
-
-  setTimeout(() => {
-    s.stopListening();
-  }, 6000);
-
-  setTimeout(() => {
-    s.onReadData((data) => {
-      console.log(`again ${data}`);
-    });
-  }, 10000);
-})();
-*/
 //# sourceMappingURL=app.js.map

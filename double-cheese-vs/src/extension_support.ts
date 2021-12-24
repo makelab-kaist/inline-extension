@@ -1,5 +1,27 @@
 import * as vscode from 'vscode';
 
+// Globals
+const EXTENSION_ID = 'MAKinteract.double-cheese';
+
+// DIRECTORIES
+
+function extensionUri(): vscode.Uri {
+  return vscode.extensions.getExtension(EXTENSION_ID)!.extensionUri;
+}
+
+function templatesFolderUri(subdirs: string[] = []): vscode.Uri {
+  return vscode.Uri.joinPath(extensionUri(), 'src', 'templates', ...subdirs);
+}
+
+async function buildFolderUri() {
+  const curr = await getCurrentWorkspace();
+  return vscode.Uri.joinPath(curr.uri, buildFolderName());
+}
+
+function buildFolderName() {
+  return '.out';
+}
+
 // WORKSPACE
 
 function workspaceUri(
@@ -56,15 +78,6 @@ async function getCurrentWorkspace(): Promise<vscode.WorkspaceFolder> {
   throw new Error('No workspace folder is open');
 }
 
-async function getBuildFolderUri() {
-  const curr = await getCurrentWorkspace();
-  return vscode.Uri.joinPath(curr.uri, '.out');
-}
-
-function getBuildFolderName() {
-  return '.out';
-}
-
 /**
  * Copy a single file from a folder to a folder or a folder (nested directories are ignored)
  * @param {String} filenameSrc - the file name
@@ -86,6 +99,7 @@ async function copyFileOrFolder(
 export {
   getCurrentWorkspace,
   copyFileOrFolder,
-  getBuildFolderUri,
-  getBuildFolderName,
+  buildFolderUri,
+  buildFolderName,
+  templatesFolderUri,
 };

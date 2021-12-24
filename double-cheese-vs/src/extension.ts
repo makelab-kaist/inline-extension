@@ -1,27 +1,13 @@
 import * as vscode from 'vscode';
 import { io, Socket } from 'socket.io-client';
-
 import * as ui from './ui';
 import { ArduinoCli, ArduinoBoard, ArduinoPlatform } from './arduino-cli';
 import { VirtualArduino } from './virtual-arduino';
 import * as extension from './extension_support';
-import { tokenParser, TextLocation, Token } from './parsers/parsers';
+import { tokenParser, TextLocation, Token } from './parsers';
 import { writeFile, writeFileSync } from 'fs';
 
-// Globals
-const EXTENSION_ID = 'MAKinteract.double-cheese';
-
-// DIRECTORIES
-
-function extensionUri(): vscode.Uri {
-  return vscode.extensions.getExtension(EXTENSION_ID)!.extensionUri;
-}
-
-function templatesFolderUri(subdirs: string[] = []): vscode.Uri {
-  return vscode.Uri.joinPath(extensionUri(), 'src', 'templates', ...subdirs);
-}
-
-async function configureAndConnect() {
+async function configureConnection() {
   // Configure arduino-cli board
   const selectBoard = async () => {
     const list = Object.keys(ArduinoBoard);
@@ -52,18 +38,73 @@ async function configureAndConnect() {
   const port = await selectPort();
   if (!port) return;
 
-  ArduinoCli.getInstance().init(fqbn, port);
-  VirtualArduino.getInstance().connect(baud, port, onSerialData);
-  ui.vsInfo('Connection open');
+  try {
+    ArduinoCli.getInstance().init(fqbn, port);
+    VirtualArduino.getInstance().configure(baud, port, onSerialData);
+    ui.vsInfo('Configuration saved');
+  } catch (e) {
+    ui.vsError((e as Error).message);
+  }
 }
 
+function onSerialData(data: string) {
+  console.log('Data received: ' + data);
+}
+
+function connectSerial() {
+  try {
+    VirtualArduino.getInstance().connectSerial();
+    ui.vsInfo('Connection open');
+  } catch (e) {
+    ui.vsError((e as Error).message);
+  }
+}
+
+function disconnectSerial() {
+  try {
+    VirtualArduino.getInstance().disconnectSerial();
+    ui.vsInfo('Connection closed');
+  } catch (e) {
+    ui.vsError((e as Error).message);
+  }
+}
+
+async function initializeProject() {
+  const workspace = await extension.getCurrentWorkspace();
+  const workspaceName = workspace.name;
+
+  // Wanna continue?
+  const ans = await ui.confirmationMessage(
+    'Are you sure you want to override your project?',
+    ['Yes', 'No']
+  );
+  if (ans === 'No' || ans === undefined) return; // bye bye
+
+  // Copy ino file template
+  await extension.copyFileOrFolder(
+    extension.templatesFolderUri(), // src folder
+    'sketch.ino', // src file
+    workspace.uri, // target folder
+    workspaceName + '.ino' // target file
+  );
+
+  // Copy folder with code library
+  await extension.copyFileOrFolder(
+    extension.templatesFolderUri(), // src folder
+    'dependencies',
+    workspace.uri,
+    extension.buildFolderName()
+  );
+}
+
+/*
 function prepend(code: string, toPrePend: string): string {
   return toPrePend + '\n' + code;
 }
 
 function getSubstitution(tok: Token): string {
   const args = tok.args.join(',');
-  return `_${tok.name}(${args},${tok.id},${tok.location.lineNo})`;
+  return `_${tok.functionName}(${args},"${tok.id}",${tok.location.lineNo})`;
 }
 
 function replaceWithTokens(code: string, tokens: Token[]): string {
@@ -94,7 +135,6 @@ function decorateTokens(tokens: Token[]): void {
     const line = tok.location.lineNo;
     tok.lineId = linesCount.filter((x) => x === line).length;
     linesCount.push(line);
-    tok.md5Id = tok.md5.substring(0, 6);
   }
 }
 
@@ -117,6 +157,7 @@ async function compileAndUpload() {
   );
   decorateTokens(tokens);
   saveFile(newCode);
+  console.log(tokens);
 
   try {
     await ArduinoCli.getInstance().compileSketch(ws);
@@ -132,41 +173,18 @@ async function compileAndUpload() {
   }
 }
 
-function onSerialData(data: string) {
-  console.log('here ' + data);
-}
 
-function closeConnection() {
-  VirtualArduino.getInstance().disconnect();
-  ui.vsInfo('Connection closed');
-}
 
-async function initProject() {
-  const workspace = await extension.getCurrentWorkspace();
-  const workspaceName = workspace.name;
 
-  // Wanna continue?
-  const ans = await ui.confirmationMessage(
-    'Are you sure you want to override your project?',
-    ['Yes', 'No']
-  );
-  if (ans === 'No' || ans === undefined) return; // bye bye
 
-  // Copy ino file template
-  await extension.copyFileOrFolder(
-    templatesFolderUri(), // src folder
-    'sketch.ino', // src file
-    workspace.uri, // target folder
-    workspaceName + '.ino' // target file
-  );
+*/
 
-  // Copy folder with code library
-  await extension.copyFileOrFolder(
-    templatesFolderUri(), // src folder
-    'dependencies',
-    workspace.uri,
-    extension.getBuildFolderName()
-  );
-}
-
-export { configureAndConnect, compileAndUpload, closeConnection, initProject };
+export {
+  // configureAndConnect,
+  // compileAndUpload,
+  // disconnectSerial as closeConnection,
+  initializeProject,
+  configureConnection,
+  connectSerial,
+  disconnectSerial,
+};

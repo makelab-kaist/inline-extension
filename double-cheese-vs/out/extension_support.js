@@ -1,7 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBuildFolderName = exports.getBuildFolderUri = exports.copyFileOrFolder = exports.getCurrentWorkspace = void 0;
+exports.templatesFolderUri = exports.buildFolderName = exports.buildFolderUri = exports.copyFileOrFolder = exports.getCurrentWorkspace = void 0;
 const vscode = require("vscode");
+// Globals
+const EXTENSION_ID = 'MAKinteract.double-cheese';
+// DIRECTORIES
+function extensionUri() {
+    return vscode.extensions.getExtension(EXTENSION_ID).extensionUri;
+}
+function templatesFolderUri(subdirs = []) {
+    return vscode.Uri.joinPath(extensionUri(), 'src', 'templates', ...subdirs);
+}
+exports.templatesFolderUri = templatesFolderUri;
+async function buildFolderUri() {
+    const curr = await getCurrentWorkspace();
+    return vscode.Uri.joinPath(curr.uri, buildFolderName());
+}
+exports.buildFolderUri = buildFolderUri;
+function buildFolderName() {
+    return '.out';
+}
+exports.buildFolderName = buildFolderName;
 // WORKSPACE
 function workspaceUri(workspace, subdirs = []) {
     return vscode.Uri.joinPath(workspace.uri, ...subdirs);
@@ -49,15 +68,6 @@ async function getCurrentWorkspace() {
     throw new Error('No workspace folder is open');
 }
 exports.getCurrentWorkspace = getCurrentWorkspace;
-async function getBuildFolderUri() {
-    const curr = await getCurrentWorkspace();
-    return vscode.Uri.joinPath(curr.uri, '.out');
-}
-exports.getBuildFolderUri = getBuildFolderUri;
-function getBuildFolderName() {
-    return '.out';
-}
-exports.getBuildFolderName = getBuildFolderName;
 /**
  * Copy a single file from a folder to a folder or a folder (nested directories are ignored)
  * @param {String} filenameSrc - the file name
