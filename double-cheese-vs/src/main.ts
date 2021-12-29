@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 import { ArduinoCli, ArduinoBoard } from './arduino-cli';
 import { VirtualArduino } from './virtual-arduino';
+
 import * as ui from './ui';
 import {
   initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
+  compileAndUpload,
 } from './extension';
 
 function beforeAll() {
@@ -53,12 +55,12 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand(
-  //     'double-cheese.compileUpload',
-  //     compileAndUpload
-  //   )
-  // );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.compileUpload',
+      compileAndUpload
+    )
+  );
 }
 
 /**

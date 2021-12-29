@@ -9,7 +9,7 @@ type TextLocation = {
   endCol: number;
 };
 
-type Token = {
+type FunctionData = {
   id: string;
   index: number;
   function: string;
@@ -17,4 +17,8 @@ type Token = {
   location: TextLocation;
 };
 
-export { tokenParser, commentParser, TextLocation, Token };
+function getFunctionsData(code: string): FunctionData[] {
+  return tokenParser.parse(code);
+}
+
+export { getFunctionsData, TextLocation, FunctionData };

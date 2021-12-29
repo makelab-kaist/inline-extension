@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
+exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
 const ui = require("./ui");
 const arduino_cli_1 = require("./arduino-cli");
 const virtual_arduino_1 = require("./virtual-arduino");
+const codeManager_1 = require("./codeManager");
 const extension = require("./extension_support");
 async function configureConnection() {
     // Configure arduino-cli board
@@ -86,4 +87,28 @@ async function initializeProject() {
     'dependencies', workspace.uri, extension.buildFolderName());
 }
 exports.initializeProject = initializeProject;
+function compileAndUpload() {
+    /*
+      // const ws = await extension.getCurrentWorkspace()!.uri;
+      const ws = await extension.getBuildFolderUri();
+      */
+    const newCode = codeManager_1.CodeManager.getInstance().parseAndGenerateCode();
+    console.log(newCode);
+    /*
+      saveFile(newCode);
+  
+      try {
+        await ArduinoCli.getInstance().compileSketch(ws);
+        await ArduinoCli.getInstance().uploadSketch(ws);
+        ui.vsInfo('Sketch succssfully uploaded');
+      } catch (e) {
+        if (e instanceof Error) {
+          ui.vsError(e.message);
+        } else {
+          ui.vsError('Compilation / uploading error');
+          console.log(e);
+        }
+      }*/
+}
+exports.compileAndUpload = compileAndUpload;
 //# sourceMappingURL=extension.js.map

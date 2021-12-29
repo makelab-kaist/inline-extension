@@ -3,8 +3,8 @@ import { io, Socket } from 'socket.io-client';
 import * as ui from './ui';
 import { ArduinoCli, ArduinoBoard, ArduinoPlatform } from './arduino-cli';
 import { VirtualArduino } from './virtual-arduino';
+import { CodeManager } from './codeManager';
 import * as extension from './extension_support';
-import { tokenParser, TextLocation, Token } from './parsers';
 import { writeFile, writeFileSync } from 'fs';
 
 async function configureConnection() {
@@ -97,29 +97,36 @@ async function initializeProject() {
   );
 }
 
+function compileAndUpload() {
+  /*
+    // const ws = await extension.getCurrentWorkspace()!.uri;
+    const ws = await extension.getBuildFolderUri();
+    */
+
+  const newCode = CodeManager.getInstance().parseAndGenerateCode();
+  console.log(newCode);
+
+  /*
+    saveFile(newCode);
+
+    try {
+      await ArduinoCli.getInstance().compileSketch(ws);
+      await ArduinoCli.getInstance().uploadSketch(ws);
+      ui.vsInfo('Sketch succssfully uploaded');
+    } catch (e) {
+      if (e instanceof Error) {
+        ui.vsError(e.message);
+      } else {
+        ui.vsError('Compilation / uploading error');
+        console.log(e);
+      }
+    }*/
+}
+
 /*
-function prepend(code: string, toPrePend: string): string {
-  return toPrePend + '\n' + code;
-}
 
-function getSubstitution(tok: Token): string {
-  const args = tok.args.join(',');
-  return `_${tok.functionName}(${args},"${tok.id}",${tok.location.lineNo})`;
-}
 
-function replaceWithTokens(code: string, tokens: Token[]): string {
-  const lines = code.split('\n');
 
-  for (let tok of tokens.reverse()) {
-    const line = tok.location.lineNo - 1;
-    const s = tok.location.startCol;
-    const e = tok.location.endCol;
-    const text = lines[line];
-    lines[line] =
-      text.substring(0, s) + getSubstitution(tok) + text.substring(e);
-  }
-  return lines.join('\n');
-}
 
 async function saveFile(code: string) {
   const wsedit = new vscode.WorkspaceEdit();
@@ -129,49 +136,8 @@ async function saveFile(code: string) {
   writeFileSync(filePath.path, code, {});
 }
 
-function decorateTokens(tokens: Token[]): void {
-  const linesCount = [];
-  for (let tok of tokens) {
-    const line = tok.location.lineNo;
-    tok.lineId = linesCount.filter((x) => x === line).length;
-    linesCount.push(line);
-  }
-}
 
-async function compileAndUpload() {
-  // const ws = await extension.getCurrentWorkspace()!.uri;
-  const ws = await extension.getBuildFolderUri();
 
-  const doc = vscode.window.activeTextEditor?.document;
-  if (!doc || doc.isUntitled) {
-    ui.vsError('No valid document open');
-    return;
-  }
-
-  const code = doc.getText();
-  const tokens: Token[] = tokenParser.parse(code);
-
-  const newCode = prepend(
-    replaceWithTokens(code, tokens),
-    `#include "ExtensionHelpers.h"`
-  );
-  decorateTokens(tokens);
-  saveFile(newCode);
-  console.log(tokens);
-
-  try {
-    await ArduinoCli.getInstance().compileSketch(ws);
-    await ArduinoCli.getInstance().uploadSketch(ws);
-    ui.vsInfo('Sketch succssfully uploaded');
-  } catch (e) {
-    if (e instanceof Error) {
-      ui.vsError(e.message);
-    } else {
-      ui.vsError('Compilation / uploading error');
-      console.log(e);
-    }
-  }
-}
 
 
 
@@ -180,11 +146,9 @@ async function compileAndUpload() {
 */
 
 export {
-  // configureAndConnect,
-  // compileAndUpload,
-  // disconnectSerial as closeConnection,
   initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
+  compileAndUpload,
 };
