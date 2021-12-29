@@ -31,10 +31,15 @@ class VirtualArduino {
     return this.instance;
   }
 
-  connectToServer() {
-    if (this.socket.connected) return; //done
-    this.socket.connect();
-    if (this.socket.disconnected) throw new Error('Cannot connet to server');
+  connectToServer(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (this.socket.connected) resolve('Connected'); //done
+      this.socket.connect();
+      setTimeout(() => {
+        if (this.socket.disconnected) reject('Cannot connet to server');
+        else resolve('Connected');
+      }, 200);
+    });
   }
 
   getAvailableBuadRate(): string[] {

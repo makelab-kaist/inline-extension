@@ -9,15 +9,19 @@ import {
   disconnectSerial,
 } from './extension';
 
-export function activate(context: vscode.ExtensionContext) {
-  // Connect to server
-  try {
-    VirtualArduino.getInstance().connectToServer();
-  } catch (err) {
-    ui.vsError((err as Error).message);
-  }
+function beforeAll() {
+  VirtualArduino.getInstance()
+    .connectToServer()
+    .catch((err) => {
+      ui.vsError(err);
+    });
+}
 
-  // Registering commands
+export function activate(context: vscode.ExtensionContext) {
+  // Connect to server before we start
+  beforeAll();
+
+  // Initialize the folder of the project
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.initProject',
@@ -25,6 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // First time config
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.configureConnection',
@@ -32,6 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // Connect to the serial port
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.openConnection',
@@ -39,6 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // Disconnect from serial port
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.closeConnection',

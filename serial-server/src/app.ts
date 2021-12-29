@@ -18,6 +18,8 @@ var io = require('socket.io')(http, {
 });
 
 io.on('connection', function (socket: any) {
+  console.log('Connected');
+
   socket.on('listSerials', async () => {
     console.log('listSerials');
 

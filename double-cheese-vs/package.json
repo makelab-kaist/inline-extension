@@ -51,10 +51,12 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "compile_grammars": "npx jison ./src/parsers/grammar_tokens.jison -o ./src/parsers/grammar_tokens.js && npx jison ./src/parsers/grammar_comments.jison -o ./src/parsers/grammar_comments.js && cp -rf ./src/parsers ./out"
+    "test": "jest --watchAll --verbose",
+    "compile_grammars": "npx jison ./src/parsers/grammar_tokens.jison -o ./src/parsers/grammar_tokens.js && npx jison ./src/parsers/grammar_comments.jison -o ./src/parsers/grammar_comments.js && cp -prf ./src/parsers/*.js ./out/parsers"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",
+    "@types/jest": "^27.0.3",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
     "@types/vscode": "^1.63.0",
@@ -70,6 +72,7 @@
     "@types/socket.io-client": "^3.0.0",
     "crypto-js": "^4.1.1",
     "fs": "^0.0.1-security",
+    "jest": "^27.4.5",
     "socket.io-client": "^4.4.0"
   }
 }

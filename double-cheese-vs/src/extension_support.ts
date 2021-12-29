@@ -10,7 +10,7 @@ function extensionUri(): vscode.Uri {
 }
 
 function templatesFolderUri(subdirs: string[] = []): vscode.Uri {
-  return vscode.Uri.joinPath(extensionUri(), 'src', 'templates', ...subdirs);
+  return vscode.Uri.joinPath(extensionUri(), 'templates', ...subdirs);
 }
 
 async function buildFolderUri() {

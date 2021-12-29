@@ -1,20 +1,19 @@
 // @ts-ignore
-import * as tokenParser from './parsers/grammar_tokens';
+import * as tokenParser from './grammar_tokens';
 // @ts-ignore
-import * as commentParser from './parsers/grammar_tokens';
+import * as commentParser from './grammar_comments';
 
 type TextLocation = {
-  lineNo: number;
+  line: number;
   startCol: number;
   endCol: number;
 };
 
 type Token = {
-  functionName: string;
-  args: string[];
   id: string;
-  lineId: number;
-  md5: string;
+  index: number;
+  function: string;
+  args: string[];
   location: TextLocation;
 };
 

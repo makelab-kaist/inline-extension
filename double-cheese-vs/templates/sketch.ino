@@ -6,4 +6,5 @@ void setup()
 
 void loop()
 {
+  int a = digitalRead(9);
 }

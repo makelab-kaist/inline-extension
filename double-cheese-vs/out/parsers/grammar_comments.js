@@ -103,17 +103,23 @@ case 6:
 break;
 case 11:
  this.$ = {
-        line: this._$.first_line,
-        position: this._$.last_column,
-        expr: ''
+        expr: '',
+        location: {
+          line: this._$.first_line,
+          startCol: this._$.first_column,
+          endCol: this._$.last_column
+        }
       }
     
 break;
 case 12:
  this.$ = {
-        line: this._$.first_line,
-        position: this._$.last_column,
-        ...$$[$0-1]
+        ...$$[$0-1],
+        location: {
+          line: this._$.first_line,
+          startCol: this._$.first_column,
+          endCol: this._$.last_column
+        }
       } 
     
 break;

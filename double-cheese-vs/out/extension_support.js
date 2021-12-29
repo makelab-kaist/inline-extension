@@ -9,7 +9,7 @@ function extensionUri() {
     return vscode.extensions.getExtension(EXTENSION_ID).extensionUri;
 }
 function templatesFolderUri(subdirs = []) {
-    return vscode.Uri.joinPath(extensionUri(), 'src', 'templates', ...subdirs);
+    return vscode.Uri.joinPath(extensionUri(), 'templates', ...subdirs);
 }
 exports.templatesFolderUri = templatesFolderUri;
 async function buildFolderUri() {

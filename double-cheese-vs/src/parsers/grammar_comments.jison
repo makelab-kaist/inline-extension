@@ -58,16 +58,22 @@ anything_else
 query_expression
   : COMMENT '?'
     { $$ = {
-        line: @$.first_line,
-        position: @$.last_column,
-        expr: ''
+        expr: '',
+        location: {
+          line: this._$.first_line,
+          startCol: this._$.first_column,
+          endCol: this._$.last_column
+        }
       }
     }
   | COMMENT expression '?'
     { $$ = {
-        line: @$.first_line,
-        position: @$.last_column,
-        ...$2
+        ...$2,
+        location: {
+          line: this._$.first_line,
+          startCol: this._$.first_column,
+          endCol: this._$.last_column
+        }
       } 
     }
   ;

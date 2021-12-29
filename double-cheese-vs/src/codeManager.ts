@@ -1,3 +1,5 @@
+import * as parsers from './parsers';
+
 class CodeManager {
   private static instance: CodeManager;
 

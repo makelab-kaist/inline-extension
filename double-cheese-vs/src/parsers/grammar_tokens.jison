@@ -32,6 +32,7 @@
 %{
   var MD5 = require("crypto-js/md5");
   let counterID = 0;
+  let line = 0;
 %}
 
 %start primary_expression
@@ -65,14 +66,19 @@ anything_else
 function_call
   : fun_name fun_arg_list 
   {
-    const fullName= $1+'_'+@$.first_line+'_'+@$.first_column+'_'+@$.last_column;
+    const currentLine =@$.first_line; 
+    const fullName= $1+'_'+currentLine+'_'+@$.first_column+'_'+@$.last_column;
+    if (line !== currentLine){
+      line = currentLine;
+      counterID= 0;
+    }
 
-    $$= { id: "$"+counterID++,
-          md5: MD5(fullName).toString().substring(0, 6),
-          functionName: $1,
+    $$= { id: MD5(fullName).toString().substring(0, 6),
+          index: counterID++,
+          function: $1,
           args: $2, 
           location: {
-            lineNo: @$.first_line,
+            line: @$.first_line,
             startCol: @$.first_column,
             endCol: @$.last_column
           }
