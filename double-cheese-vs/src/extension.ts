@@ -97,53 +97,35 @@ async function initializeProject() {
   );
 }
 
-function compileAndUpload() {
-  /*
-    // const ws = await extension.getCurrentWorkspace()!.uri;
-    const ws = await extension.getBuildFolderUri();
-    */
+async function compileAndUpload() {
+  const sketch = await extension.buildFolderUri();
 
   const newCode = CodeManager.getInstance().parseAndGenerateCode();
+  saveFile(newCode);
   console.log(newCode);
 
-  /*
-    saveFile(newCode);
-
-    try {
-      await ArduinoCli.getInstance().compileSketch(ws);
-      await ArduinoCli.getInstance().uploadSketch(ws);
-      ui.vsInfo('Sketch succssfully uploaded');
-    } catch (e) {
-      if (e instanceof Error) {
-        ui.vsError(e.message);
-      } else {
-        ui.vsError('Compilation / uploading error');
-        console.log(e);
-      }
-    }*/
+  // Compile and upload if pass
+  try {
+    await ArduinoCli.getInstance().compileSketch(sketch);
+    await ArduinoCli.getInstance().uploadSketch(sketch);
+    ui.vsInfo('Sketch succssfully uploaded');
+  } catch (e) {
+    if (e instanceof Error) {
+      ui.vsError(e.message);
+    } else {
+      ui.vsError('Compilation / uploading error');
+      console.log(e);
+    }
+  }
 }
-
-/*
-
-
-
 
 async function saveFile(code: string) {
-  const wsedit = new vscode.WorkspaceEdit();
-  const wsPath = (await extension.getBuildFolderUri())?.fsPath;
-  if (!wsPath) return;
-  const filePath = vscode.Uri.file(wsPath + '/.out.ino');
-  writeFileSync(filePath.path, code, {});
+  // const wsedit = new vscode.WorkspaceEdit();
+  const build = await extension.buildFolderUri();
+  const out = vscode.Uri.joinPath(build, extension.buildFolderName() + '.ino');
+  if (!out) return;
+  writeFileSync(out.fsPath, code, {});
 }
-
-
-
-
-
-
-
-
-*/
 
 export {
   initializeProject,

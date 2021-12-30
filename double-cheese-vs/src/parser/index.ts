@@ -18,6 +18,7 @@ type FunctionData = {
 };
 
 function getFunctionsData(code: string): FunctionData[] {
+  tokenParser.resetCounters(); // important to reset all the counters!
   return tokenParser.parse(code);
 }
 

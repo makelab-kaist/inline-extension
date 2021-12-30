@@ -29,6 +29,7 @@ var io = require('socket.io')(http, {
     },
 });
 io.on('connection', function (socket) {
+    console.log('Connected');
     socket.on('listSerials', () => __awaiter(this, void 0, void 0, function* () {
         console.log('listSerials');
         const ls = yield s.listAvailablePorts();

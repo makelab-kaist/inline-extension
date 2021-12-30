@@ -13,14 +13,14 @@
 'analogRead'                { return 'FN_NAME'}
 'millis'                    { return 'FN_NAME'}
 'micros'                    { return 'FN_NAME'}
-'Serial.print'              { return 'FN_NAME'}
-'Serial.println'            { return 'FN_NAME'}
 'pulseIn'                   { return 'FN_NAME'}
 'pulseInLong'               { return 'FN_NAME'}
+'Serial.print'              { return 'FN_SERIAL'}
+'Serial.println'            { return 'FN_SERIAL'}
 
 \"(\\.|[^"\\])*\"           { return 'STRING' }
 [a-zA-Z]+[a-zA-Z0-9]*       { return 'IDENTIFIER'; }
-[1-9]+[0-9]*                { return 'NUM'; }
+0|([1-9]+[0-9]*)            { return 'NUM'; }
 '-'                         { return '-' }
 '('                         { return '(' }
 ')'                         { return ')' }
@@ -33,6 +33,11 @@
   var MD5 = require("crypto-js/md5");
   let counterID = 0;
   let line = 0;
+
+  exports.resetCounters = function (){
+    counterID=0;
+    line=0;
+  }
 %}
 
 %start primary_expression
@@ -88,7 +93,8 @@ function_call
 
 
 fun_name
-  : FN_NAME { $$ = yytext}
+  : FN_NAME { $$ = yytext }
+  | FN_SERIAL { $$ = 'Serialprint' }
   ;
 
 

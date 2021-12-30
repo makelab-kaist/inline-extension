@@ -4,6 +4,7 @@ exports.getFunctionsData = void 0;
 // @ts-ignore
 const tokenParser = require("./grammar_tokens");
 function getFunctionsData(code) {
+    tokenParser.resetCounters(); // important to reset all the counters!
     return tokenParser.parse(code);
 }
 exports.getFunctionsData = getFunctionsData;

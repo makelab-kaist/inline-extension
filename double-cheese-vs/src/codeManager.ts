@@ -21,27 +21,39 @@ class CodeManager {
     const code = doc.getText();
 
     // Parse and generate new code
-    const fundata: parser.FunctionData[] = parser.getFunctionsData(code);
-    const result = this.generateCode(code, fundata);
+    let result = code;
+    try {
+      const fundata: parser.FunctionData[] = parser.getFunctionsData(code);
+      result = this.generateCode(code, fundata);
+    } catch (err) {
+      console.error('Unable to parse the code');
+    }
     return result;
   }
 
   private generateCode(code: string, fundata: parser.FunctionData[]): string {
     const lines = code.split('\n');
+    let prevLine = -1; // out of range
 
+    // Loop bottom up
     for (let tok of fundata.reverse()) {
-      // bottom up
       const line = tok.location.line - 1;
       const s = tok.location.startCol;
       const e = tok.location.endCol;
       const text = lines[line];
+
+      const newLine = prevLine !== line; // we changed line
+      prevLine = line;
+
+      // substitute function call
       lines[line] =
         text.substring(0, s) +
-        this.getSubstitutionCode(tok) +
+        this.getSubstitutionCode(tok, newLine) +
         text.substring(e);
     }
     const newCode = lines.join('\n');
 
+    // prepend library
     return this.prepend(`#include "ExtensionHelpers.h"`, newCode);
   }
 
@@ -49,9 +61,18 @@ class CodeManager {
     return toPrePend + '\n' + code;
   }
 
-  private getSubstitutionCode(tok: parser.FunctionData): string {
-    const args = tok.args.join(',');
-    return `_${tok.function}(${args},"${tok.id}",${tok.location.line})`;
+  private getSubstitutionCode(
+    tok: parser.FunctionData,
+    newLine: boolean
+  ): string {
+    const fnName = tok.function;
+    let args = '';
+    if (tok.args.length > 0) {
+      args = tok.args.join(',');
+      args += ',';
+    }
+
+    return `_${fnName}(${args}${tok.location.line},${tok.index},${newLine})`;
   }
 }
 
