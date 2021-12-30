@@ -17,9 +17,25 @@ type FunctionData = {
   location: TextLocation;
 };
 
+type Annotation = {
+  ids: string[];
+  expr: string;
+  location: TextLocation;
+};
+
 function getFunctionsData(code: string): FunctionData[] {
   tokenParser.resetCounters(); // important to reset all the counters!
   return tokenParser.parse(code);
 }
 
-export { getFunctionsData, TextLocation, FunctionData };
+function getAnnotations(code: string): Annotation[] {
+  return commentParser.parse(code);
+}
+
+export {
+  getFunctionsData,
+  getAnnotations,
+  TextLocation,
+  FunctionData,
+  Annotation,
+};

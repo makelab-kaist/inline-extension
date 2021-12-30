@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
+exports.hello = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
 const vscode = require("vscode");
 const ui = require("./ui");
 const arduino_cli_1 = require("./arduino-cli");
 const virtual_arduino_1 = require("./virtual-arduino");
 const codeManager_1 = require("./codeManager");
+const annotationManager_1 = require("./annotationManager");
 const extension = require("./extension_support");
 const fs_1 = require("fs");
 async function configureConnection() {
@@ -49,7 +50,8 @@ async function configureConnection() {
 }
 exports.configureConnection = configureConnection;
 function onSerialData(data) {
-    console.log('Data received: ' + data);
+    // console.log('Data received: ' + data);
+    annotationManager_1.AnnotationManager.getInstance().displayAnnotations(data);
 }
 function connectSerial() {
     try {
@@ -119,4 +121,11 @@ async function saveFile(code) {
         return;
     (0, fs_1.writeFileSync)(out.fsPath, code, {});
 }
+function hello() {
+    // const location: Partial<TextLocation> = {};
+    // location.line = 8;
+    // location.startCol = 42;
+    // location.endCol = 45;
+}
+exports.hello = hello;
 //# sourceMappingURL=extension.js.map

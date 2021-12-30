@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const virtual_arduino_1 = require("./virtual-arduino");
+const annotationManager_1 = require("./annotationManager");
 const ui = require("./ui");
 const extension_1 = require("./extension");
 function beforeAll() {
@@ -24,13 +25,15 @@ function activate(context) {
     // Disconnect from serial port
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.closeConnection', extension_1.disconnectSerial));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.hello', extension_1.hello));
 }
 exports.activate = activate;
 /**
  * @param {vscode.TextDocumentChangeEvent} event
  */
 vscode.workspace.onDidChangeTextDocument((event) => {
-    console.log('text change ' + event.document.fileName);
+    // console.log('text change ' + event.document.fileName);
+    annotationManager_1.AnnotationManager.getInstance().updateAnnotations();
 });
 vscode.window.onDidChangeActiveTextEditor(() => {
     console.log('editor change');
@@ -38,6 +41,7 @@ vscode.window.onDidChangeActiveTextEditor(() => {
 vscode.workspace.onDidCloseTextDocument(() => {
     console.log('text close');
 });
+vscode.workspace.onDidSaveTextDocument(() => { });
 // this method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ArduinoCli, ArduinoBoard } from './arduino-cli';
 import { VirtualArduino } from './virtual-arduino';
+import { AnnotationManager } from './annotationManager';
 
 import * as ui from './ui';
 import {
@@ -9,6 +10,7 @@ import {
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  hello,
 } from './extension';
 
 function beforeAll() {
@@ -61,13 +63,18 @@ export function activate(context: vscode.ExtensionContext) {
       compileAndUpload
     )
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('double-cheese.hello', hello)
+  );
 }
 
 /**
  * @param {vscode.TextDocumentChangeEvent} event
  */
 vscode.workspace.onDidChangeTextDocument((event) => {
-  console.log('text change ' + event.document.fileName);
+  // console.log('text change ' + event.document.fileName);
+  AnnotationManager.getInstance().updateAnnotations();
 });
 
 vscode.window.onDidChangeActiveTextEditor(() => {
@@ -77,6 +84,8 @@ vscode.window.onDidChangeActiveTextEditor(() => {
 vscode.workspace.onDidCloseTextDocument(() => {
   console.log('text close');
 });
+
+vscode.workspace.onDidSaveTextDocument(() => {});
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

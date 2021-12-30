@@ -1,13 +1,15 @@
 #ifndef __EXTENSION_HELPERS__H__
 #define __EXTENSION_HELPERS__H__
 
+#define PAUSE 5
 
 int _digitalRead(const int &pin, const unsigned int line, const unsigned int index, const bool last = true)
 {
   if (index == 0) // first in line
   {
+    Serial.print("$,");
     Serial.print(line);
-    Serial.print(",");  
+    Serial.print(",");
   }
 
   int v = digitalRead(pin);
@@ -16,6 +18,7 @@ int _digitalRead(const int &pin, const unsigned int line, const unsigned int ind
     Serial.println("");
   else
     Serial.print(",");
+  delay(PAUSE);
   return v;
 }
 
@@ -23,8 +26,9 @@ int _analogRead(const int &pin, const unsigned int line, const unsigned int inde
 {
   if (index == 0) // first in line
   {
+    Serial.print("$,");
     Serial.print(line);
-    Serial.print(",");  
+    Serial.print(",");
   }
 
   int v = analogRead(pin);
@@ -33,6 +37,7 @@ int _analogRead(const int &pin, const unsigned int line, const unsigned int inde
     Serial.println("");
   else
     Serial.print(",");
+  delay(PAUSE);
   return v;
 }
 
@@ -40,8 +45,9 @@ unsigned long _millis(const unsigned int line, const unsigned int index, const b
 {
   if (index == 0) // first in line
   {
+    Serial.print("$,");
     Serial.print(line);
-    Serial.print(",");  
+    Serial.print(",");
   }
 
   unsigned long v = millis();
@@ -50,6 +56,7 @@ unsigned long _millis(const unsigned int line, const unsigned int index, const b
     Serial.println("");
   else
     Serial.print(",");
+  delay(PAUSE);
   return v;
 }
 
@@ -57,8 +64,9 @@ unsigned long _micros(const unsigned int line, const unsigned int index, const b
 {
   if (index == 0) // first in line
   {
+    Serial.print("$,");
     Serial.print(line);
-    Serial.print(",");  
+    Serial.print(",");
   }
 
   unsigned long v = micros();
@@ -67,15 +75,17 @@ unsigned long _micros(const unsigned int line, const unsigned int index, const b
     Serial.println("");
   else
     Serial.print(",");
+  delay(PAUSE);
   return v;
 }
 
-void _Serialprint(const char* str, const unsigned int line, const unsigned int index, const bool last = true)
+void _Serialprint(const char *str, const unsigned int line, const unsigned int index, const bool last = true)
 {
   if (index == 0) // first in line
   {
+    Serial.print("$,");
     Serial.print(line);
-    Serial.print(",");  
+    Serial.print(",");
   }
 
   Serial.print(str);
@@ -83,6 +93,7 @@ void _Serialprint(const char* str, const unsigned int line, const unsigned int i
     Serial.println("");
   else
     Serial.print(",");
+  delay(PAUSE);
 }
 
 #endif

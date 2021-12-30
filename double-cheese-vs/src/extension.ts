@@ -4,8 +4,10 @@ import * as ui from './ui';
 import { ArduinoCli, ArduinoBoard, ArduinoPlatform } from './arduino-cli';
 import { VirtualArduino } from './virtual-arduino';
 import { CodeManager } from './codeManager';
+import { AnnotationManager } from './annotationManager';
 import * as extension from './extension_support';
 import { writeFile, writeFileSync } from 'fs';
+import { TextLocation } from './parser';
 
 async function configureConnection() {
   // Configure arduino-cli board
@@ -48,7 +50,8 @@ async function configureConnection() {
 }
 
 function onSerialData(data: string) {
-  console.log('Data received: ' + data);
+  // console.log('Data received: ' + data);
+  AnnotationManager.getInstance().displayAnnotations(data);
 }
 
 function connectSerial() {
@@ -127,10 +130,18 @@ async function saveFile(code: string) {
   writeFileSync(out.fsPath, code, {});
 }
 
+function hello() {
+  // const location: Partial<TextLocation> = {};
+  // location.line = 8;
+  // location.startCol = 42;
+  // location.endCol = 45;
+}
+
 export {
   initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  hello,
 };

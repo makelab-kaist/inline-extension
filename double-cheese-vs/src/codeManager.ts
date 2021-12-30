@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
-import * as ui from './ui';
 
 class CodeManager {
   private static instance: CodeManager;

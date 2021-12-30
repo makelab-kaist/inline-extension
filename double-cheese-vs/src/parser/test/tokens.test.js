@@ -3,7 +3,7 @@ const parserComments = require("../grammar_comments").parser;
 const fs = require("fs");
 
 function loadFile (name){
-    return fs.readFileSync(`./src/parsers/test/${name}`, 'utf8');
+    return fs.readFileSync(`./src/parser/test/${name}`, 'utf8');
 }
 
 describe("Parsing from ino files", ()=>{
@@ -35,16 +35,16 @@ describe("Parsing from ino files", ()=>{
               location: { line: 11, startCol: 12, endCol: 26 },
             },
             {
-              id: '2afd76',
+              id: 'd8f6cb',
               index: 0,
-              function: 'Serial.print',
+              function: 'Serialprint',
               args: ['a'],
               location: { line: 12, startCol: 4, endCol: 19 },
             },
             {
-              id: 'f30376',
+              id: '1b9fe0',
               index: 1,
-              function: 'Serial.print',
+              function: 'Serialprint',
               args: ['b'],
               location: { line: 12, startCol: 21, endCol: 36 },
             },

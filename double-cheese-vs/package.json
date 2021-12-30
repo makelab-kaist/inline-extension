@@ -15,7 +15,9 @@
     "onCommand:double-cheese.configureConnection",
     "onCommand:double-cheese.openConnection",
     "onCommand:double-cheese.closeConnection",
-    "onCommand:double-cheese.compileUpload"
+    "onCommand:double-cheese.compileUpload",
+    "onCommand:double-cheese.hello",
+    "onLanguage:cpp"
   ],
   "main": "./out/main.js",
   "contributes": {
@@ -44,6 +46,11 @@
         "command": "double-cheese.compileUpload",
         "category": "doublecheese",
         "title": "Compile and upload sketch"
+      },
+      {
+        "command": "double-cheese.hello",
+        "category": "doublecheese",
+        "title": "hello"
       }
     ]
   },
