@@ -105,7 +105,9 @@ async function compileAndUpload() {
 
   const newCode = CodeManager.getInstance().parseAndGenerateCode();
   saveFile(newCode);
-  console.log(newCode);
+  // console.log(newCode);
+
+  AnnotationManager.getInstance().updateAnnotations();
 
   // Compile and upload if pass
   try {

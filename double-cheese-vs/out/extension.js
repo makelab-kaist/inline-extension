@@ -95,7 +95,8 @@ async function compileAndUpload() {
     const sketch = await extension.buildFolderUri();
     const newCode = codeManager_1.CodeManager.getInstance().parseAndGenerateCode();
     saveFile(newCode);
-    console.log(newCode);
+    // console.log(newCode);
+    annotationManager_1.AnnotationManager.getInstance().updateAnnotations();
     // Compile and upload if pass
     try {
         await arduino_cli_1.ArduinoCli.getInstance().compileSketch(sketch);

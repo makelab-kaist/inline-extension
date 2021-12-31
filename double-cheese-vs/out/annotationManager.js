@@ -6,6 +6,7 @@ const parser = require("./parser");
 class AnnotationManager {
     constructor() {
         this.annotations = [];
+        this.disposables = [];
     }
     static getInstance() {
         if (!AnnotationManager.instance)
@@ -22,6 +23,9 @@ class AnnotationManager {
         this.annotations = parser.getAnnotations(code);
     }
     displayAnnotations(serialData) {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor)
+            return;
         // Chop data and validate
         const data = serialData.split(',');
         if (data.length === 0)
@@ -36,20 +40,30 @@ class AnnotationManager {
         const annotation = this.annotations.find((a) => a.location.line === line);
         if (!annotation)
             return;
-        const text = ' ' + data.join(' ');
-        this.showText(text, annotation.location);
+        const text = data.join(' ');
+        // this.showText(text, annotation.location);
         console.log(serialData);
+        this.addDecorationWithText('▶️ ' + text, annotation.location.line - 1, annotation.location.endCol, editor);
     }
-    showText(text, location) {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor || !text)
-            return;
-        const line = location.line - 1;
-        const linelength = editor.document.lineAt(line).text.length;
-        const range = new vscode.Range(new vscode.Position(line, location.endCol), new vscode.Position(line, linelength));
-        editor.edit((editBuilder) => {
-            editBuilder.replace(range, text);
+    addDecorationWithText(contentText, line, column, activeEditor) {
+        this.removeDecorations();
+        const decorationType = vscode.window.createTextEditorDecorationType({
+            after: {
+                contentText,
+                margin: '50px',
+                backgroundColor: 'red',
+                color: 'white',
+            },
         });
+        this.disposables.push(decorationType);
+        const range = new vscode.Range(new vscode.Position(line, column), new vscode.Position(line, column));
+        activeEditor.setDecorations(decorationType, [{ range }]);
+    }
+    removeDecorations() {
+        if (this.disposables) {
+            this.disposables.forEach((item) => item.dispose());
+        }
+        this.disposables = [];
     }
 }
 exports.AnnotationManager = AnnotationManager;

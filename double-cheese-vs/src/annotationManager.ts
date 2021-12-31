@@ -4,6 +4,7 @@ import * as parser from './parser';
 class AnnotationManager {
   private static instance: AnnotationManager;
   private annotations: parser.Annotation[] = [];
+  private disposables: vscode.Disposable[] = [];
 
   private constructor() {}
 
@@ -24,6 +25,8 @@ class AnnotationManager {
   }
 
   displayAnnotations(serialData: string) {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
     // Chop data and validate
     const data: string[] = serialData.split(',');
     if (data.length === 0) return;
@@ -38,25 +41,49 @@ class AnnotationManager {
     const annotation = this.annotations.find((a) => a.location.line === line);
     if (!annotation) return;
 
-    const text = ' ' + data.join(' ');
-    this.showText(text, annotation.location);
+    const text = data.join(' ');
+    // this.showText(text, annotation.location);
     console.log(serialData);
+
+    this.addDecorationWithText(
+      '▶️ ' + text,
+      annotation.location.line - 1,
+      annotation.location.endCol,
+      editor
+    );
   }
 
-  private showText(text: string, location: parser.TextLocation) {
-    const editor = vscode.window.activeTextEditor;
+  private addDecorationWithText(
+    contentText: string,
+    line: number,
+    column: number,
+    activeEditor: vscode.TextEditor
+  ) {
+    this.removeDecorations();
+    const decorationType = vscode.window.createTextEditorDecorationType({
+      after: {
+        contentText,
+        margin: '50px',
+        backgroundColor: 'red',
+        color: 'white',
+      },
+    });
 
-    if (!editor || !text) return;
-    const line = location.line - 1;
-    const linelength = editor.document.lineAt(line).text.length;
+    this.disposables.push(decorationType);
+
     const range = new vscode.Range(
-      new vscode.Position(line, location.endCol),
-      new vscode.Position(line, linelength)
+      new vscode.Position(line, column),
+      new vscode.Position(line, column)
     );
 
-    editor.edit((editBuilder) => {
-      editBuilder.replace(range, text);
-    });
+    activeEditor.setDecorations(decorationType, [{ range }]);
+  }
+
+  private removeDecorations() {
+    if (this.disposables) {
+      this.disposables.forEach((item) => item.dispose());
+    }
+    this.disposables = [];
   }
 }
 
