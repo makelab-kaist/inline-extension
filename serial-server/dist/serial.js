@@ -22,76 +22,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleSerial = void 0;
 const serialport_1 = __importStar(require("serialport"));
 class SimpleSerial {
-    constructor() { }
-    listAvailablePorts(boardInfo = {}) {
-        return new Promise((resolve, reject) => {
-            // Get all the ports
-            serialport_1.default.list().then((ports) => {
-                // Filter the ports
-                const { productId: pid, vendorId: vid } = boardInfo;
-                let filteredPorts = ports
-                    .filter(({ vendorId }) => {
-                    if (vendorId && vid)
-                        return vid == parseInt(vendorId, 16); // hex
-                    // else
-                    return true;
-                })
-                    .filter(({ productId }) => {
-                    if (productId && pid)
-                        return pid == parseInt(productId, 16); // hex
-                    // else
-                    return true;
-                });
-                // Extract the port names
-                const paths = filteredPorts.map(({ path }) => path);
-                if (paths.length > 0)
-                    resolve(paths);
-                else
-                    reject(new Error('No serial found'));
-            });
-        });
+    constructor(portName, baud = 115200, onIncomingData, delayAtStart = 50) {
+        this.portName = portName;
+        this.baud = baud;
+        this.onIncomingData = onIncomingData;
+        this.delayAtStart = delayAtStart;
     }
-    isConnected() {
-        var _a;
-        return ((_a = this.serialPort) === null || _a === void 0 ? void 0 : _a.isOpen) || false;
-    }
-    connect(portName, baud = 115200, delayAtStart = 100) {
+    connectSerial() {
         return new Promise((resolve, reject) => {
             // Already connected?
-            if (this.isConnected()) {
+            if (this.isSerialConnected()) {
                 reject('Serial port already open');
             }
-            this.serialPort = new serialport_1.default(portName, {
-                baudRate: baud,
-            }); // this might throw an error
-            this.serialPort.on('open', () => {
-                setTimeout(() => {
-                    resolve();
-                }, delayAtStart); // let's give it some time to wake up
-            });
+            try {
+                this.serialPort = new serialport_1.default(this.portName, {
+                    baudRate: this.baud,
+                }, function (err) {
+                    if (err) {
+                        reject(err.message);
+                    }
+                });
+                // After opening, register the callback
+                this.serialPort.on('open', () => {
+                    setTimeout(() => {
+                        this.parser = this.serialPort.pipe(new serialport_1.parsers.Readline({ delimiter: '\r\n' }));
+                        // Switches the port into "flowing mode"
+                        this.parser.on('data', (data) => {
+                            this.onIncomingData(data);
+                        });
+                        // Resolve
+                        resolve(`Connected to ${this.portName}`);
+                    }, this.delayAtStart); // let's give it some time to wake up
+                });
+            }
+            catch (err) {
+                reject(err.message);
+            }
         });
     }
-    onReadData(callback) {
-        if (!this.isConnected())
+    disconnectSerial() {
+        var _a, _b;
+        if (!this.isSerialConnected()) {
             return;
-        this.parser = this.serialPort.pipe(new serialport_1.parsers.Readline({ delimiter: '\r\n' }));
-        // Switches the port into "flowing mode"
-        this.parser.on('data', function (data) {
-            callback(data);
-        });
-    }
-    stopListening() {
-        var _a;
-        if (!this.isConnected())
-            return;
-        (_a = this.parser) === null || _a === void 0 ? void 0 : _a.removeAllListeners();
-    }
-    disconnect() {
-        var _a;
-        if (!this.isConnected()) {
-            throw new Error('Serial port not connected');
         }
-        (_a = this.serialPort) === null || _a === void 0 ? void 0 : _a.close();
+        // stop listenting
+        (_a = this.parser) === null || _a === void 0 ? void 0 : _a.removeAllListeners();
+        // close
+        (_b = this.serialPort) === null || _b === void 0 ? void 0 : _b.close();
+    }
+    isSerialConnected() {
+        var _a;
+        return ((_a = this.serialPort) === null || _a === void 0 ? void 0 : _a.isOpen) || false;
     }
     send(commandString) {
         var _a;

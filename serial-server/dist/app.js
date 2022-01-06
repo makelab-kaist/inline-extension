@@ -13,13 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const serial_1 = require("./serial");
-const arduino_cli_1 = require("./arduino-cli");
+const arduino_1 = require("./arduino");
 var path = require('path');
-const s = new serial_1.SimpleSerial();
-// Disconnect serial on connection
-if (s.isConnected())
-    s.disconnect();
+let serial;
 // Server
 const port = process.env.PORT || 3000;
 const app = (0, express_1.default)();
@@ -30,52 +26,73 @@ var io = require('socket.io')(http, {
         origin: '*',
     },
 });
+function emitError(msg, socket) {
+    socket.emit('error', { msg });
+    console.log('ERROR', msg);
+}
+function emitInfo(msg, socket) {
+    socket.emit('info', { msg });
+    console.log('INFO', msg);
+}
+// CONNECT
 io.on('connection', function (socket) {
-    console.log('Connected');
-    // socket.on('listSerials', async () => {
-    //   console.log('listSerials');
-    //   const ls: string[] = await s.listAvailablePorts();
-    //   socket.emit('listSerialsData', ls);
-    // });
-    // socket.on(
-    //   'connectSerial',
-    //   async ({ port, baud = 115200 }: { port: string; baud: number }) => {
-    //     console.log('connectSerial');
-    //     console.log(port, baud);
-    //     try {
-    //       if (s.isConnected()) return;
-    //       await s.connect(port, baud);
-    //       s.onReadData((data: string) => {
-    //         socket.emit('serialData', data);
-    //       });
-    //     } catch (error) {
-    //       console.log(error);
-    //       // throw error;
-    //     }
-    //   }
-    // );
-    // socket.on('disconnectSerial', () => {
-    //   console.log('disconnectSerial');
-    //   if (s.isConnected()) s.disconnect();
-    // });
-    // socket.on('sendMessage', (msg: string) => {
-    //   console.log('sendMessage');
-    //   s.send(msg);
-    // });
+    // Disconnect serial on connection
+    emitInfo('Connected', socket);
+    arduino_1.Arduino.getInstance().reset();
+    // Disconnect
+    socket.on('disconnect', function () {
+        console.log('Disconnected');
+    });
+    // List available serial ports
+    socket.on('listSerials', function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            const list = yield arduino_1.Arduino.getInstance().listSerialPorts();
+            socket.emit('listSerialsData', list);
+            console.log('listSerialsData', list);
+        });
+    });
+    // Initialize serial
+    socket.on('beginSerial', ({ port, baud = 115200, autoconnect = true, }) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const result = yield arduino_1.Arduino.getInstance().begin(port, baud, (data) => {
+                socket === null || socket === void 0 ? void 0 : socket.emit('serialData', data);
+            }, autoconnect);
+            emitInfo(result, socket);
+        }
+        catch (err) {
+            emitError(err, socket);
+        }
+    }));
+    // Connect serial
+    socket.on('connectSerial', () => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const result = yield arduino_1.Arduino.getInstance().connect();
+            emitInfo(result, socket);
+        }
+        catch (errmsg) {
+            emitError(errmsg, socket);
+        }
+    }));
+    socket.on('disconnectSerial', () => {
+        try {
+            const result = arduino_1.Arduino.getInstance().disconnect();
+            emitInfo(result, socket);
+        }
+        catch (err) {
+            emitError(err.message, socket);
+        }
+    });
+    socket.on('compileAndUpload', ({ sketchPath, autoconnect = true, }) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const result = yield arduino_1.Arduino.getInstance().compileAndUpload(sketchPath, autoconnect);
+            emitInfo(result, socket);
+        }
+        catch (err) {
+            emitError(err, socket);
+        }
+    }));
 });
 http.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
-arduino_cli_1.ArduinoCli.getInstance().init(arduino_cli_1.ArduinoBoard.Arduino_Uno, '/dev/tty.usbmodem544101');
-setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-    var sketch = path.join(__dirname, '..', 'test_sketch');
-    console.log('start');
-    try {
-        const res = yield arduino_cli_1.ArduinoCli.getInstance().compileAndUpload(sketch);
-        console.log(res);
-    }
-    catch (err) {
-        console.log(err);
-    }
-}), 100);
 //# sourceMappingURL=app.js.map

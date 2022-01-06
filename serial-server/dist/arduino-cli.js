@@ -57,41 +57,45 @@ var ArduinoBoard;
 exports.ArduinoBoard = ArduinoBoard;
 class ArduinoCli {
     constructor() {
-        this.ready = false;
+        this.portName = '';
+        this.fqbn = ArduinoBoard.Arduino_Uno;
     }
     static getInstance() {
         if (!ArduinoCli.instance)
             this.instance = new ArduinoCli();
         return this.instance;
     }
-    init(fqbn, portName) {
-        this.fqbn = fqbn;
-        this.portName = portName;
-        this.ready = true;
-    }
+    /**
+     * Return the current board platform
+     * @returns {string} with the platfrom name
+     */
     get platform() {
-        this.checkIfReady();
         return this.fqbn.toString();
     }
-    get port() {
-        this.checkIfReady();
-        return this.portName;
+    /**
+     * Initialize the Arduino CLI
+     * @param port to connect to
+     * @param board to use
+     */
+    initialize(port, board) {
+        this.portName = port;
+        this.fqbn = board;
     }
     /**
-     * Get version of Arduino-cli
+     * Get version of Arduino CLI
      * @returns {Promise<string>} containing the stdout
      */
     version() {
-        return this.run(`version`, this.root());
+        return this.run(`version`, __dirname);
     }
     /**
-     * Check whether the Arduino-cli is installed
-     * @returns true or false whether it is installed or not
+     * Check whether the Arduino CLI is installed
+     * @returns {Promise<boolean>} true or false whether it is installed or not
      */
     isInstalled() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.run('', this.root());
+                yield this.run('', __dirname);
                 return true;
             }
             catch (err) {
@@ -102,14 +106,14 @@ class ArduinoCli {
     /**
      * Install the platform via `arduino-cli core install`
      * @param board - the board used to infer which platform to isntall
-     * @returns a string containing the stdout
+     * @returns {Promise<string>} string containing the stdout
      */
     installPlatform(platform) {
-        return this.run(`core install ${platform}`, this.root());
+        return this.run(`core install ${platform}`, __dirname);
     }
     /**
      * Install the platform via `arduino-cli core install` for the current baord
-     * @returns a string containing the stdout
+     * @returns {Promise<string>} a string containing the stdout
      */
     installCurrentPlatform() {
         const platform = this.fqbn
@@ -119,49 +123,68 @@ class ArduinoCli {
         // return this.installPlatform(this.fqbn);
         return this.installPlatform(platform);
     }
-    compileAndUpload(sketchPath) {
-        return new Promise((resolve, reject) => {
-            let report = 'DONE: ';
-            this.compileSketch(sketchPath)
-                .then((msg) => {
-                report += msg;
-                return this.uploadSketch(sketchPath);
-            })
-                .then((msg) => {
-                resolve(report);
-            })
-                .catch((err) => {
-                reject(err);
-            });
-        });
-    }
-    compileSketch(sketchPath) {
-        if (!fs_1.default.existsSync(sketchPath))
-            throw new Error(`Sketch folder ${sketchPath} is invalid`);
-        this.checkIfReady(); // will throw an error if not initialized
-        return this.run(`compile -b ${this.fqbn}`, sketchPath);
-    }
-    uploadSketch(sketchPath) {
-        if (!fs_1.default.existsSync(sketchPath))
-            throw new Error(`Sketch folder ${sketchPath} is invalid`);
-        this.checkIfReady(); // will throw an error if not initialized
-        return this.run(`upload --port ${this.portName} --fqbn ${this.fqbn}`, sketchPath);
-    }
+    /**
+     * Returns available ports
+     * @returns {Promise<string[]>} list of ports
+     */
     listAvailablePorts() {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.run(`board list --format json`, this.root());
+            const res = yield this.run(`board list --format json`, __dirname);
             const resObj = JSON.parse(res);
             const ports = resObj.map((val) => val.port.address);
             resolve(ports);
         }));
     }
-    // Private methods
-    root() {
-        return '/';
+    /**
+     * Compile and upload
+     * @param sketchPath
+     * @returns {Promise<string>} result of compilation or upload
+     */
+    compileAndUpload(sketchPath) {
+        let report = '';
+        return this.compileSketch(sketchPath)
+            .then((msg) => {
+            report += msg;
+            return this.uploadSketch(sketchPath);
+        })
+            .then((msg) => {
+            report += msg;
+            return new Promise((resolve) => resolve(report));
+        });
     }
-    checkIfReady() {
-        if (!this.ready)
-            throw new Error(`Arduino board not initalized`);
+    // Private methods
+    /**
+     * Compile the sketch
+     * @param sketchPath
+     * @returns {Promise<string>} of output for compilation
+     */
+    compileSketch(sketchPath) {
+        if (!fs_1.default.existsSync(sketchPath))
+            return new Promise((_, reject) => reject(`Sketch folder ${sketchPath} is invalid`));
+        if (!this.isReady())
+            return new Promise((_, reject) => reject(`Board not initialized`));
+        return this.run(`compile -b ${this.fqbn}`, sketchPath);
+    }
+    /**
+     * Upload the sketch
+     * @param sketchPath
+     * @returns {Promise<string>} of output for upload
+     */
+    uploadSketch(sketchPath) {
+        if (!fs_1.default.existsSync(sketchPath))
+            return new Promise((_, reject) => reject(`Sketch folder ${sketchPath} is invalid`));
+        if (!this.isReady())
+            return new Promise((_, reject) => reject(`Board not initialized`));
+        return this.run(`upload --port ${this.portName} --fqbn ${this.fqbn} -v`, sketchPath);
+    }
+    /**
+     * Check whether baord is initialized
+     * @returns {boolean}
+     */
+    isReady() {
+        return (this.portName !== undefined &&
+            this.portName !== '' &&
+            this.fqbn !== undefined);
     }
     /**
      *
@@ -170,17 +193,14 @@ class ArduinoCli {
      * @returns a string containing the stdout
      */
     run(command, baseDirectoryPath) {
-        return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             const workingDir = { cwd: baseDirectoryPath };
             try {
                 const { stdout, stderr } = yield exec(`arduino-cli ${command}`, workingDir);
-                if (stdout)
-                    res(stdout);
-                else
-                    res(stderr);
+                resolve(stdout + stderr);
             }
             catch (err) {
-                rej(`Error: ${err}`);
+                reject(`Error: ${err}`);
             }
         }));
     }
