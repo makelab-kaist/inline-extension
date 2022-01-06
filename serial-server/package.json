@@ -19,6 +19,8 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
+    "@asyncapi/cli": "^0.12.1",
+    "@asyncapi/generator": "^1.8.27",
     "express": "^4.17.1",
     "serialport": "^9.2.8",
     "socket.io": "^4.4.0"
