@@ -1,23 +1,126 @@
 asyncapi: '2.2.0'
+
+#
+# Overal information for users of the application
+#
 info:
-  title: Account Service
-  version: 1.0.0
-  description: This service is in charge of processing user signups
+  title: Arduino server
+  version: '1.0.0'
+  contact:
+    name: MAKinteract
+    url: https://makinteract.kaist.ac.kr
+  description: Remotely control an Arduino
+
+#
+# Details on how to connect to the application
+#
+servers:
+  public:
+    url: http://localhost:3000
+    protocol: wss
+
 channels:
-  user/signedup:
+  listSerials:
+    publish:
+      message:
+        $ref: '#/components/messages/listSerials'
+  listSerialsData:
     subscribe:
       message:
-        $ref: '#/components/messages/UserSignedUp'
+        $ref: '#/components/messages/listSerialsData'
+
+  beginSerial:
+    publish:
+      message:
+        $ref: '#/components/messages/beginSerial'
+  connectSerial:
+    publish:
+      message:
+        $ref: '#/components/messages/connectSerial'
+  disconnectSerial:
+    publish:
+      message:
+        $ref: '#/components/messages/disconnectSerial'
+  compileAndUpload:
+    publish:
+      message:
+        $ref: '#/components/messages/compileAndUpload'
+
+  serialData:
+    subscribe:
+      message:
+        $ref: '#/components/messages/serialData'
+  info:
+    subscribe:
+      message:
+        $ref: '#/components/messages/info'
+  error:
+    subscribe:
+      message:
+        $ref: '#/components/messages/error'
+
 components:
   messages:
-    UserSignedUp:
+    listSerials:
+      payload:
+        additionalProperties: false
+    listSerialsData:
+      payload:
+        type: array
+        additionalProperties: false
+        items:
+          type: string
+        example: ['COM1', 'COM2', 'COM3']
+    connectSerial:
+      payload:
+        additionalProperties: false
+    disconnectSerial:
+      payload:
+        additionalProperties: false
+    beginSerial:
       payload:
         type: object
+        additionalProperties: false
         properties:
-          displayName:
+          port:
             type: string
-            description: Name of the user
-          email:
+            example: 'COM1'
+          baud:
+            type: number
+            example: 115200
+          autoconnect:
+            type: boolean
+            example: true
+    compileAndUpload:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          sketchPath:
             type: string
-            format: email
-            description: Email of the user
+            example: '/path/to/arduino_sketch'
+          autoconnect:
+            type: boolean
+            example: true
+
+    serialData:
+      payload:
+        type: string
+        additionalProperties: false
+        example: 'Some data'
+    info:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          msg:
+            type: string
+            example: 'Some info message'
+    error:
+      payload:
+        type: object
+        additionalProperties: false
+        properties:
+          msg:
+            type: string
+            example: 'Some error message'
