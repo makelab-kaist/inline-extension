@@ -1,7 +1,7 @@
 {
   "name": "serial-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Client side",
   "main": "index.js",
   "scripts": {
     "start": "node dist/app.js",
@@ -22,5 +22,6 @@
     "express": "^4.17.1",
     "serialport": "^9.2.8",
     "socket.io": "^4.4.0"
-  }
+  },
+  "keywords": []
 }

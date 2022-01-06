@@ -1,90 +1,69 @@
 import SerialPort, { parsers } from 'serialport';
 
-type BoardInfo = {
-  productId?: number;
-  vendorId?: number;
-};
-
 class SimpleSerial {
-  serialPort: SerialPort | undefined;
-  parser: SerialPort.parsers.Readline | undefined;
+  private serialPort?: SerialPort;
+  private parser?: SerialPort.parsers.Readline;
 
-  constructor() {}
+  constructor(
+    private portName: string,
+    private baud: number = 115200,
+    private onIncomingData: (s: string) => void,
+    private delayAtStart: number = 50
+  ) {}
 
-  listAvailablePorts(boardInfo: BoardInfo = {}): Promise<string[]> | never {
-    return new Promise<string[]>((resolve, reject) => {
-      // Get all the ports
-      SerialPort.list().then((ports: SerialPort.PortInfo[]) => {
-        // Filter the ports
-        const { productId: pid, vendorId: vid } = boardInfo;
-        let filteredPorts = ports
-          .filter(({ vendorId }) => {
-            if (vendorId && vid) return vid == parseInt(vendorId, 16); // hex
-            // else
-            return true;
-          })
-          .filter(({ productId }) => {
-            if (productId && pid) return pid == parseInt(productId, 16); // hex
-            // else
-            return true;
-          });
-        // Extract the port names
-        const paths = filteredPorts.map(({ path }) => path);
-        if (paths.length > 0) resolve(paths);
-        else reject(new Error('No serial found'));
-      });
-    });
-  }
-
-  isConnected(): boolean {
-    return this.serialPort?.isOpen || false;
-  }
-
-  connect(
-    portName: string,
-    baud: number = 115200,
-    delayAtStart: number = 100
-  ): Promise<string[]> | never {
-    return new Promise((resolve: Function, reject: Function) => {
+  connectSerial(): Promise<string> {
+    return new Promise((resolve, reject) => {
       // Already connected?
-      if (this.isConnected()) {
+      if (this.isSerialConnected()) {
         reject('Serial port already open');
       }
 
-      this.serialPort = new SerialPort(portName, {
-        baudRate: baud,
-      }); // this might throw an error
+      try {
+        this.serialPort = new SerialPort(
+          this.portName,
+          {
+            baudRate: this.baud,
+          },
+          function (err) {
+            if (err) {
+              reject(err.message);
+            }
+          }
+        );
 
-      this.serialPort.on('open', () => {
-        setTimeout(() => {
-          resolve();
-        }, delayAtStart); // let's give it some time to wake up
-      });
+        // After opening, register the callback
+        this.serialPort.on('open', () => {
+          setTimeout(() => {
+            this.parser = this.serialPort!.pipe(
+              new parsers.Readline({ delimiter: '\r\n' })
+            );
+            // Switches the port into "flowing mode"
+            this.parser.on('data', (data) => {
+              this.onIncomingData(data);
+            });
+
+            // Resolve
+            resolve(`Connected to ${this.portName}`);
+          }, this.delayAtStart); // let's give it some time to wake up
+        });
+      } catch (err) {
+        reject((err as Error).message);
+      }
     });
   }
 
-  onReadData(callback: (s: string) => void): void {
-    if (!this.isConnected()) return;
-
-    this.parser = this.serialPort!.pipe(
-      new parsers.Readline({ delimiter: '\r\n' })
-    );
-    // Switches the port into "flowing mode"
-    this.parser.on('data', function (data) {
-      callback(data);
-    });
-  }
-
-  stopListening(): void {
-    if (!this.isConnected()) return;
-    this.parser?.removeAllListeners();
-  }
-
-  disconnect(): void | never {
-    if (!this.isConnected()) {
-      throw new Error('Serial port not connected');
+  disconnectSerial() {
+    if (!this.isSerialConnected()) {
+      return;
     }
+    // stop listenting
+    this.parser?.removeAllListeners();
+    // close
     this.serialPort?.close();
+  }
+
+  isSerialConnected(): boolean {
+    return this.serialPort?.isOpen || false;
   }
 
   send(commandString: string): void {
@@ -92,4 +71,4 @@ class SimpleSerial {
   }
 }
 
-export { BoardInfo, SimpleSerial };
+export { SimpleSerial };
