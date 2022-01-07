@@ -1,22 +1,17 @@
 import * as vscode from 'vscode';
 import { io, Socket } from 'socket.io-client';
 import * as ui from './ui';
-import { ArduinoCli, ArduinoBoard, ArduinoPlatform } from './arduino-cli';
-import { VirtualArduino } from './virtual-arduino';
-import { CodeManager } from './codeManager';
-import { AnnotationManager } from './annotationManager';
-import * as extension from './extension_support';
+
+import * as extension from './extension-support';
 import { writeFile, writeFileSync } from 'fs';
 import { TextLocation } from './parser';
+import { VirtualArduino } from './virtual-arduino';
 
 async function configureConnection() {
-  // Configure arduino-cli board
-  const selectBoard = async () => {
-    const list = Object.keys(ArduinoBoard);
-    const pick = await ui.showQuickPick(list, 'Choose your board');
-    if (!pick) return; // cancel
-    const fqbn: ArduinoBoard = ArduinoBoard[pick as keyof typeof ArduinoBoard];
-    return fqbn;
+  const ports = await VirtualArduino.getInstance().getAvailablePorts();
+
+  const selectPort = async () => {
+    return await ui.showQuickPick(ports, 'Pick your serial port');
   };
 
   const selectBaud = async () => {
@@ -26,52 +21,38 @@ async function configureConnection() {
     return parseInt(pick);
   };
 
-  const selectPort = async () => {
-    const ports = await ArduinoCli.getInstance().listAvailablePorts();
-    return await ui.showQuickPick(ports, 'Pick your serial port');
-  };
-
-  const fqbn = await selectBoard();
-  if (!fqbn) return;
+  const port = await selectPort();
+  if (!port) return;
 
   const baud = await selectBaud();
   if (!baud) return;
 
-  const port = await selectPort();
-  if (!port) return;
-
-  try {
-    ArduinoCli.getInstance().init(fqbn, port);
-    VirtualArduino.getInstance().configure(baud, port, onSerialData);
-    ui.vsInfo('Configuration saved');
-  } catch (e) {
-    ui.vsError((e as Error).message);
-  }
+  VirtualArduino.getInstance()
+    .beginSerial(port, baud, onSerialData)
+    .then((msg) => ui.vsInfo(msg))
+    .catch((msg) => ui.vsError(msg));
 }
 
 function onSerialData(data: string) {
-  // console.log('Data received: ' + data);
-  AnnotationManager.getInstance().displayAnnotations(data);
+  console.log('Data received: ' + data);
+  // AnnotationManager.getInstance().displayAnnotations(data);
 }
 
 function connectSerial() {
-  try {
-    VirtualArduino.getInstance().connectSerial();
-    ui.vsInfo('Connection open');
-  } catch (e) {
-    ui.vsError((e as Error).message);
-  }
+  VirtualArduino.getInstance()
+    .connectSerial()
+    .then((msg) => ui.vsInfo(msg))
+    .catch((msg) => ui.vsError(msg));
 }
 
 function disconnectSerial() {
-  try {
-    VirtualArduino.getInstance().disconnectSerial();
-    ui.vsInfo('Connection closed');
-  } catch (e) {
-    ui.vsError((e as Error).message);
-  }
+  VirtualArduino.getInstance()
+    .disconnectSerial()
+    .then((msg) => ui.vsInfo(msg))
+    .catch((msg) => ui.vsError(msg));
 }
 
+/*
 async function initializeProject() {
   const workspace = await extension.getCurrentWorkspace();
   const workspaceName = workspace.name;
@@ -138,12 +119,13 @@ function hello() {
   // location.startCol = 42;
   // location.endCol = 45;
 }
+*/
 
 export {
-  initializeProject,
+  // initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
-  compileAndUpload,
-  hello,
+  // compileAndUpload,
+  // hello,
 };
