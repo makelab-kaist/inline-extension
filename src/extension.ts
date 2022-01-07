@@ -52,14 +52,21 @@ function disconnectSerial() {
     .catch((msg) => ui.vsError(msg));
 }
 
-/*
 async function initializeProject() {
   const workspace = await extension.getCurrentWorkspace();
   const workspaceName = workspace.name;
 
-  // Wanna continue?
+  // Copy folder with code library
+  await extension.copyFileOrFolder(
+    extension.templatesFolderUri(), // src folder
+    'dependencies',
+    workspace.uri,
+    extension.buildFolderName()
+  );
+
+  // Copy over the current sketch?
   const ans = await ui.confirmationMessage(
-    'Are you sure you want to override your project?',
+    'Are you sure you want to override your sketch?',
     ['Yes', 'No']
   );
   if (ans === 'No' || ans === undefined) return; // bye bye
@@ -71,61 +78,34 @@ async function initializeProject() {
     workspace.uri, // target folder
     workspaceName + '.ino' // target file
   );
-
-  // Copy folder with code library
-  await extension.copyFileOrFolder(
-    extension.templatesFolderUri(), // src folder
-    'dependencies',
-    workspace.uri,
-    extension.buildFolderName()
-  );
 }
 
 async function compileAndUpload() {
   const sketch = await extension.buildFolderUri();
 
-  const newCode = CodeManager.getInstance().parseAndGenerateCode();
-  saveFile(newCode);
+  // const newCode = CodeManager.getInstance().parseAndGenerateCode();
+  // saveFile(newCode);
   // console.log(newCode);
-
-  AnnotationManager.getInstance().updateAnnotations();
+  // AnnotationManager.getInstance().updateAnnotations();
 
   // Compile and upload if pass
-  try {
-    await ArduinoCli.getInstance().compileSketch(sketch);
-    await ArduinoCli.getInstance().uploadSketch(sketch);
-    ui.vsInfo('Sketch succssfully uploaded');
-  } catch (e) {
-    if (e instanceof Error) {
-      ui.vsError(e.message);
-    } else {
-      ui.vsError('Compilation / uploading error');
-      console.log(e);
-    }
-  }
+  VirtualArduino.getInstance()
+    .compileAndUpload(sketch.fsPath)
+    .then((msg) => ui.vsInfo(msg))
+    .catch((msg) => ui.vsError(msg));
 }
 
-async function saveFile(code: string) {
-  // const wsedit = new vscode.WorkspaceEdit();
+async function saveFileInBuild(code: string) {
   const build = await extension.buildFolderUri();
   const out = vscode.Uri.joinPath(build, extension.buildFolderName() + '.ino');
   if (!out) return;
   writeFileSync(out.fsPath, code, {});
 }
 
-function hello() {
-  // const location: Partial<TextLocation> = {};
-  // location.line = 8;
-  // location.startCol = 42;
-  // location.endCol = 45;
-}
-*/
-
 export {
-  // initializeProject,
+  initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
-  // compileAndUpload,
-  // hello,
+  compileAndUpload,
 };

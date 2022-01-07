@@ -19,24 +19,14 @@ function activate(context) {
     // Connect to server before we start
     beforeAll();
     // Initialize the folder of the project
-    // context.subscriptions.push(
-    //   vscode.commands.registerCommand(
-    //     'double-cheese.initProject',
-    //     initializeProject
-    //   )
-    // );
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.initProject', extension_1.initializeProject));
     // First time config
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.configureConnection', extension_1.configureConnection));
     // Connect to the serial port
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.openConnection', extension_1.connectSerial));
     // Disconnect from serial port
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.closeConnection', extension_1.disconnectSerial));
-    // context.subscriptions.push(
-    //   vscode.commands.registerCommand(
-    //     'double-cheese.compileUpload',
-    //     compileAndUpload
-    //   )
-    // );
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
 }
 exports.activate = activate;
 /**

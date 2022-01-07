@@ -81,6 +81,13 @@ class VirtualArduino {
     return this.sendToServer('disconnectSerial');
   }
 
+  compileAndUpload(sketchPath: string): Promise<string> {
+    return this.sendToServer('compileAndUpload', {
+      sketchPath,
+      autoconnect: true,
+    });
+  }
+
   private sendToServer(command: string, params: {} = {}): Promise<string> {
     return new Promise((resolve, reject) => {
       this.socket.emit(command, params);

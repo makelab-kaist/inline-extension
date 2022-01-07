@@ -2,12 +2,11 @@ import * as vscode from 'vscode';
 
 import * as ui from './ui';
 import {
-  //   initializeProject,
+  initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
-  //   compileAndUpload,
-  //   hello,
+  compileAndUpload,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { utimes } from 'fs';
@@ -28,12 +27,12 @@ export function activate(context: vscode.ExtensionContext) {
   beforeAll();
 
   // Initialize the folder of the project
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand(
-  //     'double-cheese.initProject',
-  //     initializeProject
-  //   )
-  // );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.initProject',
+      initializeProject
+    )
+  );
 
   // First time config
   context.subscriptions.push(
@@ -59,12 +58,12 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand(
-  //     'double-cheese.compileUpload',
-  //     compileAndUpload
-  //   )
-  // );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.compileUpload',
+      compileAndUpload
+    )
+  );
 }
 
 /**
