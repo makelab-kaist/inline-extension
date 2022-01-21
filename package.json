@@ -60,7 +60,7 @@
     "watch": "tsc -watch -p ./",
     "test": "jest --watchAll --verbose",
     "check_license": "npx license-checker --summary",
-    "compile_grammars": "npx jison ./src/parser/grammar_tokens.jison -o ./src/parser/grammar_tokens.js && npx jison ./src/parser/grammar_comments.jison -o ./src/parser/grammar_comments.js && cp -prf ./src/parser/*.js ./out/parser"
+    "compile_grammars": "npx jison ./src/parser/grammar.jison -o ./src/parser/grammar.js && cp -prf ./src/parser/grammar.js ./out/parser"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",

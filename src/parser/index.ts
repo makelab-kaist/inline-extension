@@ -1,7 +1,5 @@
 // @ts-ignore
-import * as tokenParser from './grammar_tokens';
-// @ts-ignore
-import * as commentParser from './grammar_comments';
+import * as parser from './grammar';
 
 type TextLocation = {
   line: number;
@@ -9,33 +7,21 @@ type TextLocation = {
   endCol: number;
 };
 
-type FunctionData = {
+type Data = {
+  type: ['function', 'query'];
+  function?: number;
+  args?: string;
+  location: TextLocation;
+};
+
+type LineData = {
   id: string;
-  index: number;
-  function: string;
-  args: string[];
-  location: TextLocation;
+  line: number;
+  data: Data[];
 };
 
-type Annotation = {
-  ids: string[];
-  expr: string;
-  location: TextLocation;
-};
-
-function getFunctionsData(code: string): FunctionData[] {
-  tokenParser.resetCounters(); // important to reset all the counters!
-  return tokenParser.parse(code);
+function getParsedData(code: string): LineData[] {
+  return parser.parse(code);
 }
 
-function getAnnotations(code: string): Annotation[] {
-  return commentParser.parse(code);
-}
-
-export {
-  getFunctionsData,
-  getAnnotations,
-  TextLocation,
-  FunctionData,
-  Annotation,
-};
+export { getParsedData, TextLocation, Data, LineData };

@@ -71,95 +71,110 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var grammar_comments = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,8],$V2=[1,9],$V3=[1,6],$V4=[1,11],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,20],$Ve=[1,21],$Vf=[5,8,9,10,12,17,18,19,20,21,22,23,24,25,26,27],$Vg=[1,30],$Vh=[1,29],$Vi=[13,17,18,19,20,21,22,23,24,25,26,27];
+var grammar = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,6],$V2=[1,14],$V3=[1,15],$V4=[1,12],$V5=[1,13],$V6=[1,11],$V7=[1,7,8,13,15,16,17,19],$V8=[7,8,13,15,16,17,19],$V9=[1,22],$Va=[1,24],$Vb=[7,8,13,15,17];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"primary_expression":3,"query_expressions":4,"EOF":5,"query_expression":6,"anything_else":7,"NUM":8,",":9,"$":10,"binary_op":11,"COMMENT":12,"?":13,"expression":14,"id":15,"number":16,"+":17,"-":18,"*":19,"/":20,"%":21,"==":22,"!=":23,"<":24,"<=":25,">":26,">=":27,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",8:"NUM",9:",",10:"$",12:"COMMENT",13:"?",17:"+",18:"-",19:"*",20:"/",21:"%",22:"==",23:"!=",24:"<",25:"<=",26:">",27:">="},
-productions_: [0,[3,2],[3,1],[4,1],[4,2],[4,1],[4,2],[7,1],[7,1],[7,1],[7,1],[6,2],[6,3],[14,1],[14,1],[14,3],[14,3],[15,2],[16,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1]],
+symbols_: {"error":2,"primary_expression":3,"lines":4,"line":5,"statements":6,"EOL":7,"EOF":8,"statement":9,"anything":10,"function_call":11,"query":12,"FN_NAME":13,"params":14,"QUERY":15,"(":16,")":17,"any":18,"ANY":19,"$accept":0,"$end":1},
+terminals_: {2:"error",7:"EOL",8:"EOF",13:"FN_NAME",15:"QUERY",16:"(",17:")",19:"ANY"},
+productions_: [0,[3,1],[4,1],[4,2],[5,2],[5,2],[5,1],[5,1],[6,1],[6,2],[6,1],[6,2],[9,1],[9,1],[11,2],[12,1],[14,2],[14,3],[14,2],[14,1],[18,1],[10,1],[10,1],[10,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- return $$[$0-1]
+ return $$[$0] 
 break;
 case 2:
- return []; 
+ 
+    if($$[$0]) this.$= [$$[$0]]
+    else this.$ =[] 
+  
 break;
 case 3:
- this.$ = [$$[$0]]; 
+ 
+    if($$[$0]) this.$ = [...$$[$0-1], $$[$0]]
+    else this.$ = $$[$0-1]
+  
 break;
 case 4:
- this.$.push ($$[$0]); 
+ 
+
+    if ($$[$0-1].length > 0) this.$ = {id: getId($$[$0-1], 6), line: this._$.first_line, data:$$[$0-1]}  
+    else this.$ = undefined
+  
 break;
 case 5:
- this.$= [] 
+
+    if ($$[$0-1].length > 0) this.$ = {id: getId($$[$0-1], 6), line: this._$.first_line, data:$$[$0-1]}  
+    else this.$ = undefined
+  
 break;
 case 6:
- this.$=$$[$0-1] 
+ this.$ = undefined 
+break;
+case 7:
+ 
+break;
+case 8:
+ this.$= [$$[$0]]
+break;
+case 9:
+ 
+    if($$[$0]) this.$= [...$$[$0-1], $$[$0]]
+    else this.$= $$[$0-1]
+  
+break;
+case 10:
+ this.$= []; 
 break;
 case 11:
- this.$ = {
-        expr: '',
-        location: {
-          line: this._$.first_line,
-          startCol: this._$.first_column,
-          endCol: this._$.last_column
-        }
-      }
-    
+ this.$= $$[$0-1]; 
 break;
-case 12:
- this.$ = {
-        ...$$[$0-1],
-        location: {
-          line: this._$.first_line,
-          startCol: this._$.first_column,
-          endCol: this._$.last_column
-        }
-      } 
-    
-break;
-case 13:
-
-      this.$ = { ids: [$$[$0]], expr: $$[$0]  }
-     
+case 12: case 13: case 20:
+ this.$ = $$[$0] 
 break;
 case 14:
- this.$= {ids: [], expr: $$[$0] } 
+
+    this.$= { type: "function",
+          function: $$[$0-1],
+          args: $$[$0].substring(1, $$[$0].length-2),  // strip ()
+          location: {
+            line: this._$.first_line,
+            startCol: this._$.first_column,
+            endCol: this._$.last_column
+          }
+        }
+  
 break;
 case 15:
- 
-      $$[$0-2].ids.push($$[$0])
-      $$[$0-2].ids= [...new Set($$[$0-2].ids)] // make sure all elements are unique
-      this.$= { ids: $$[$0-2].ids,
-        expr: `${$$[$0-2].expr} ${$$[$0-1]} ${$$[$0]}`
-      }
-    
+
+    this.$= { type: "query",
+          location: {
+            line: this._$.first_line,
+            startCol: this._$.first_column,
+            endCol: this._$.last_column
+          }
+        }
+  
 break;
 case 16:
- 
-      this.$= { ids: $$[$0-2].ids,
-        expr: `${$$[$0-2].expr} ${$$[$0-1]} ${$$[$0]}`
-      }
-    
+ this.$ = $$[$0-1] + $$[$0]
 break;
 case 17:
- this.$ = '$'+$$[$0] 
+ this.$ = $$[$0-2]+$$[$0-1]+$$[$0]
 break;
 case 18:
- this.$= Number($$[$0])  
+ this.$ = $$[$0-1]+$$[$0]
 break;
-case 29:
- this.$= $$[$0] 
+case 19:
+this.$ = $$[$0] 
 break;
 }
 },
-table: [{3:1,4:2,5:[1,3],6:4,7:5,8:$V0,9:$V1,10:$V2,11:10,12:$V3,17:$V4,18:$V5,19:$V6,20:$V7,21:$V8,22:$V9,23:$Va,24:$Vb,25:$Vc,26:$Vd,27:$Ve},{1:[3]},{5:[1,22],6:23,7:24,8:$V0,9:$V1,10:$V2,11:10,12:$V3,17:$V4,18:$V5,19:$V6,20:$V7,21:$V8,22:$V9,23:$Va,24:$Vb,25:$Vc,26:$Vd,27:$Ve},{1:[2,2]},o($Vf,[2,3]),o($Vf,[2,5]),{8:$Vg,10:$Vh,13:[1,25],14:26,15:27,16:28},o($Vf,[2,7]),o($Vf,[2,8]),o($Vf,[2,9]),o($Vf,[2,10]),o($Vf,[2,19]),o($Vf,[2,20]),o($Vf,[2,21]),o($Vf,[2,22]),o($Vf,[2,23]),o($Vf,[2,24]),o($Vf,[2,25]),o($Vf,[2,26]),o($Vf,[2,27]),o($Vf,[2,28]),o($Vf,[2,29]),{1:[2,1]},o($Vf,[2,4]),o($Vf,[2,6]),o($Vf,[2,11]),{11:32,13:[1,31],17:$V4,18:$V5,19:$V6,20:$V7,21:$V8,22:$V9,23:$Va,24:$Vb,25:$Vc,26:$Vd,27:$Ve},o($Vi,[2,13]),o($Vi,[2,14]),{8:$Vg,16:33},o($Vi,[2,18]),o($Vf,[2,12]),{8:$Vg,10:$Vh,15:34,16:35},o($Vi,[2,17]),o($Vi,[2,15]),o($Vi,[2,16])],
-defaultActions: {3:[2,2],22:[2,1]},
+table: [{3:1,4:2,5:3,6:4,7:$V0,8:$V1,9:7,10:8,11:9,12:10,13:$V2,15:$V3,16:$V4,17:$V5,19:$V6},{1:[3]},{1:[2,1],5:16,6:4,7:$V0,8:$V1,9:7,10:8,11:9,12:10,13:$V2,15:$V3,16:$V4,17:$V5,19:$V6},o($V7,[2,2]),{7:[1,17],8:[1,18],9:19,10:20,11:9,12:10,13:$V2,15:$V3,16:$V4,17:$V5,19:$V6},o($V7,[2,6]),o($V7,[2,7]),o($V8,[2,8]),o($V8,[2,10]),o($V8,[2,12]),o($V8,[2,13]),o($V8,[2,21]),o($V8,[2,22]),o($V8,[2,23]),{14:21,16:$V9,18:23,19:$Va},o($V8,[2,15]),o($V7,[2,3]),o($V7,[2,4]),o($V7,[2,5]),o($V8,[2,9]),o($V8,[2,11]),o($Vb,[2,14],{18:23,14:25,16:$V9,19:$Va}),{14:27,16:$V9,17:[1,26],18:23,19:$Va},o($V8,[2,19]),o($V8,[2,20]),o($Vb,[2,18],{18:23,14:25,16:$V9,19:$Va}),o($V8,[2,16]),{14:25,16:$V9,17:[1,28],18:23,19:$Va},o($V8,[2,17])],
+defaultActions: {},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -306,6 +321,19 @@ parse: function parse(input) {
     }
     return true;
 }};
+
+
+  const MD5 = require("crypto-js/md5");
+
+  function getId (statements, length){
+    const long_name= statements.reduce ( (acc, d) => {
+        if (d.type === 'function')
+            return acc + d.function + "_" + d.args + "_";
+        return acc
+    }, "");
+
+    return MD5(long_name).toString().substring(0, length);
+  }
 
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
@@ -635,48 +663,32 @@ options: {},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0: return 5; 
+case 0: return 8  
 break;
-case 1: /* MULTILINE COMNT */
+case 1: return 7 
 break;
-case 2: return 12
+case 2: return 15 
 break;
-case 3: return 13
+case 3: /* LINE COMMENT */ 
 break;
-case 4: return 10
+case 4: /* MULTILINE COMNT */
 break;
-case 5: return 8; 
+case 5: /* ignore spaces */ 
 break;
-case 6: return 17
+case 6: return 13 
 break;
-case 7: return 18
+case 7: return 13 
 break;
-case 8: return 19
+case 8: return 16 
 break;
-case 9: return 20
+case 9: return 17 
 break;
-case 10: return 21
-break;
-case 11: return 22
-break;
-case 12: return 23
-break;
-case 13: return 24
-break;
-case 14: return 25
-break;
-case 15: return 26
-break;
-case 16: return 27
-break;
-case 17: /* ignore spaces */ 
-break;
-case 18: /* ignore others */
+case 10: return 19 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:\/\/)/,/^(?:\?)/,/^(?:\$)/,/^(?:0|[1-9]+[0-9]*)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:%)/,/^(?:==)/,/^(?:!=)/,/^(?:<)/,/^(?:<=)/,/^(?:>)/,/^(?:>=)/,/^(?:\s+)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:\s+)/,/^(?:digitalRead\b)/,/^(?:analogRead\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10],"inclusive":true}}
 });
 return lexer;
 })();
@@ -690,9 +702,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = grammar_comments;
-exports.Parser = grammar_comments.Parser;
-exports.parse = function () { return grammar_comments.parse.apply(grammar_comments, arguments); };
+exports.parser = grammar;
+exports.Parser = grammar.Parser;
+exports.parse = function () { return grammar.parse.apply(grammar, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

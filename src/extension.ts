@@ -1,10 +1,8 @@
 import * as vscode from 'vscode';
-import { io, Socket } from 'socket.io-client';
 import * as ui from './ui';
 
 import * as extension from './extension-support';
-import { writeFile, writeFileSync } from 'fs';
-import { TextLocation } from './parser';
+import { writeFileSync } from 'fs';
 import { VirtualArduino } from './virtual-arduino';
 
 async function configureConnection() {
@@ -85,7 +83,6 @@ async function compileAndUpload() {
 
   // const newCode = CodeManager.getInstance().parseAndGenerateCode();
   // saveFile(newCode);
-  // console.log(newCode);
   // AnnotationManager.getInstance().updateAnnotations();
 
   // Compile and upload if pass

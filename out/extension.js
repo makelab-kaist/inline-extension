@@ -70,7 +70,6 @@ async function compileAndUpload() {
     const sketch = await extension.buildFolderUri();
     // const newCode = CodeManager.getInstance().parseAndGenerateCode();
     // saveFile(newCode);
-    // console.log(newCode);
     // AnnotationManager.getInstance().updateAnnotations();
     // Compile and upload if pass
     virtual_arduino_1.VirtualArduino.getInstance()
