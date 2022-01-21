@@ -100,14 +100,14 @@ case 3:
 break;
 case 4:
  
-
-    if ($$[$0-1].length > 0) this.$ = {id: getId($$[$0-1], 6), line: this._$.first_line, data:$$[$0-1]}  
+    const line = this._$.first_line;
+    if ($$[$0-1].length > 0) this.$ = {id: getId($$[$0-1], line, 6), line, data:$$[$0-1]}  
     else this.$ = undefined
   
 break;
 case 5:
 
-    if ($$[$0-1].length > 0) this.$ = {id: getId($$[$0-1], 6), line: this._$.first_line, data:$$[$0-1]}  
+    if ($$[$0-1].length > 0) this.$ = {id: getId($$[$0-1], line, 6), line, data:$$[$0-1]}  
     else this.$ = undefined
   
 break;
@@ -325,10 +325,10 @@ parse: function parse(input) {
 
   const MD5 = require("crypto-js/md5");
 
-  function getId (statements, length){
+  function getId (statements, line, length){
     const long_name= statements.reduce ( (acc, d) => {
         if (d.type === 'function')
-            return acc + d.function + "_" + d.args + "_";
+            return acc + d.function + "_" + d.args + "_" + line;
         return acc
     }, "");
 

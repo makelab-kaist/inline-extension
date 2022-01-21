@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
+exports.helloWorld = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
 const vscode = require("vscode");
 const ui = require("./ui");
 const extension = require("./extension-support");
 const fs_1 = require("fs");
 const virtual_arduino_1 = require("./virtual-arduino");
+const parser_1 = require("./parser");
 async function configureConnection() {
     const ports = await virtual_arduino_1.VirtualArduino.getInstance().getAvailablePorts();
     const selectPort = async () => {
@@ -85,4 +86,20 @@ async function saveFileInBuild(code) {
         return;
     (0, fs_1.writeFileSync)(out.fsPath, code, {});
 }
+function helloWorld() {
+    const test = `void setup()
+  {
+    Serial.begin(115200);
+    int a = digitalRead(2);
+    Serial.println("Hello world"); //?
+  }
+  
+  void loop()
+  {
+    int a = digitalRead(2);
+  }`;
+    const result = (0, parser_1.getParsedData)(test);
+    console.log(result);
+}
+exports.helloWorld = helloWorld;
 //# sourceMappingURL=extension.js.map

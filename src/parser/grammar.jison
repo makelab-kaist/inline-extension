@@ -22,10 +22,10 @@
 
   const MD5 = require("crypto-js/md5");
 
-  function getId (statements, length){
+  function getId (statements, line, length){
     const long_name= statements.reduce ( (acc, d) => {
         if (d.type === 'function')
-            return acc + d.function + "_" + d.args + "_";
+            return acc + d.function + "_" + d.args + "_" + line;
         return acc
     }, "");
 
@@ -57,12 +57,12 @@ lines
 
 line 
   : statements EOL { 
-
-    if ($1.length > 0) $$ = {id: getId($1, 6), line: @$.first_line, data:$1}  
+    const line = @$.first_line;
+    if ($1.length > 0) $$ = {id: getId($1, line, 6), line, data:$1}  
     else $$ = undefined
   }
   | statements EOF {
-    if ($1.length > 0) $$ = {id: getId($1, 6), line: @$.first_line, data:$1}  
+    if ($1.length > 0) $$ = {id: getId($1, line, 6), line, data:$1}  
     else $$ = undefined
   }
   | EOL { $$ = undefined }

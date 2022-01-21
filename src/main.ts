@@ -7,6 +7,7 @@ import {
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  helloWorld,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { utimes } from 'fs';
@@ -63,6 +64,10 @@ export function activate(context: vscode.ExtensionContext) {
       'double-cheese.compileUpload',
       compileAndUpload
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('double-cheese.hello', helloWorld)
   );
 }
 

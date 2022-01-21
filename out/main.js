@@ -27,6 +27,7 @@ function activate(context) {
     // Disconnect from serial port
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.closeConnection', extension_1.disconnectSerial));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.hello', extension_1.helloWorld));
 }
 exports.activate = activate;
 /**
