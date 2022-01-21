@@ -6,7 +6,7 @@ const ui = require("./ui");
 const extension = require("./extension-support");
 const fs_1 = require("fs");
 const virtual_arduino_1 = require("./virtual-arduino");
-const parser_1 = require("./parser");
+const codeManager_1 = require("./codeManager");
 async function configureConnection() {
     const ports = await virtual_arduino_1.VirtualArduino.getInstance().getAvailablePorts();
     const selectPort = async () => {
@@ -69,8 +69,8 @@ async function initializeProject() {
 exports.initializeProject = initializeProject;
 async function compileAndUpload() {
     const sketch = await extension.buildFolderUri();
-    // const newCode = CodeManager.getInstance().parseAndGenerateCode();
-    // saveFile(newCode);
+    const newCode = codeManager_1.CodeManager.getInstance().parseAndGenerateCode();
+    saveFileInBuild(newCode);
     // AnnotationManager.getInstance().updateAnnotations();
     // Compile and upload if pass
     virtual_arduino_1.VirtualArduino.getInstance()
@@ -87,19 +87,18 @@ async function saveFileInBuild(code) {
     (0, fs_1.writeFileSync)(out.fsPath, code, {});
 }
 function helloWorld() {
-    const test = `void setup()
-  {
-    Serial.begin(115200);
-    int a = digitalRead(2);
-    Serial.println("Hello world"); //?
-  }
-  
-  void loop()
-  {
-    int a = digitalRead(2);
-  }`;
-    const result = (0, parser_1.getParsedData)(test);
-    console.log(result);
+    // const test = `void setup()
+    // {
+    //   Serial.begin(115200);
+    //   int a = digitalRead(2);
+    //   Serial.println("Hello world"); //?
+    // }
+    // void loop()
+    // {
+    //   int a = digitalRead(2);
+    // }`;
+    // const result = getParsedData(test);
+    // console.log(result);
 }
 exports.helloWorld = helloWorld;
 //# sourceMappingURL=extension.js.map

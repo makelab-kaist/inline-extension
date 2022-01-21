@@ -4,7 +4,7 @@ import * as ui from './ui';
 import * as extension from './extension-support';
 import { writeFileSync } from 'fs';
 import { VirtualArduino } from './virtual-arduino';
-import { getParsedData } from './parser';
+import { CodeManager } from './codeManager';
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -82,8 +82,8 @@ async function initializeProject() {
 async function compileAndUpload() {
   const sketch = await extension.buildFolderUri();
 
-  // const newCode = CodeManager.getInstance().parseAndGenerateCode();
-  // saveFile(newCode);
+  const newCode = CodeManager.getInstance().parseAndGenerateCode();
+  saveFileInBuild(newCode);
   // AnnotationManager.getInstance().updateAnnotations();
 
   // Compile and upload if pass
@@ -101,19 +101,18 @@ async function saveFileInBuild(code: string) {
 }
 
 function helloWorld() {
-  const test = `void setup()
-  {
-    Serial.begin(115200);
-    int a = digitalRead(2);
-    Serial.println("Hello world"); //?
-  }
-  
-  void loop()
-  {
-    int a = digitalRead(2);
-  }`;
-  const result = getParsedData(test);
-  console.log(result);
+  // const test = `void setup()
+  // {
+  //   Serial.begin(115200);
+  //   int a = digitalRead(2);
+  //   Serial.println("Hello world"); //?
+  // }
+  // void loop()
+  // {
+  //   int a = digitalRead(2);
+  // }`;
+  // const result = getParsedData(test);
+  // console.log(result);
 }
 
 export {
