@@ -12,69 +12,97 @@ class CodeManager {
   }
 
   parseAndGenerateCode(): string | never {
-    // Get current Code
+    let code = '';
+    try {
+      // Get current code
+      code = this.getCurrentCode();
+    } catch (err) {
+      throw new Error('Unable to parse the code');
+    }
+
+    // Get all lines with valid code
+    const lines: parser.LineData[] = this.getFilteredLines(code, 'function');
+    // Substitute them in the code to generate a new code
+    return this.generateCode(code, lines);
+  }
+
+  private getFilteredLines(
+    code: string,
+    queryType: 'function' | 'query'
+  ): parser.LineData[] {
+    const lines: parser.LineData[] = parser.getParsedData(code);
+
+    // remap
+    return (
+      lines
+        .map(({ id, line, data }) => {
+          return {
+            id,
+            line,
+            data: data.filter(({ type }) => type === queryType),
+          };
+        })
+        // filter
+        .filter(({ data }) => data.length > 0)
+    );
+  }
+
+  private getCurrentCode(): string | never {
     const doc = vscode.window.activeTextEditor?.document;
     if (!doc || doc.isUntitled) {
       throw new Error('No valid document open');
     }
     const code = doc.getText();
+    return code;
+  }
 
-    // Parse and generate new code
-    let result = code;
-    try {
-      const lines: parser.LineData[] = parser.getParsedData(code);
-      // result = this.generateCode(code, data);
-      console.log(lines);
-    } catch (err) {
-      console.error('Unable to parse the code');
+  private generateCode(code: string, fundata: parser.LineData[]): string {
+    const lines = code.split('\n');
+
+    // prepend a library
+    lines.unshift('#include "_functions.h"');
+
+    // Loop for the lines of interest
+    for (let { id, line, data } of fundata) {
+      const text = lines[line];
+      const newText = this.generateCodeForLine(id, line + 1, text, data); // adjust line starting from 1
+      lines[line] = newText;
     }
+
+    const newCode = lines.join('\n');
+    return newCode;
+  }
+
+  private generateCodeForLine(
+    id: string,
+    line: number,
+    text: string,
+    data: parser.Data[]
+  ): string {
+    let result = text;
+
+    const items = data.length;
+    let index = items;
+    console.log(data);
+
+    for (let { function: funcName, args, location } of data.reverse()) {
+      const s = location.startCol;
+      const e = location.endCol - 1;
+
+      // Serial.print and Serial.println have a dot, that should be replaced with a dash
+      if (funcName!.includes('.')) funcName = funcName!.replace('.', '_');
+
+      let newFuncCall = `_${funcName}(${args},"${id}",${line},${index},${items}`;
+      if (args === '') {
+        // no args
+        newFuncCall = `_${funcName}("${id}",${line},${index},${items}`;
+      }
+      result = result.substring(0, s) + newFuncCall + result.substring(e);
+      index--;
+    }
+
     return result;
   }
-
-  /*private generateCode(code: string, fundata: parser.LineData[]): string {
-    const lines = code.split('\n');
-    let prevLine = -1; // out of range
-
-    // Loop bottom up
-    for (let tok of fundata.reverse()) {
-      const line = tok.location.line - 1;
-      const s = tok.location.startCol;
-      const e = tok.location.endCol;
-      const text = lines[line];
-
-      const newLine = prevLine !== line; // we changed line
-      prevLine = line;
-
-      // substitute function call
-      lines[line] =
-        text.substring(0, s) +
-        this.getSubstitutionCode(tok, newLine) +
-        text.substring(e);
-    }
-    const newCode = lines.join('\n');
-
-    // prepend library
-    return this.prepend(`#include "ExtensionHelpers.h"`, newCode);
-  }
-
-  private prepend(toPrePend: string, code: string): string {
-    return toPrePend + '\n' + code;
-  }
-
-  private getSubstitutionCode(
-    tok: parser.FunctionData,
-    newLine: boolean
-  ): string {
-    const fnName = tok.function;
-    let args = '';
-    if (tok.args.length > 0) {
-      args = tok.args.join(',');
-      args += ',';
-    }
-
-    return `_${fnName}(${args}${tok.location.line},${tok.index},${newLine})`;
-  }
-  */
 }
 
 export { CodeManager };

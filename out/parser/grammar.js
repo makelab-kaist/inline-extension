@@ -72,12 +72,12 @@
   }
 */
 var grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,6],$V2=[1,14],$V3=[1,15],$V4=[1,12],$V5=[1,13],$V6=[1,11],$V7=[1,7,8,13,15,16,17,19],$V8=[7,8,13,15,16,17,19],$V9=[1,22],$Va=[1,24],$Vb=[7,8,13,15,17];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,6],$V2=[1,14],$V3=[1,12],$V4=[1,13],$V5=[1,15],$V6=[1,11],$V7=[1,7,8,13,14,16,17,18],$V8=[7,8,13,14,16,17,18],$V9=[1,24],$Va=[1,25],$Vb=[1,28],$Vc=[14,16,18];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"primary_expression":3,"lines":4,"line":5,"statements":6,"EOL":7,"EOF":8,"statement":9,"anything":10,"function_call":11,"query":12,"FN_NAME":13,"params":14,"QUERY":15,"(":16,")":17,"any":18,"ANY":19,"$accept":0,"$end":1},
-terminals_: {2:"error",7:"EOL",8:"EOF",13:"FN_NAME",15:"QUERY",16:"(",17:")",19:"ANY"},
-productions_: [0,[3,1],[4,1],[4,2],[5,2],[5,2],[5,1],[5,1],[6,1],[6,2],[6,1],[6,2],[9,1],[9,1],[11,2],[12,1],[14,2],[14,3],[14,2],[14,1],[18,1],[10,1],[10,1],[10,1]],
+symbols_: {"error":2,"primary_expression":3,"lines":4,"line":5,"statements":6,"EOL":7,"EOF":8,"statement":9,"anything":10,"function_call":11,"query":12,"FN_NAME":13,"(":14,"params":15,")":16,"QUERY":17,"ANY":18,"$accept":0,"$end":1},
+terminals_: {2:"error",7:"EOL",8:"EOF",13:"FN_NAME",14:"(",16:")",17:"QUERY",18:"ANY"},
+productions_: [0,[3,1],[4,1],[4,2],[5,2],[5,2],[5,1],[5,1],[6,1],[6,2],[6,1],[6,2],[9,1],[9,1],[11,4],[11,3],[12,1],[15,3],[15,2],[15,2],[15,1],[10,1],[10,1],[10,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -132,14 +132,14 @@ break;
 case 11:
  this.$= $$[$0-1]; 
 break;
-case 12: case 13: case 20:
+case 12: case 13:
  this.$ = $$[$0] 
 break;
 case 14:
 
     this.$= { type: "function",
-          function: $$[$0-1],
-          args: $$[$0].substring(1, $$[$0].length-2),  // strip ()
+          function: $$[$0-3],
+          args: $$[$0-1].substring(0, $$[$0-1].length),  // strip ()
           location: {
             line: this._$.first_line,
             startCol: this._$.first_column,
@@ -150,7 +150,9 @@ case 14:
 break;
 case 15:
 
-    this.$= { type: "query",
+    this.$= { type: "function",
+          function: $$[$0-2],
+          args: "",
           location: {
             line: this._$.first_line,
             startCol: this._$.first_column,
@@ -160,7 +162,15 @@ case 15:
   
 break;
 case 16:
- this.$ = $$[$0-1] + $$[$0]
+
+    this.$= { type: "query",
+          location: {
+            line: this._$.first_line,
+            startCol: this._$.first_column,
+            endCol: this._$.last_column
+          }
+        }
+  
 break;
 case 17:
  this.$ = $$[$0-2]+$$[$0-1]+$$[$0]
@@ -169,11 +179,14 @@ case 18:
  this.$ = $$[$0-1]+$$[$0]
 break;
 case 19:
+ this.$ = $$[$0-1]+$$[$0] 
+break;
+case 20:
 this.$ = $$[$0] 
 break;
 }
 },
-table: [{3:1,4:2,5:3,6:4,7:$V0,8:$V1,9:7,10:8,11:9,12:10,13:$V2,15:$V3,16:$V4,17:$V5,19:$V6},{1:[3]},{1:[2,1],5:16,6:4,7:$V0,8:$V1,9:7,10:8,11:9,12:10,13:$V2,15:$V3,16:$V4,17:$V5,19:$V6},o($V7,[2,2]),{7:[1,17],8:[1,18],9:19,10:20,11:9,12:10,13:$V2,15:$V3,16:$V4,17:$V5,19:$V6},o($V7,[2,6]),o($V7,[2,7]),o($V8,[2,8]),o($V8,[2,10]),o($V8,[2,12]),o($V8,[2,13]),o($V8,[2,21]),o($V8,[2,22]),o($V8,[2,23]),{14:21,16:$V9,18:23,19:$Va},o($V8,[2,15]),o($V7,[2,3]),o($V7,[2,4]),o($V7,[2,5]),o($V8,[2,9]),o($V8,[2,11]),o($Vb,[2,14],{18:23,14:25,16:$V9,19:$Va}),{14:27,16:$V9,17:[1,26],18:23,19:$Va},o($V8,[2,19]),o($V8,[2,20]),o($Vb,[2,18],{18:23,14:25,16:$V9,19:$Va}),o($V8,[2,16]),{14:25,16:$V9,17:[1,28],18:23,19:$Va},o($V8,[2,17])],
+table: [{3:1,4:2,5:3,6:4,7:$V0,8:$V1,9:7,10:8,11:9,12:10,13:$V2,14:$V3,16:$V4,17:$V5,18:$V6},{1:[3]},{1:[2,1],5:16,6:4,7:$V0,8:$V1,9:7,10:8,11:9,12:10,13:$V2,14:$V3,16:$V4,17:$V5,18:$V6},o($V7,[2,2]),{7:[1,17],8:[1,18],9:19,10:20,11:9,12:10,13:$V2,14:$V3,16:$V4,17:$V5,18:$V6},o($V7,[2,6]),o($V7,[2,7]),o($V8,[2,8]),o($V8,[2,10]),o($V8,[2,12]),o($V8,[2,13]),o($V8,[2,21]),o($V8,[2,22]),o($V8,[2,23]),{14:[1,21]},o($V8,[2,16]),o($V7,[2,3]),o($V7,[2,4]),o($V7,[2,5]),o($V8,[2,9]),o($V8,[2,11]),{14:$V9,15:22,16:[1,23],18:$Va},{14:$V9,15:27,16:[1,26],18:$Vb},o($V8,[2,15]),{14:$V9,15:29,18:$Va},o($Vc,[2,20]),o($V8,[2,14]),{14:$V9,15:27,16:[2,18],18:$Vb},o($Vc,[2,19]),{14:$V9,15:27,16:[1,30],18:$Vb},o($Vc,[2,17])],
 defaultActions: {},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
@@ -667,7 +680,7 @@ case 0: return 8
 break;
 case 1: return 7 
 break;
-case 2: return 15 
+case 2: return 17 
 break;
 case 3: /* LINE COMMENT */ 
 break;
@@ -679,16 +692,28 @@ case 6: return 13
 break;
 case 7: return 13 
 break;
-case 8: return 16 
+case 8: return 13 
 break;
-case 9: return 17 
+case 9: return 13 
 break;
-case 10: return 19 
+case 10: return 13 
+break;
+case 11: return 13 
+break;
+case 12: return 13 
+break;
+case 13: return 13 
+break;
+case 14: return 14 
+break;
+case 15: return 16 
+break;
+case 16: return 18 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:\s+)/,/^(?:digitalRead\b)/,/^(?:analogRead\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:\s+)/,/^(?:digitalRead\b)/,/^(?:analogRead\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:pinMode\b)/,/^(?:digitalWrite\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"inclusive":true}}
 });
 return lexer;
 })();

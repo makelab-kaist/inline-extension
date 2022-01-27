@@ -8,8 +8,8 @@ type TextLocation = {
 };
 
 type Data = {
-  type: ['function', 'query'];
-  function?: number;
+  type: 'function' | 'query';
+  function?: string;
   args?: string;
   location: TextLocation;
 };

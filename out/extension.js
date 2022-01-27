@@ -69,9 +69,15 @@ async function initializeProject() {
 exports.initializeProject = initializeProject;
 async function compileAndUpload() {
     const sketch = await extension.buildFolderUri();
-    const newCode = codeManager_1.CodeManager.getInstance().parseAndGenerateCode();
-    saveFileInBuild(newCode);
-    // AnnotationManager.getInstance().updateAnnotations();
+    try {
+        const newCode = codeManager_1.CodeManager.getInstance().parseAndGenerateCode();
+        // Save the code
+        saveFileInBuild(newCode);
+    }
+    catch (err) {
+        ui.vsError(err.message);
+        return;
+    }
     // Compile and upload if pass
     virtual_arduino_1.VirtualArduino.getInstance()
         .compileAndUpload(sketch.fsPath)

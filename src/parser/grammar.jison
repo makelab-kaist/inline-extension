@@ -12,6 +12,12 @@
 \s+                                               { /* ignore spaces */ }
 'digitalRead'                                     { return 'FN_NAME' }
 'analogRead'                                      { return 'FN_NAME' }
+'millis'                                          { return 'FN_NAME' }
+'micros'                                          { return 'FN_NAME' }
+'pinMode'                                         { return 'FN_NAME' }
+'digitalWrite'                                    { return 'FN_NAME' }
+'Serial.print'                                    { return 'FN_NAME' }
+'Serial.println'                                  { return 'FN_NAME' }
                            
 '('                                               { return '(' }
 ')'                                               { return ')' }
@@ -87,11 +93,23 @@ statement
   ;
   
 function_call
-  : FN_NAME params
+  : FN_NAME '(' params ')'
   {
     $$= { type: "function",
           function: $1,
-          args: $2.substring(1, $2.length-2),  // strip ()
+          args: $3.substring(0, $3.length),  // strip ()
+          location: {
+            line: @$.first_line,
+            startCol: @$.first_column,
+            endCol: @$.last_column
+          }
+        }
+  }
+  | FN_NAME '(' ')'
+  {
+    $$= { type: "function",
+          function: $1,
+          args: "",
           location: {
             line: @$.first_line,
             startCol: @$.first_column,
@@ -117,15 +135,13 @@ query
 
 
 params
-  : '(' ')' { $$ = $1 + $2}
-  |  '(' params ')' { $$ = $1+$2+$3}
+  // : '(' ')' { $$ = $1 + $2}
+  :  '(' params ')' { $$ = $1+$2+$3}
   | params params { $$ = $1+$2}
-  | any {$$ = $1 }
+  | params ANY { $$ = $1+$2 }
+  | ANY {$$ = $1 }
   ;
 
-any
-  : ANY { $$ = $1 }
-  ;
 
 
 anything 
