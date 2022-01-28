@@ -9,7 +9,7 @@
 \/\/.*\?                                          { return 'QUERY' }          
 \/\/.*                                            { /* LINE COMMENT */ }
 \/\*[.\s\S]*\*\/                                  { /* MULTILINE COMNT */}
-\s+                                               { /* ignore spaces */ }
+// \s+                                               { /* ignore spaces */ }
 'digitalRead'                                     { return 'FN_NAME' }
 'analogRead'                                      { return 'FN_NAME' }
 'millis'                                          { return 'FN_NAME' }

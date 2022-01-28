@@ -65,7 +65,7 @@ class CodeManager {
     // Loop for the lines of interest
     for (let { id, line, data } of fundata) {
       const text = lines[line];
-      const newText = this.generateCodeForLine(id, line + 1, text, data); // adjust line starting from 1
+      const newText = this.generateCodeForLine(id, line, text, data); // adjust line starting from 1
       lines[line] = newText;
     }
 
