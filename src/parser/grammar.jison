@@ -9,16 +9,18 @@
 \/\/.*\?                                          { return 'QUERY' }          
 \/\/.*                                            { /* LINE COMMENT */ }
 \/\*[.\s\S]*\*\/                                  { /* MULTILINE COMNT */}
-// \s+                                               { /* ignore spaces */ }
+// \s+                                            { /* ignore spaces */ }
+'pinMode'                                         { return 'FN_NAME' }
 'digitalRead'                                     { return 'FN_NAME' }
+'digitalWrite'                                    { return 'FN_NAME' }
 'analogRead'                                      { return 'FN_NAME' }
+'analogWrite'                                      { return 'FN_NAME' }
 'millis'                                          { return 'FN_NAME' }
 'micros'                                          { return 'FN_NAME' }
-'pinMode'                                         { return 'FN_NAME' }
-'digitalWrite'                                    { return 'FN_NAME' }
 'Serial.print'                                    { return 'FN_NAME' }
 'Serial.println'                                  { return 'FN_NAME' }
                            
+'random'                                          { return 'FN_NAME' }
 '('                                               { return '(' }
 ')'                                               { return ')' }
 .                                                 { return 'ANY' }

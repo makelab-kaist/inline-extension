@@ -702,16 +702,20 @@ case 11: return 13
 break;
 case 12: return 13 
 break;
-case 13: return 14 
+case 13: return 13 
 break;
-case 14: return 16 
+case 14: return 13 
 break;
-case 15: return 18 
+case 15: return 14 
+break;
+case 16: return 16 
+break;
+case 17: return 18 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:digitalRead\b)/,/^(?:analogRead\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:pinMode\b)/,/^(?:digitalWrite\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"inclusive":true}}
 });
 return lexer;
 })();

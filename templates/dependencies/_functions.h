@@ -72,6 +72,8 @@ void printValueFormatted(const SerialWrapper &value, const char *id, uint16_t li
     Serial.print(",");
 }
 
+// Pins
+
 void _pinMode(uint16_t pin, uint16_t mode, char *id, uint16_t line, uint16_t index, uint16_t items)
 {
   pinMode(pin, mode);
@@ -100,6 +102,18 @@ int _analogRead(uint16_t pin, char *id, uint16_t line, uint16_t index, uint16_t 
   return v;
 }
 
+void _analogWrite(uint16_t pin, uint16_t value, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  analogWrite(pin, value);
+  unsigned long highTime = pulseIn(pin, HIGH);
+  unsigned long lowTime = pulseIn(pin, LOW);
+  unsigned long dutyCycle = (float)(highTime * 100) / (highTime + lowTime);
+  String perc = String(dutyCycle) + "%";
+  printValueFormatted(SerialWrapper(perc), id, line, index, items);
+}
+
+// Time
+
 unsigned long _millis(char *id, uint16_t line, uint16_t index, uint16_t items)
 {
   unsigned long m = millis();
@@ -113,6 +127,24 @@ unsigned long _micros(char *id, uint16_t line, uint16_t index, uint16_t items)
   printValueFormatted(SerialWrapper(m), id, line, index, items);
   return m;
 }
+
+// Random
+
+long _random(long maxvalue, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  long r = random(maxvalue);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+long _random(long minvalue, long maxvalue, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  long r = random(minvalue, maxvalue);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+// Serial
 
 // print without formatter
 void _Serial_print(int value, char *id, uint16_t line, uint16_t index, uint16_t items)
