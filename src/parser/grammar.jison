@@ -5,22 +5,42 @@
 %%
 
 <<EOF>>                                           { return 'EOF'  }
-[\r\n]+                                            { return 'EOL' }
+[\r\n]+                                           { return 'EOL' }
 \/\/.*\?                                          { return 'QUERY' }          
 \/\/.*                                            { /* LINE COMMENT */ }
 \/\*[.\s\S]*\*\/                                  { /* MULTILINE COMNT */}
 // \s+                                            { /* ignore spaces */ }
+
+// Pins
 'pinMode'                                         { return 'FN_NAME' }
 'digitalRead'                                     { return 'FN_NAME' }
 'digitalWrite'                                    { return 'FN_NAME' }
 'analogRead'                                      { return 'FN_NAME' }
-'analogWrite'                                      { return 'FN_NAME' }
+'analogWrite'                                     { return 'FN_NAME' }
+
+// Time
 'millis'                                          { return 'FN_NAME' }
 'micros'                                          { return 'FN_NAME' }
+
+// Serial
 'Serial.print'                                    { return 'FN_NAME' }
 'Serial.println'                                  { return 'FN_NAME' }
-                           
+
+// Random + Trigonometry                           
 'random'                                          { return 'FN_NAME' }
+'cos'                                             { return 'FN_NAME' }
+'sin'                                             { return 'FN_NAME' }
+'tan'                                             { return 'FN_NAME' }
+
+// Bits and Bytes
+'bit'                                             { return 'FN_NAME' }
+'bitClear'                                        { return 'FN_NAME' }
+'bitRead'                                         { return 'FN_NAME' }
+// 'bitSet'                                          { return 'FN_NAME' }
+// 'bitWrite'                                        { return 'FN_NAME' }
+'lowByte'                                         { return 'FN_NAME' }
+'highByte'                                        { return 'FN_NAME' }
+
 '('                                               { return '(' }
 ')'                                               { return ')' }
 .                                                 { return 'ANY' }

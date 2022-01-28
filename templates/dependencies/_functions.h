@@ -183,4 +183,108 @@ void _Serial_print(char value, uint8_t format, char *id, uint16_t line, uint16_t
   printValueFormatted(SerialWrapper(value, format), id, line, index, items);
 }
 
+// Trigonometry
+
+double _cos(float rad, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  double r = cos(rad);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+double _sin(float rad, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  double r = sin(rad);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+double _tan(float rad, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  double r = tan(rad);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+// Bits and Bytes
+
+uint32_t _bit(uint8_t n, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  uint32_t r = bit(n);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+uint32_t _bitClear(uint32_t x, uint8_t n, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  uint32_t r = bitClear(x, n);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+uint32_t _bitRead(uint32_t x, uint8_t n, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  uint32_t r = bitRead(x, n);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+// void _bitSet(uint32_t &x, uint8_t n, char *id, uint16_t line, uint16_t index, uint16_t items)
+// {
+//   x |= (1UL << n);
+//   printValueFormatted(SerialWrapper(x), id, line, index, items);
+// }
+
+// void _bitWrite(uint32_t &x, uint8_t n, uint8_t b, char *id, uint16_t line, uint16_t index, uint16_t items)
+// {
+//   b ? (x |= (1UL << n)) : bitClear(x, n);
+//   printValueFormatted(SerialWrapper(x), id, line, index, items);
+// }
+
+uint8_t _highByte(uint16_t x, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  uint8_t r = highByte(x);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+uint8_t _lowByte(uint16_t x, char *id, uint16_t line, uint16_t index, uint16_t items)
+{
+  uint8_t r = lowByte(x);
+  printValueFormatted(SerialWrapper(r), id, line, index, items);
+  return r;
+}
+
+// Math
+// TODO
+
+// abs()
+// constrain()
+// map()
+// max()
+// min()
+// pow()
+// sq()
+// sqrt()
+
+// Advanced I/O
+// noTone()
+// pulseIn()
+// pulseInLong()
+// shiftIn()
+// shiftOut()
+// tone()
+
+// Characters
+// isAlpha()
+// isAlphaNumeric()
+// isAscii()
+// isControl()
+// isDigit()
+// isGraph()
+// isHexadecimalDigit()
+// isLowerCase()
+// isPrintable()
+// isPunct()
+// isSpace()
+// isUpperCase()
+// isWhitespace()
 #endif

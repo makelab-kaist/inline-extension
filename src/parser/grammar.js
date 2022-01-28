@@ -706,16 +706,32 @@ case 13: return 13
 break;
 case 14: return 13 
 break;
-case 15: return 14 
+case 15: return 13 
 break;
-case 16: return 16 
+case 16: return 13 
 break;
-case 17: return 18 
+case 17: return 13 
+break;
+case 18: return 13 
+break;
+case 19: return 13 
+break;
+case 20: return 13 
+break;
+case 21: return 13 
+break;
+case 22: return 13 
+break;
+case 23: return 14 
+break;
+case 24: return 16 
+break;
+case 25: return 18 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:cos\b)/,/^(?:sin\b)/,/^(?:tan\b)/,/^(?:bit\b)/,/^(?:bitClear\b)/,/^(?:bitRead\b)/,/^(?:lowByte\b)/,/^(?:highByte\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],"inclusive":true}}
 });
 return lexer;
 })();
