@@ -43,7 +43,7 @@ vscode.window.onDidChangeActiveTextEditor(() => {
 vscode.workspace.onDidCloseTextDocument(() => {
     console.log('text close');
 });
-vscode.workspace.onDidSaveTextDocument(() => { });
+vscode.workspace.onDidSaveTextDocument(extension_1.updateLineInformation);
 // this method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;

@@ -10,20 +10,32 @@ class CodeManager {
             this.instance = new CodeManager();
         return this.instance;
     }
-    parseAndGenerateCode() {
-        let code = '';
-        try {
-            // Get current code
-            code = this.getCurrentCode();
-        }
-        catch (err) {
-            throw new Error('Unable to parse the code');
-        }
-        // Get all lines with valid code
-        const lines = this.getFilteredLines(code, 'function');
-        // Substitute them in the code to generate a new code
-        return this.generateCode(code, lines);
-    }
+    // parseAndDecorate() {
+    //   let code = '';
+    //   try {
+    //     // Get current code
+    //     code = this.getCurrentCode();
+    //   } catch (err) {
+    //     throw new Error('Unable to parse the code');
+    //   }
+    //   // Get all lines with valid code
+    //   const lines: parser.LineData[] = this.getFilteredLines(code, 'function');
+    //   const flat = lines
+    //     .map(({ data }) => data)
+    //     .reduce((acc, curr) => [...acc, ...curr], [])
+    //     .map(({ location }) => location);
+    //   const ranges = flat.reduce(
+    //     (acc: vscode.Range[], { line, startCol, endCol }): vscode.Range[] => {
+    //       const range = new vscode.Range(
+    //         new vscode.Position(line - 1, startCol),
+    //         new vscode.Position(line - 1, endCol)
+    //       );
+    //       return [...acc, range];
+    //     },
+    //     []
+    //   );
+    //   DecorationManager.getInstance().decorateFunctions(ranges);
+    // }
     getFilteredLines(code, queryType) {
         const lines = parser.getParsedData(code);
         // remap
@@ -63,7 +75,6 @@ class CodeManager {
         let result = text;
         const items = data.length;
         let index = items;
-        console.log(data);
         for (let { function: funcName, args, location } of data.reverse()) {
             const s = location.startCol;
             const e = location.endCol - 1;

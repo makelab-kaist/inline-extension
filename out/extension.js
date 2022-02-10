@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.helloWorld = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
+exports.updateLineInformation = exports.helloWorld = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = exports.initializeProject = void 0;
 const vscode = require("vscode");
 const ui = require("./ui");
 const extension = require("./extension-support");
@@ -32,7 +32,7 @@ async function configureConnection() {
 }
 exports.configureConnection = configureConnection;
 function onSerialData(data) {
-    console.log('Data received: ' + data);
+    // console.log('Data received: ' + data);
     // AnnotationManager.getInstance().displayAnnotations(data);
 }
 function connectSerial() {
@@ -70,7 +70,10 @@ exports.initializeProject = initializeProject;
 async function compileAndUpload() {
     const sketch = await extension.buildFolderUri();
     try {
-        const newCode = codeManager_1.CodeManager.getInstance().parseAndGenerateCode();
+        const code = codeManager_1.CodeManager.getInstance().getCurrentCode();
+        // Get all lines with valid code
+        const lines = codeManager_1.CodeManager.getInstance().getFilteredLines(code, 'function');
+        const newCode = codeManager_1.CodeManager.getInstance().generateCode(code, lines);
         // Save the code
         saveFileInBuild(newCode);
     }
@@ -92,7 +95,22 @@ async function saveFileInBuild(code) {
         return;
     (0, fs_1.writeFileSync)(out.fsPath, code, {});
 }
+function updateLineInformation() {
+    try {
+        const code = codeManager_1.CodeManager.getInstance().getCurrentCode();
+        // Get all the lines with the '//?' queries
+        const queries = codeManager_1.CodeManager.getInstance().getFilteredLines(code, 'query');
+        // DecorationManager.getInstance.updateQueryList(queries);
+        console.log(JSON.stringify(queries, null, ' '));
+    }
+    catch (err) {
+        ui.vsError(err.message);
+        return;
+    }
+}
+exports.updateLineInformation = updateLineInformation;
 function helloWorld() {
+    // CodeManager.getInstance().parseAndDecorate();
     // const test = `void setup()
     // {
     //   Serial.begin(115200);

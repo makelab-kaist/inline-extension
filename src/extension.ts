@@ -5,6 +5,8 @@ import * as extension from './extension-support';
 import { writeFileSync } from 'fs';
 import { VirtualArduino } from './virtual-arduino';
 import { CodeManager } from './codeManager';
+import * as parser from './parser';
+import { DecorationManager } from './decorationManager';
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -33,7 +35,7 @@ async function configureConnection() {
 }
 
 function onSerialData(data: string) {
-  console.log('Data received: ' + data);
+  // console.log('Data received: ' + data);
   // AnnotationManager.getInstance().displayAnnotations(data);
 }
 
@@ -83,7 +85,15 @@ async function compileAndUpload() {
   const sketch = await extension.buildFolderUri();
 
   try {
-    const newCode = CodeManager.getInstance().parseAndGenerateCode();
+    const code = CodeManager.getInstance().getCurrentCode();
+
+    // Get all lines with valid code
+    const lines: parser.LineData[] = CodeManager.getInstance().getFilteredLines(
+      code,
+      'function'
+    );
+
+    const newCode = CodeManager.getInstance().generateCode(code, lines);
     // Save the code
     saveFileInBuild(newCode);
   } catch (err: any) {
@@ -105,7 +115,24 @@ async function saveFileInBuild(code: string) {
   writeFileSync(out.fsPath, code, {});
 }
 
+function updateLineInformation() {
+  try {
+    const code = CodeManager.getInstance().getCurrentCode();
+
+    // Get all the lines with the '//?' queries
+    const queries: parser.LineData[] =
+      CodeManager.getInstance().getFilteredLines(code, 'query');
+
+    // DecorationManager.getInstance.updateQueryList(queries);
+    console.log(JSON.stringify(queries, null, ' '));
+  } catch (err: any) {
+    ui.vsError(err.message);
+    return;
+  }
+}
+
 function helloWorld() {
+  // CodeManager.getInstance().parseAndDecorate();
   // const test = `void setup()
   // {
   //   Serial.begin(115200);
@@ -127,4 +154,5 @@ export {
   disconnectSerial,
   compileAndUpload,
   helloWorld,
+  updateLineInformation,
 };

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { DecorationManager } from './decorationManager';
 import * as parser from './parser';
 
 class CodeManager {
@@ -11,22 +12,37 @@ class CodeManager {
     return this.instance;
   }
 
-  parseAndGenerateCode(): string | never {
-    let code = '';
-    try {
-      // Get current code
-      code = this.getCurrentCode();
-    } catch (err) {
-      throw new Error('Unable to parse the code');
-    }
+  // parseAndDecorate() {
+  //   let code = '';
+  //   try {
+  //     // Get current code
+  //     code = this.getCurrentCode();
+  //   } catch (err) {
+  //     throw new Error('Unable to parse the code');
+  //   }
 
-    // Get all lines with valid code
-    const lines: parser.LineData[] = this.getFilteredLines(code, 'function');
-    // Substitute them in the code to generate a new code
-    return this.generateCode(code, lines);
-  }
+  //   // Get all lines with valid code
+  //   const lines: parser.LineData[] = this.getFilteredLines(code, 'function');
 
-  private getFilteredLines(
+  //   const flat = lines
+  //     .map(({ data }) => data)
+  //     .reduce((acc, curr) => [...acc, ...curr], [])
+  //     .map(({ location }) => location);
+
+  //   const ranges = flat.reduce(
+  //     (acc: vscode.Range[], { line, startCol, endCol }): vscode.Range[] => {
+  //       const range = new vscode.Range(
+  //         new vscode.Position(line - 1, startCol),
+  //         new vscode.Position(line - 1, endCol)
+  //       );
+  //       return [...acc, range];
+  //     },
+  //     []
+  //   );
+  //   DecorationManager.getInstance().decorateFunctions(ranges);
+  // }
+
+  getFilteredLines(
     code: string,
     queryType: 'function' | 'query'
   ): parser.LineData[] {
@@ -47,7 +63,7 @@ class CodeManager {
     );
   }
 
-  private getCurrentCode(): string | never {
+  getCurrentCode(): string | never {
     const doc = vscode.window.activeTextEditor?.document;
     if (!doc || doc.isUntitled) {
       throw new Error('No valid document open');
@@ -56,7 +72,7 @@ class CodeManager {
     return code;
   }
 
-  private generateCode(code: string, fundata: parser.LineData[]): string {
+  generateCode(code: string, fundata: parser.LineData[]): string {
     const lines = code.split('\n');
 
     // prepend a library
@@ -83,7 +99,6 @@ class CodeManager {
 
     const items = data.length;
     let index = items;
-    console.log(data);
 
     for (let { function: funcName, args, location } of data.reverse()) {
       const s = location.startCol;

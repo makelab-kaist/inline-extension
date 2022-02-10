@@ -1,0 +1,1 @@
+{"version":3,"file":"annotationManager.js","sourceRoot":"","sources":["../src/annotationManager.ts"],"names":[],"mappings":";;;AAEA,MAAM,iBAAiB;IAGrB,gBAAuB,CAAC;IAExB,MAAM,CAAC,WAAW;QAChB,IAAI,CAAC,iBAAiB,CAAC,QAAQ;YAAE,IAAI,CAAC,QAAQ,GAAG,IAAI,iBAAiB,EAAE,CAAC;QACzE,OAAO,IAAI,CAAC,QAAQ,CAAC;IACvB,CAAC;CACF;AAEQ,8CAAiB"}

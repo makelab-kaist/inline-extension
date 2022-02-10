@@ -8,6 +8,7 @@ import {
   disconnectSerial,
   compileAndUpload,
   helloWorld,
+  updateLineInformation,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { utimes } from 'fs';
@@ -87,7 +88,7 @@ vscode.workspace.onDidCloseTextDocument(() => {
   console.log('text close');
 });
 
-vscode.workspace.onDidSaveTextDocument(() => {});
+vscode.workspace.onDidSaveTextDocument(updateLineInformation);
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
