@@ -533,9 +533,7 @@ long getFrequency(int pin)
 void _tone(uint8_t pin, unsigned int frequency, unsigned long duration, PARAMS)
 {
   tone(pin, frequency, duration);
-  Serial.println("asdf");
   long freq = getFrequency(pin);
-  Serial.println("asdf2");
   printValueFormatted(SerialWrapper(freq), id, line, index, items);
 }
 
