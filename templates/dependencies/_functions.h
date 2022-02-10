@@ -182,6 +182,7 @@ long _min(long a, long b, PARAMS)
   printValueFormatted(SerialWrapper(r), id, line, index, items);
   return r;
 }
+
 double _min(double a, double b, PARAMS)
 {
   double r = min(a, b);
@@ -209,6 +210,7 @@ long _abs(long a, PARAMS)
   printValueFormatted(SerialWrapper(r), id, line, index, items);
   return r;
 }
+
 double _abs(double a, PARAMS)
 {
   double r = abs(a);
@@ -271,6 +273,7 @@ double _cos(float rad, PARAMS)
   printValueFormatted(SerialWrapper(r), id, line, index, items);
   return r;
 }
+
 double _sin(float rad, PARAMS)
 {
   double r = sin(rad);
@@ -481,6 +484,7 @@ uint8_t _highByte(long w, PARAMS)
   printValueFormatted(SerialWrapper(r), id, line, index, items);
   return r;
 }
+
 uint8_t _lowByte(long w, PARAMS)
 {
   uint8_t r = lowByte(w);

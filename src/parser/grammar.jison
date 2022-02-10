@@ -11,6 +11,8 @@
 \/\*[.\s\S]*\*\/                                  { /* MULTILINE COMNT */}
 // \s+                                            { /* ignore spaces */ }
 
+///////////// begin ARDUINO KEYWORDS
+
 // Pins
 'pinMode'                                         { return 'FN_NAME' }
 'digitalRead'                                     { return 'FN_NAME' }
@@ -21,6 +23,43 @@
 // Time
 'millis'                                          { return 'FN_NAME' }
 'micros'                                          { return 'FN_NAME' }
+'pulseIn'                                         { return 'FN_NAME' }
+
+// Random
+'random'                                          { return 'FN_NAME' }
+'map'                                             { return 'FN_NAME' }
+
+// Math
+'min'                                             { return 'FN_NAME' }
+'max'                                             { return 'FN_NAME' }
+'abs'                                             { return 'FN_NAME' }
+'round'                                           { return 'FN_NAME' }
+'radians'                                         { return 'FN_NAME' }
+'degrees'                                         { return 'FN_NAME' }
+'sq'                                              { return 'FN_NAME' }
+'sqrt'                                            { return 'FN_NAME' }
+'constrain'                                       { return 'FN_NAME' }
+'cos'                                             { return 'FN_NAME' }
+'sin'                                             { return 'FN_NAME' }
+'tan'                                             { return 'FN_NAME' }
+
+// Characters
+'isAlphaNumeric'                                  { return 'FN_NAME' }
+'isAlpha'                                         { return 'FN_NAME' }
+'isAscii'                                         { return 'FN_NAME' }
+'isWhitespace'                                    { return 'FN_NAME' }
+'isControl'                                       { return 'FN_NAME' }
+'isDigit'                                         { return 'FN_NAME' }
+'isGraph'                                         { return 'FN_NAME' }
+'isLowerCase'                                     { return 'FN_NAME' }
+'isPrintable'                                     { return 'FN_NAME' }
+'isPunct'                                         { return 'FN_NAME' }
+'isSpace'                                         { return 'FN_NAME' }
+'isUpperCase'                                     { return 'FN_NAME' }
+'isHexadecimalDigit'                              { return 'FN_NAME' }
+'toAscii'                                         { return 'FN_NAME' }
+'toLowerCase'                                     { return 'FN_NAME' }
+'toUpperCase'                                     { return 'FN_NAME' }
 
 // Serial
 'Serial.print'                                    { return 'FN_NAME' }
@@ -28,18 +67,23 @@
 
 // Random + Trigonometry                           
 'random'                                          { return 'FN_NAME' }
-'cos'                                             { return 'FN_NAME' }
-'sin'                                             { return 'FN_NAME' }
-'tan'                                             { return 'FN_NAME' }
 
 // Bits and Bytes
 'bit'                                             { return 'FN_NAME' }
 'bitClear'                                        { return 'FN_NAME' }
 'bitRead'                                         { return 'FN_NAME' }
-// 'bitSet'                                          { return 'FN_NAME' }
-// 'bitWrite'                                        { return 'FN_NAME' }
+'bitSet'                                          { return 'FN_NAME' }
+'bitToggle'                                       { return 'FN_NAME' }
+'bitWrite'                                        { return 'FN_NAME' }
 'lowByte'                                         { return 'FN_NAME' }
 'highByte'                                        { return 'FN_NAME' }
+
+// Advanced IO
+'shiftIn'                                         { return 'FN_NAME' }
+'shiftOut'                                        { return 'FN_NAME' }
+'tone'                                            { return 'FN_NAME' }
+
+///////////// end ARDUINO KEYWORDS
 
 '('                                               { return '(' }
 ')'                                               { return ')' }

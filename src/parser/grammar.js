@@ -722,16 +722,84 @@ case 21: return 13
 break;
 case 22: return 13 
 break;
-case 23: return 14 
+case 23: return 13 
 break;
-case 24: return 16 
+case 24: return 13 
 break;
-case 25: return 18 
+case 25: return 13 
+break;
+case 26: return 13 
+break;
+case 27: return 13 
+break;
+case 28: return 13 
+break;
+case 29: return 13 
+break;
+case 30: return 13 
+break;
+case 31: return 13 
+break;
+case 32: return 13 
+break;
+case 33: return 13 
+break;
+case 34: return 13 
+break;
+case 35: return 13 
+break;
+case 36: return 13 
+break;
+case 37: return 13 
+break;
+case 38: return 13 
+break;
+case 39: return 13 
+break;
+case 40: return 13 
+break;
+case 41: return 13 
+break;
+case 42: return 13 
+break;
+case 43: return 13 
+break;
+case 44: return 13 
+break;
+case 45: return 13 
+break;
+case 46: return 13 
+break;
+case 47: return 13 
+break;
+case 48: return 13 
+break;
+case 49: return 13 
+break;
+case 50: return 13 
+break;
+case 51: return 13 
+break;
+case 52: return 13 
+break;
+case 53: return 13 
+break;
+case 54: return 13 
+break;
+case 55: return 13 
+break;
+case 56: return 13 
+break;
+case 57: return 14 
+break;
+case 58: return 16 
+break;
+case 59: return 18 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:cos\b)/,/^(?:sin\b)/,/^(?:tan\b)/,/^(?:bit\b)/,/^(?:bitClear\b)/,/^(?:bitRead\b)/,/^(?:lowByte\b)/,/^(?:highByte\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:pulseIn\b)/,/^(?:random\b)/,/^(?:map\b)/,/^(?:min\b)/,/^(?:max\b)/,/^(?:abs\b)/,/^(?:round\b)/,/^(?:radians\b)/,/^(?:degrees\b)/,/^(?:sq\b)/,/^(?:sqrt\b)/,/^(?:constrain\b)/,/^(?:cos\b)/,/^(?:sin\b)/,/^(?:tan\b)/,/^(?:isAlphaNumeric\b)/,/^(?:isAlpha\b)/,/^(?:isAscii\b)/,/^(?:isWhitespace\b)/,/^(?:isControl\b)/,/^(?:isDigit\b)/,/^(?:isGraph\b)/,/^(?:isLowerCase\b)/,/^(?:isPrintable\b)/,/^(?:isPunct\b)/,/^(?:isSpace\b)/,/^(?:isUpperCase\b)/,/^(?:isHexadecimalDigit\b)/,/^(?:toAscii\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:bit\b)/,/^(?:bitClear\b)/,/^(?:bitRead\b)/,/^(?:bitSet\b)/,/^(?:bitToggle\b)/,/^(?:bitWrite\b)/,/^(?:lowByte\b)/,/^(?:highByte\b)/,/^(?:shiftIn\b)/,/^(?:shiftOut\b)/,/^(?:tone\b)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59],"inclusive":true}}
 });
 return lexer;
 })();
