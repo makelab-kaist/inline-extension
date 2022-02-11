@@ -7,6 +7,8 @@ const extension = require("./extension-support");
 const fs_1 = require("fs");
 const virtual_arduino_1 = require("./virtual-arduino");
 const codeManager_1 = require("./codeManager");
+const decoration_1 = require("./decoration");
+const timers_1 = require("timers");
 async function configureConnection() {
     const ports = await virtual_arduino_1.VirtualArduino.getInstance().getAvailablePorts();
     const selectPort = async () => {
@@ -110,6 +112,19 @@ function updateLineInformation() {
 }
 exports.updateLineInformation = updateLineInformation;
 function helloWorld() {
+    const ae = vscode.window.activeTextEditor;
+    const q1 = new decoration_1.QueryDecoration(10, ae);
+    const q2 = new decoration_1.QueryDecoration(12, ae);
+    let i = 0;
+    (0, timers_1.setInterval)(() => {
+        q1.show('hello ' + i);
+        i += 1;
+    }, 5000);
+    let j = 0;
+    (0, timers_1.setInterval)(() => {
+        q2.show('hello ' + j);
+        j += 1;
+    }, 1000);
     // CodeManager.getInstance().parseAndDecorate();
     // const test = `void setup()
     // {

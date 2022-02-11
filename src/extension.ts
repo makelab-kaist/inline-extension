@@ -7,6 +7,8 @@ import { VirtualArduino } from './virtual-arduino';
 import { CodeManager } from './codeManager';
 import * as parser from './parser';
 import { DecorationManager } from './decorationManager';
+import { QueryDecoration } from './decoration';
+import { setInterval } from 'timers';
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -132,6 +134,21 @@ function updateLineInformation() {
 }
 
 function helloWorld() {
+  const ae = vscode.window.activeTextEditor!;
+  const q1 = new QueryDecoration(10, ae);
+  const q2 = new QueryDecoration(12, ae);
+
+  let i = 0;
+  setInterval(() => {
+    q1.show('hello ' + i);
+    i += 1;
+  }, 5000);
+
+  let j = 0;
+  setInterval(() => {
+    q2.show('hello ' + j);
+    j += 1;
+  }, 1000);
   // CodeManager.getInstance().parseAndDecorate();
   // const test = `void setup()
   // {

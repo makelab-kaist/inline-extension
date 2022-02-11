@@ -1,16 +1,11 @@
 import * as vscode from 'vscode';
+import { QueryDecoration } from './decoration';
 import * as parser from './parser';
-
-const decorations = {
-  functionHighlight: vscode.window.createTextEditorDecorationType({
-    border: '1px solid green',
-  }),
-};
 
 class DecorationManager {
   private static instance: DecorationManager;
 
-  private queryDecorations: Map<string, vscode.Disposable[]> = new Map();
+  private queryDecorations: Map<string, QueryDecoration> = new Map();
 
   private constructor() {}
 
@@ -19,35 +14,9 @@ class DecorationManager {
     return this.instance;
   }
 
-  updateQueryList(queries: parser.LineData[]) {
-    this.queryDecorations = new Map();
-    // queries.forEach(({ id, line, data }) => {});
-  }
-
-  setDecoration(id: string, value: string) {}
-
-  /*
-  this.addDecorationWithText(
-      '▶️ ' + text,
-      annotation.location.line - 1,
-      annotation.location.endCol,
-      editor
-    );
-  */
-
-  // decorateFunctions(ranges: vscode.Range[]) {
-  //   vscode.window.activeTextEditor?.setDecorations(
-  //     decorations.functionHighlight,
-  //     ranges
-  //   );
-  // }
-
-  // private removeDecorations() {
-  //   if (this.disposables) {
-  //     this.disposables.forEach((item) => item.dispose());
-  //   }
-  //   this.disposables = [];
-  // }
+  addQueryDecoration(id: string, line: number) {}
+  removeQueryDecoration(id: string) {}
+  removeAll() {}
 }
 
 export { DecorationManager };
