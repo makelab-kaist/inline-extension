@@ -6,6 +6,8 @@ import {
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  decorateEditor,
+  hello,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 
@@ -51,6 +53,10 @@ export async function activate(context: vscode.ExtensionContext) {
       compileAndUpload
     )
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('double-cheese.hello', hello)
+  );
 }
 
 /**
@@ -69,7 +75,7 @@ vscode.workspace.onDidCloseTextDocument(() => {
   console.log('text close');
 });
 
-// vscode.workspace.onDidSaveTextDocument(updateLineInformation);
+vscode.workspace.onDidSaveTextDocument(decorateEditor);
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

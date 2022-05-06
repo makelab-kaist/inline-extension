@@ -4,6 +4,7 @@ import * as ui from './ui';
 import { ArduinoAck, VirtualArduino } from './virtual-arduino';
 import * as parser from './parser';
 import { CodeManager } from './codeManager';
+import { createAnnotation, removeAnnotations } from './annotations';
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -35,9 +36,16 @@ async function configureConnection() {
     .catch((msg) => ui.vsError(msg));
 }
 
-function onSerialData(data: ArduinoAck) {
-  if (data.success) console.log('Data received: ' + data.message);
-  // AnnotationManager.getInstance().displayAnnotations(data);
+function onSerialData(ack: ArduinoAck) {
+  if (!ack.success) return;
+  const data = ack.message as string;
+  // console.log(data);
+
+  // should start with $
+  if (data.charAt(0) !== '$') return;
+  const [id, line, value] = data.slice(1).split(','); // e.g., $b4999c,9,1
+  console.log(id, line, value);
+  createAnnotation(id, +line, value);
 }
 
 function connectSerial() {
@@ -77,70 +85,71 @@ function compileAndUpload() {
   }
 }
 
-/*
-
-
-
-
-
-async function saveFileInBuild(code: string) {
-  const build = await extension.buildFolderUri();
-  const out = vscode.Uri.joinPath(build, extension.buildFolderName() + '.ino');
-  if (!out) return;
-  writeFileSync(out.fsPath, code, {});
-}
-
-function updateLineInformation() {
+function decorateEditor() {
   try {
-    const code = CodeManager.getInstance().getCurrentCode();
-
+    // remove all annotations if they exist
+    removeAnnotations();
     // Get all the lines with the '//?' queries
     const queries: parser.LineData[] =
-      CodeManager.getInstance().getFilteredLines(code, 'query');
+      CodeManager.getInstance().getFilteredLines('query');
 
-    // DecorationManager.getInstance.updateQueryList(queries);
-    console.log(JSON.stringify(queries, null, ' '));
+    queries.forEach(({ id, line }) => {
+      createAnnotation(id, line);
+    });
+    // console.log(JSON.stringify(queries, null, ' '));
   } catch (err: any) {
     ui.vsError(err.message);
     return;
   }
 }
 
-function helloWorld() {
-  const ae = vscode.window.activeTextEditor!;
-  const q1 = new QueryDecoration(10, ae);
-  const q2 = new QueryDecoration(12, ae);
+/*type AnnotationOptions = {
+  color?: string;
+  backgroundColor?: string;
+};
 
+function createDecoration(
+  activeEditor: vscode.TextEditor,
+  contentText: string,
+  line: number,
+  { color = 'green', backgroundColor = 'none' }: AnnotationOptions = {
+    color: 'green',
+    backgroundColor: 'none',
+  }
+): vscode.TextEditorDecorationType {
+  const end = 10000; // a large number
+
+  const range = new vscode.Range(
+    new vscode.Position(line - 1, end), // lines starts at 0
+    new vscode.Position(line - 1, end) // lines start at 0
+  );
+
+  const decoration = vscode.window.createTextEditorDecorationType({
+    after: {
+      contentText,
+      color,
+      margin: '20px',
+      backgroundColor: 'none',
+    },
+  });
+  activeEditor?.setDecorations(decoration, [{ range }]);
+
+  return decoration;
+}*/
+
+function hello() {
+  createAnnotation('1231', 1);
   let i = 0;
   setInterval(() => {
-    q1.show('hello ' + i);
-    i += 1;
-  }, 5000);
-
-  let j = 0;
-  setInterval(() => {
-    q2.show('hello ' + j);
-    j += 1;
+    createAnnotation('1231', 1, `${i++}`);
   }, 1000);
-  // CodeManager.getInstance().parseAndDecorate();
-  // const test = `void setup()
-  // {
-  //   Serial.begin(115200);
-  //   int a = digitalRead(2);
-  //   Serial.println("Hello world"); //?
-  // }
-  // void loop()
-  // {
-  //   int a = digitalRead(2);
-  // }`;
-  // const result = getParsedData(test);
-  // console.log(result);
 }
-*/
 
 export {
   configureConnection,
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  decorateEditor,
+  hello,
 };

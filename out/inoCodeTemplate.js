@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.libCode = void 0;
 exports.libCode = `
+
 #ifndef __DASH_FUNCTIONS__H__
 #define __DASH_FUNCTIONS__H__
 
@@ -408,6 +409,11 @@ int _toUpperCase(int c, PARAMS)
 
 // Serial
 
+void _Serial_print(int value, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
+
 void _Serial_print(long value, PARAMS)
 {
   printValueFormatted(SerialWrapper(value), id, line, index, items);
@@ -420,7 +426,7 @@ void _Serial_print(double value, PARAMS)
 
 void _Serial_print(char value, PARAMS)
 {
-  printValueFormatted(SerialWrapper(value), id, line, index, items);
+  printValueFormatted(SerialWrapper(String(value)), id, line, index, items);
 }
 
 void _Serial_print(const String &value, PARAMS)
@@ -429,6 +435,7 @@ void _Serial_print(const String &value, PARAMS)
 }
 
 // print with formatter
+
 void _Serial_print(long value, uint8_t format, PARAMS)
 {
   printValueFormatted(SerialWrapper(value, format), id, line, index, items);
@@ -467,20 +474,11 @@ long _bitRead(long value, uint8_t bit, PARAMS)
   return r;
 }
 
-#define _bitSet(value, bit, id, line, index, items) ({               \
-  bitSet(value, bit);                                                \
-  printValueFormatted(SerialWrapper(value), id, line, index, items); \
-})
+#define _bitSet(value, bit, id, line, index, items) ({                 bitSet(value, bit);                                                  printValueFormatted(SerialWrapper(value), id, line, index, items); })
 
-#define _bitToggle(value, bit, id, line, index, items) ({            \
-  bitToggle(value, bit);                                             \
-  printValueFormatted(SerialWrapper(value), id, line, index, items); \
-})
+#define _bitToggle(value, bit, id, line, index, items) ({              bitToggle(value, bit);                                               printValueFormatted(SerialWrapper(value), id, line, index, items); })
 
-#define _bitWrite(value, bit, bitvalue, id, line, index, items) ({   \
-  bitWrite(value, bit, bitvalue);                                    \
-  printValueFormatted(SerialWrapper(value), id, line, index, items); \
-})
+#define _bitWrite(value, bit, bitvalue, id, line, index, items) ({     bitWrite(value, bit, bitvalue);                                      printValueFormatted(SerialWrapper(value), id, line, index, items); })
 
 uint8_t _highByte(long w, PARAMS)
 {
@@ -514,7 +512,7 @@ char *int2bin(unsigned int x, uint8_t bitOrder)
     else if (bitOrder == LSBFIRST)
       buffer[i] = '0' + ((x & (1 << i)) > 0);
 
-  buffer[8] = '\0';
+  buffer[8] = ' ';
   return buffer;
 }
 

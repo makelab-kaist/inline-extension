@@ -25,6 +25,7 @@ async function activate(context) {
     // Disconnect from serial port
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.disconnect', extension_1.disconnectSerial));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.hello', extension_1.hello));
 }
 exports.activate = activate;
 /**
@@ -40,7 +41,7 @@ vscode.window.onDidChangeActiveTextEditor(() => {
 vscode.workspace.onDidCloseTextDocument(() => {
     console.log('text close');
 });
-// vscode.workspace.onDidSaveTextDocument(updateLineInformation);
+vscode.workspace.onDidSaveTextDocument(extension_1.decorateEditor);
 // this method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;

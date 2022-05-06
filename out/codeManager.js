@@ -81,19 +81,6 @@ class CodeManager {
             // filter
             .filter(({ data }) => data.length > 0));
     }
-    // generateCode(code: string, fundata: parser.LineData[]): string {
-    //   const lines = code.split('\n');
-    //   // prepend a library
-    //   lines.unshift('#include "_functions.h"');
-    //   // Loop for the lines of interest
-    //   for (let { id, line, data } of fundata) {
-    //     const text = lines[line];
-    //     const newText = this.generateCodeForLine(id, line, text, data); // adjust line starting from 1
-    //     lines[line] = newText;
-    //   }
-    //   const newCode = lines.join('\n');
-    //   return newCode;
-    // }
     generateCodeForLine(id, line, text, data) {
         let result = text;
         const items = data.length;
