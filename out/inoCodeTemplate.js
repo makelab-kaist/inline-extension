@@ -1,3 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.libCode = void 0;
+exports.libCode = `
 #ifndef __DASH_FUNCTIONS__H__
 #define __DASH_FUNCTIONS__H__
 
@@ -543,3 +547,6 @@ void _tone(uint8_t pin, unsigned int frequency, PARAMS)
 }
 
 #endif // __DASH_FUNCTIONS__H__
+
+`;
+//# sourceMappingURL=inoCodeTemplate.js.map

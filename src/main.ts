@@ -2,19 +2,15 @@ import * as vscode from 'vscode';
 
 import * as ui from './ui';
 import {
-  initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
   compileAndUpload,
-  helloWorld,
-  updateLineInformation,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
-import { utimes } from 'fs';
 
-function beforeAll() {
-  VirtualArduino.getInstance()
+async function startConnectionToServer() {
+  await VirtualArduino.getInstance()
     .connectToServer()
     .then((msg: string) => {
       ui.vsInfo(msg);
@@ -24,17 +20,9 @@ function beforeAll() {
     });
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
-  beforeAll();
-
-  // Initialize the folder of the project
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'double-cheese.initProject',
-      initializeProject
-    )
-  );
+  await startConnectionToServer();
 
   // First time config
   context.subscriptions.push(
@@ -46,16 +34,13 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Connect to the serial port
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'double-cheese.openConnection',
-      connectSerial
-    )
+    vscode.commands.registerCommand('double-cheese.connect', connectSerial)
   );
 
   // Disconnect from serial port
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'double-cheese.closeConnection',
+      'double-cheese.disconnect',
       disconnectSerial
     )
   );
@@ -65,10 +50,6 @@ export function activate(context: vscode.ExtensionContext) {
       'double-cheese.compileUpload',
       compileAndUpload
     )
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('double-cheese.hello', helloWorld)
   );
 }
 
@@ -88,7 +69,7 @@ vscode.workspace.onDidCloseTextDocument(() => {
   console.log('text close');
 });
 
-vscode.workspace.onDidSaveTextDocument(updateLineInformation);
+// vscode.workspace.onDidSaveTextDocument(updateLineInformation);
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

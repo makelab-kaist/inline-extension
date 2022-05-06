@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmationMessage = exports.showInputBox = exports.showQuickPick = exports.vsError = exports.vsInfo = void 0;
+exports.confirmationMessage = exports.showInputBox = exports.showQuickPick = exports.vsError = exports.vsInfoWithLink = exports.vsInfo = void 0;
 const vscode = require("vscode");
 /**
  *
- * @param {String} message - An info message to display as a VSCode toaster
+ * @param {string} message - An info message to display as a VSCode toaster
  */
 function vsInfo(message) {
     vscode.window.showInformationMessage(message);
@@ -12,7 +12,22 @@ function vsInfo(message) {
 exports.vsInfo = vsInfo;
 /**
  *
- * @param {String} message - An error message to display as a VSCode toaster
+ * @param {string} message
+ * @param {string} link
+ */
+function vsInfoWithLink(message, link) {
+    vscode.window
+        .showInformationMessage(message, 'Go to File')
+        .then((selection) => {
+        if (selection) {
+            vscode.env.openExternal(vscode.Uri.parse(link));
+        }
+    });
+}
+exports.vsInfoWithLink = vsInfoWithLink;
+/**
+ *
+ * @param {string} message - An error message to display as a VSCode toaster
  */
 function vsError(message) {
     vscode.window.showErrorMessage(message);
@@ -20,8 +35,8 @@ function vsError(message) {
 exports.vsError = vsError;
 /**
  * Show a quick pick
- * @param {String[]} itemArray - List of possible picks
- * @param {String} placeHolder - String placeholder
+ * @param {string[]} itemArray - List of possible picks
+ * @param {string} placeHolder - string placeholder
  * @returns synchronously returns the picked string or undefined
  */
 async function showQuickPick(itemArray, placeHolder) {

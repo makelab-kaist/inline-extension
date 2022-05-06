@@ -1,14 +1,9 @@
 import * as vscode from 'vscode';
 import * as ui from './ui';
 
-import * as extension from './extension-support';
-import { writeFileSync } from 'fs';
-import { VirtualArduino } from './virtual-arduino';
-import { CodeManager } from './codeManager';
+import { ArduinoAck, VirtualArduino } from './virtual-arduino';
 import * as parser from './parser';
-import { DecorationManager } from './decorationManager';
-import { QueryDecoration } from './decoration';
-import { setInterval } from 'timers';
+import { CodeManager } from './codeManager';
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -24,20 +19,24 @@ async function configureConnection() {
     return parseInt(pick);
   };
 
-  const port = await selectPort();
-  if (!port) return;
+  const portName = await selectPort();
+  if (!portName) return;
 
   const baud = await selectBaud();
   if (!baud) return;
 
+  // Autoconnect?
+  const ans = await ui.confirmationMessage('Connect to server', ['Yes', 'No']);
+  const autoConnect = ans === 'Yes';
+
   VirtualArduino.getInstance()
-    .beginSerial(port, baud, onSerialData)
+    .beginSerial({ portName, baud, autoConnect }, onSerialData)
     .then((msg) => ui.vsInfo(msg))
     .catch((msg) => ui.vsError(msg));
 }
 
-function onSerialData(data: string) {
-  // console.log('Data received: ' + data);
+function onSerialData(data: ArduinoAck) {
+  if (data.success) console.log('Data received: ' + data.message);
   // AnnotationManager.getInstance().displayAnnotations(data);
 }
 
@@ -55,60 +54,34 @@ function disconnectSerial() {
     .catch((msg) => ui.vsError(msg));
 }
 
-async function initializeProject() {
-  const workspace = await extension.getCurrentWorkspace();
-  const workspaceName = workspace.name;
-
-  // Copy folder with code library
-  await extension.copyFileOrFolder(
-    extension.templatesFolderUri(), // src folder
-    'dependencies',
-    workspace.uri,
-    extension.buildFolderName()
-  );
-
-  // Copy over the current sketch?
-  const ans = await ui.confirmationMessage(
-    'Are you sure you want to override your sketch?',
-    ['Yes', 'No']
-  );
-  if (ans === 'No' || ans === undefined) return; // bye bye
-
-  // Copy ino file template
-  await extension.copyFileOrFolder(
-    extension.templatesFolderUri(), // src folder
-    'sketch.ino', // src file
-    workspace.uri, // target folder
-    workspaceName + '.ino' // target file
-  );
-}
-
-async function compileAndUpload() {
-  const sketch = await extension.buildFolderUri();
-
+function compileAndUpload() {
   try {
-    const code = CodeManager.getInstance().getCurrentCode();
+    // const code = CodeManager.getInstance().getCurrentCode();
 
     // Get all lines with valid code
-    const lines: parser.LineData[] = CodeManager.getInstance().getFilteredLines(
-      code,
-      'function'
-    );
+    const lines: parser.LineData[] =
+      CodeManager.getInstance().getFilteredLines('function');
 
-    const newCode = CodeManager.getInstance().generateCode(code, lines);
-    // Save the code
-    saveFileInBuild(newCode);
+    const code = CodeManager.getInstance().generateCode(lines);
+
+    // Compile and upload
+    VirtualArduino.getInstance()
+      .compileAndUpload(code)
+      .then(([message, link]: string[]) => {
+        ui.vsInfoWithLink(message, link);
+      })
+      .catch((msg) => ui.vsError(msg));
   } catch (err: any) {
     ui.vsError(err.message);
     return;
   }
-
-  // Compile and upload if pass
-  VirtualArduino.getInstance()
-    .compileAndUpload(sketch.fsPath)
-    .then((msg) => ui.vsInfo(msg))
-    .catch((msg) => ui.vsError(msg));
 }
+
+/*
+
+
+
+
 
 async function saveFileInBuild(code: string) {
   const build = await extension.buildFolderUri();
@@ -163,13 +136,11 @@ function helloWorld() {
   // const result = getParsedData(test);
   // console.log(result);
 }
+*/
 
 export {
-  initializeProject,
   configureConnection,
   connectSerial,
   disconnectSerial,
   compileAndUpload,
-  helloWorld,
-  updateLineInformation,
 };

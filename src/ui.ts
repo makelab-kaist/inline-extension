@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 /**
  *
- * @param {String} message - An info message to display as a VSCode toaster
+ * @param {string} message - An info message to display as a VSCode toaster
  */
 function vsInfo(message: string): void {
   vscode.window.showInformationMessage(message);
@@ -10,7 +10,22 @@ function vsInfo(message: string): void {
 
 /**
  *
- * @param {String} message - An error message to display as a VSCode toaster
+ * @param {string} message
+ * @param {string} link
+ */
+function vsInfoWithLink(message: string, link: string): void {
+  vscode.window
+    .showInformationMessage(message, 'Go to File')
+    .then((selection) => {
+      if (selection) {
+        vscode.env.openExternal(vscode.Uri.parse(link));
+      }
+    });
+}
+
+/**
+ *
+ * @param {string} message - An error message to display as a VSCode toaster
  */
 function vsError(message: string): void {
   vscode.window.showErrorMessage(message);
@@ -18,8 +33,8 @@ function vsError(message: string): void {
 
 /**
  * Show a quick pick
- * @param {String[]} itemArray - List of possible picks
- * @param {String} placeHolder - String placeholder
+ * @param {string[]} itemArray - List of possible picks
+ * @param {string} placeHolder - string placeholder
  * @returns synchronously returns the picked string or undefined
  */
 async function showQuickPick(
@@ -63,4 +78,11 @@ async function confirmationMessage(msg: string, options: string[]) {
   return vscode.window.showInformationMessage(msg, ...options);
 }
 
-export { vsInfo, vsError, showQuickPick, showInputBox, confirmationMessage };
+export {
+  vsInfo,
+  vsInfoWithLink,
+  vsError,
+  showQuickPick,
+  showInputBox,
+  confirmationMessage,
+};

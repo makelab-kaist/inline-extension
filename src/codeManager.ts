@@ -1,15 +1,49 @@
 import * as vscode from 'vscode';
-import { DecorationManager } from './decorationManager';
 import * as parser from './parser';
+import { libCode } from './inoCodeTemplate';
 
 class CodeManager {
-  private static instance: CodeManager;
+  private static _instance: CodeManager;
 
   private constructor() {}
 
   static getInstance() {
-    if (!CodeManager.instance) this.instance = new CodeManager();
-    return this.instance;
+    if (!CodeManager._instance) this._instance = new CodeManager();
+    return this._instance;
+  }
+
+  getCurrentCode(): string {
+    const doc = vscode.window.activeTextEditor?.document;
+    if (!doc || doc.isUntitled) {
+      throw new Error('No valid document open');
+    }
+    return doc.getText();
+  }
+
+  // parseCode(): parser.LineData[] {
+  //   const code = this.getCurrentCode();
+  //   const lines: parser.LineData[] = parser.getParsedData(code);
+  //   return lines;
+  // }
+
+  generateCode(
+    fundata: parser.LineData[],
+    code: string | undefined = undefined
+  ): string {
+    if (!code) code = this.getCurrentCode();
+    const lines = code.split('\n');
+
+    // Loop for the lines of interest
+    for (let { id, line, data } of fundata) {
+      const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
+      const text = lines[editorLine];
+      const newText = this.generateCodeForLine(id, line, text, data);
+      lines[editorLine] = newText;
+    }
+    const newCode = lines.join('\n');
+
+    // add library
+    return libCode + newCode;
   }
 
   // parseAndDecorate() {
@@ -24,6 +58,7 @@ class CodeManager {
   //   // Get all lines with valid code
   //   const lines: parser.LineData[] = this.getFilteredLines(code, 'function');
 
+  // Decorations
   //   const flat = lines
   //     .map(({ data }) => data)
   //     .reduce((acc, curr) => [...acc, ...curr], [])
@@ -43,9 +78,10 @@ class CodeManager {
   // }
 
   getFilteredLines(
-    code: string,
-    queryType: 'function' | 'query'
+    queryType: 'function' | 'query',
+    code: string | undefined = undefined
   ): parser.LineData[] {
+    if (!code) code = this.getCurrentCode();
     const lines: parser.LineData[] = parser.getParsedData(code);
 
     // remap
@@ -63,31 +99,22 @@ class CodeManager {
     );
   }
 
-  getCurrentCode(): string | never {
-    const doc = vscode.window.activeTextEditor?.document;
-    if (!doc || doc.isUntitled) {
-      throw new Error('No valid document open');
-    }
-    const code = doc.getText();
-    return code;
-  }
+  // generateCode(code: string, fundata: parser.LineData[]): string {
+  //   const lines = code.split('\n');
 
-  generateCode(code: string, fundata: parser.LineData[]): string {
-    const lines = code.split('\n');
+  //   // prepend a library
+  //   lines.unshift('#include "_functions.h"');
 
-    // prepend a library
-    lines.unshift('#include "_functions.h"');
+  //   // Loop for the lines of interest
+  //   for (let { id, line, data } of fundata) {
+  //     const text = lines[line];
+  //     const newText = this.generateCodeForLine(id, line, text, data); // adjust line starting from 1
+  //     lines[line] = newText;
+  //   }
 
-    // Loop for the lines of interest
-    for (let { id, line, data } of fundata) {
-      const text = lines[line];
-      const newText = this.generateCodeForLine(id, line, text, data); // adjust line starting from 1
-      lines[line] = newText;
-    }
-
-    const newCode = lines.join('\n');
-    return newCode;
-  }
+  //   const newCode = lines.join('\n');
+  //   return newCode;
+  // }
 
   private generateCodeForLine(
     id: string,

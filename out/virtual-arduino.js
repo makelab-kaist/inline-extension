@@ -7,33 +7,34 @@ const SERVER = 'http://localhost:3000';
 class VirtualArduino {
     constructor() {
         this._connected = false;
-        this.socket = (0, socket_io_client_1.io)(SERVER, {
+        this._ready = false;
+        this._socket = (0, socket_io_client_1.io)(SERVER, {
             reconnection: true,
         });
-        this.socket.on('connect', function () {
+        this._socket.on('connect', function () {
             console.log('Connected!');
         });
-        this.socket.once('connect_error', () => {
+        this._socket.once('connect_error', () => {
             console.log('Not connected!');
         });
     }
     static getInstance() {
-        if (!VirtualArduino.instance)
-            this.instance = new VirtualArduino();
-        return this.instance;
+        if (!VirtualArduino._instance)
+            this._instance = new VirtualArduino();
+        return this._instance;
     }
-    connectToServer() {
+    connectToServer(timeoutms = 200) {
         return new Promise((resolve, reject) => {
-            if (this.socket.connected)
-                resolve('Connected'); //done
-            this.socket.connect();
-            this.socket.on('info', ({ msg }) => {
-                resolve(msg);
-            });
+            if (this._socket.connected)
+                return resolve('Connected to server'); //done
+            this._socket.connect();
+            // are we connected after timeout
             setTimeout(() => {
-                if (this.socket.disconnected)
+                if (this._socket.disconnected)
                     reject('Cannot connet to server');
-            }, 200);
+                else
+                    resolve('Client connected to server');
+            }, timeoutms);
         });
     }
     getAvailableBuadRate() {
@@ -42,46 +43,57 @@ class VirtualArduino {
     }
     getAvailablePorts() {
         return new Promise((resolve, reject) => {
-            if (!this.socket)
+            if (!this._socket)
                 reject([]); // no ports available
-            this.socket.emit('listSerials');
-            this.socket.on('listSerialsData', (ports) => {
-                resolve(ports);
+            this._socket.emit('listSerials');
+            this._socket.on('listSerialsData', ({ message, success }) => {
+                if (success)
+                    resolve(message);
+                else
+                    reject('No port found');
             });
         });
     }
-    beginSerial(port, baud, onDataCallback) {
+    beginSerial({ portName, baud, autoConnect, }, onDataCallback) {
         return new Promise((resolve, reject) => {
-            if (!this.socket)
+            if (!this._socket)
                 reject('Connection unavailable');
-            this.socket.removeAllListeners();
-            this.socket.on('serialData', onDataCallback);
-            this.sendToServer('beginSerial', { port, baud, autoconnect: true })
-                .then(resolve)
+            this._socket.removeAllListeners();
+            this._socket.on('serialData', onDataCallback);
+            this.sendToServer('beginSerial', { portName, baud, autoConnect })
+                .then(({ message }) => {
+                this._ready = true;
+                resolve(message);
+            })
                 .catch(reject);
         });
     }
     connectSerial() {
-        return this.sendToServer('connectSerial');
+        if (!this._ready)
+            return Promise.reject('Need to initialize connection first');
+        return this.sendToServer('connectSerial').then(({ message }) => message);
     }
     disconnectSerial() {
-        return this.sendToServer('disconnectSerial');
+        if (!this._ready)
+            return Promise.reject('Need to initialize connection first');
+        return this.sendToServer('disconnectSerial').then(({ message }) => message);
     }
-    compileAndUpload(sketchPath) {
-        return this.sendToServer('compileAndUpload', {
-            sketchPath,
-            autoconnect: true,
-        });
+    compileAndUpload(sketchCode) {
+        if (!this._ready)
+            return Promise.reject('Need to initialize connection first');
+        return this.sendToServer('compileAndUploadCode', {
+            code: sketchCode,
+        }).then(({ message }) => message);
     }
     sendToServer(command, params = {}) {
         return new Promise((resolve, reject) => {
-            this.socket.emit(command, params);
-            this.socket.on('info', ({ msg }) => {
-                resolve(msg);
+            this._socket.on('info', (ack) => {
+                resolve(ack);
             });
-            this.socket.on('error', ({ msg }) => {
-                reject(msg);
+            this._socket.on('error', ({ message }) => {
+                reject(message);
             });
+            this._socket.emit(command, params);
         });
     }
 }

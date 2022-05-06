@@ -11,10 +11,9 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:double-cheese.initProject",
     "onCommand:double-cheese.configureConnection",
-    "onCommand:double-cheese.openConnection",
-    "onCommand:double-cheese.closeConnection",
+    "onCommand:double-cheese.connect",
+    "onCommand:double-cheese.disconnect",
     "onCommand:double-cheese.compileUpload",
     "onCommand:double-cheese.hello",
     "onLanguage:cpp"
@@ -23,24 +22,19 @@
   "contributes": {
     "commands": [
       {
-        "command": "double-cheese.initProject",
-        "category": "doublecheese",
-        "title": "Initialize the project"
-      },
-      {
         "command": "double-cheese.configureConnection",
         "category": "doublecheese",
-        "title": "Configure the connection"
+        "title": "Configure and connect to serial"
       },
       {
-        "command": "double-cheese.openConnection",
+        "command": "double-cheese.connect",
         "category": "doublecheese",
-        "title": "Open serial connection"
+        "title": "Connect to serial"
       },
       {
-        "command": "double-cheese.closeConnection",
+        "command": "double-cheese.disconnect",
         "category": "doublecheese",
-        "title": "Close serial connection"
+        "title": "Disconnect from serial"
       },
       {
         "command": "double-cheese.compileUpload",
