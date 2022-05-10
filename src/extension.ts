@@ -4,7 +4,7 @@ import * as ui from './ui';
 import { ArduinoAck, VirtualArduino } from './virtual-arduino';
 import * as parser from './parser';
 import { CodeManager } from './codeManager';
-import { createAnnotation, removeAnnotations } from './annotations';
+import { addAndShowAnnotation } from './annotations';
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -27,7 +27,7 @@ async function configureConnection() {
   if (!baud) return;
 
   // Autoconnect?
-  const ans = await ui.confirmationMessage('Connect to server', ['Yes', 'No']);
+  const ans = await ui.confirmationMessage('Connect to serial?', ['Yes', 'No']);
   const autoConnect = ans === 'Yes';
 
   VirtualArduino.getInstance()
@@ -45,7 +45,7 @@ function onSerialData(ack: ArduinoAck) {
   if (data.charAt(0) !== '$') return;
   const [id, line, value] = data.slice(1).split(','); // e.g., $b4999c,9,1
   console.log(id, line, value);
-  createAnnotation(id, +line, value);
+  // createAnnotation(id, +line);
 }
 
 function connectSerial() {
@@ -88,13 +88,18 @@ function compileAndUpload() {
 function decorateEditor() {
   try {
     // remove all annotations if they exist
-    removeAnnotations();
+    // removeAllAnnotations();
     // Get all the lines with the '//?' queries
     const queries: parser.LineData[] =
       CodeManager.getInstance().getFilteredLines('query');
 
     queries.forEach(({ id, line }) => {
-      createAnnotation(id, line);
+      // createAnnotation(id, line);
+      addAndShowAnnotation(id, line, 'NaN', {
+        color: 'green',
+        backgroundColor: 'none',
+        highlightColor: 'yellow',
+      });
     });
     // console.log(JSON.stringify(queries, null, ' '));
   } catch (err: any) {
@@ -103,46 +108,13 @@ function decorateEditor() {
   }
 }
 
-/*type AnnotationOptions = {
-  color?: string;
-  backgroundColor?: string;
-};
-
-function createDecoration(
-  activeEditor: vscode.TextEditor,
-  contentText: string,
-  line: number,
-  { color = 'green', backgroundColor = 'none' }: AnnotationOptions = {
-    color: 'green',
-    backgroundColor: 'none',
-  }
-): vscode.TextEditorDecorationType {
-  const end = 10000; // a large number
-
-  const range = new vscode.Range(
-    new vscode.Position(line - 1, end), // lines starts at 0
-    new vscode.Position(line - 1, end) // lines start at 0
-  );
-
-  const decoration = vscode.window.createTextEditorDecorationType({
-    after: {
-      contentText,
-      color,
-      margin: '20px',
-      backgroundColor: 'none',
-    },
-  });
-  activeEditor?.setDecorations(decoration, [{ range }]);
-
-  return decoration;
-}*/
-
 function hello() {
-  createAnnotation('1231', 1);
-  let i = 0;
-  setInterval(() => {
-    createAnnotation('1231', 1, `${i++}`);
-  }, 1000);
+  // createAnnotation('1231', 1);
+  // addAndShowAnnotation('1231', 1, 'hello');
+  // let i = 0;
+  // setInterval(() => {
+  //   updateAnnotation('1231', `${i++}`);
+  // }, 5000);
 }
 
 export {
