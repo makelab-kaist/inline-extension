@@ -52,13 +52,23 @@ class SideViewProvider implements vscode.WebviewViewProvider {
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     const bundleScript = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, 'public', 'build', 'bundle.js')
+      vscode.Uri.joinPath(
+        this._extensionUri,
+        'side_view_public',
+        'build',
+        'bundle.js'
+      )
     );
     const bundlecss = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, 'public', 'build', 'bundle.css')
+      vscode.Uri.joinPath(
+        this._extensionUri,
+        'side_view_public',
+        'build',
+        'bundle.css'
+      )
     );
     const globalcss = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, 'public', 'global.css')
+      vscode.Uri.joinPath(this._extensionUri, 'side_view_public', 'global.css')
     );
 
     const nonce = getNonce();

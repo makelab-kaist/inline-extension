@@ -29,12 +29,12 @@ function serve() {
 }
 
 export default {
-  input: 'SideView/main.js',
+  input: 'src/side_view/main.js',
   output: {
     sourcemap: true,
     format: 'iife',
     name: 'app',
-    file: 'public/build/bundle.js',
+    file: 'side_view_public/build/bundle.js',
   },
   plugins: [
     svelte({

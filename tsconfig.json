@@ -19,8 +19,7 @@
 	"exclude": [
 		"node_modules",
 		".vscode-test",
-		"src/templates",
 		"public",
-		"SideView"
+		"src/side_view"
 	]
 }

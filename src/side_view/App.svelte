@@ -66,7 +66,6 @@
   <button>Disonnect</button>
 </main>
 
-
 <style>
   /* your styles go here */
   button{
