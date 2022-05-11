@@ -69,7 +69,6 @@ function compileAndUpload() {
         // Get all lines with valid code
         const lines = codeManager_1.CodeManager.getInstance().getFilteredLines('function');
         const code = codeManager_1.CodeManager.getInstance().generateCode(lines);
-        console.log(code);
         // Compile and upload
         virtual_arduino_1.VirtualArduino.getInstance()
             .compileAndUpload(code)

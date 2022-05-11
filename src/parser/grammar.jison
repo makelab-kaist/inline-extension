@@ -8,7 +8,7 @@
 [\r\n]+                                           { return 'EOL' }
 \/\/.*\?                                          { return 'QUERY' }          
 \/\/.*                                            { /* LINE COMMENT */ }
-\/\*[.\s\S]*\*\/                                  { /* MULTILINE COMNT */}
+\/\*[.\s\S]*\*\/                                  { /* MULTILINE COMMENT */}
 // \s+                                            { /* ignore spaces */ }
 
 ///////////// begin ARDUINO KEYWORDS
@@ -85,7 +85,7 @@
 
 ///////////// end ARDUINO KEYWORDS
 
-'('                                               { return '(' }
+\s*'('                                               { return '(' }
 ')'                                               { return ')' }
 .                                                 { return 'ANY' }
 
