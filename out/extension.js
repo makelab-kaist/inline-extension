@@ -42,12 +42,11 @@ function onSerialData(ack) {
     if (data.charAt(0) !== '$')
         return;
     const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
-    console.log(id, line, values);
-    // createAnnotation(id, +line);
+    // console.log(id, line, values);
     (0, annotations_1.updateAnnotation)(id, +line, {
         contentText: values.toString(),
         color: 'green',
-    }, 0);
+    });
 }
 function connectSerial() {
     virtual_arduino_1.VirtualArduino.getInstance()
@@ -126,13 +125,33 @@ function removeAnnotationsFromCode() {
 }
 exports.removeAnnotationsFromCode = removeAnnotationsFromCode;
 function hello() {
-    // const deco = createDecoration('1231', 1);
-    // console.log(deco);
-    // addAndShowAnnotation('1231', 1, 'hello');
-    // let i = 0;
-    // setInterval(() => {
-    //   updateAnnotation('1231', `${i++}`);
-    // }, 5000);
+    let i = 0;
+    let decorator = vscode.window.createTextEditorDecorationType({
+        after: {
+            contentText: `${i}`,
+            color: 'pink',
+            backgroundColor: 'none',
+            margin: '20px',
+        },
+    });
+    const range = new vscode.Range(new vscode.Position(0, 1000), // lines starts at 0
+    new vscode.Position(0, 1000) // lines start at 0
+    );
+    const activeEditor = vscode.window.activeTextEditor;
+    activeEditor?.setDecorations(decorator, [{ range }]);
+    setInterval(() => {
+        i++;
+        // decorator = vscode.window.createTextEditorDecorationType({
+        //   after: {
+        //     contentText: `${i}`,
+        //     color: 'pink',
+        //     backgroundColor: 'none',
+        //     margin: '20px',
+        //   },
+        // });
+        activeEditor?.setDecorations(decorator, []);
+    }, 1000);
+    return decorator;
 }
 exports.hello = hello;
 //# sourceMappingURL=extension.js.map

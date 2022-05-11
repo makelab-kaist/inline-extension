@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeAnnotation = exports.removeAllAnnotations = exports.updateAnnotation = exports.addAnnotation = void 0;
 const vscode = require("vscode");
+const LINE_HIGHLIGHT = vscode.window.createTextEditorDecorationType({
+    isWholeLine: true,
+    backgroundColor: 'rgb(205, 187, 8)',
+});
 const annotations = new Map();
-const HIGHLIGH_COLOR = 'yellow';
 function addAnnotation(id, line, annotation) {
     if (annotations.has(id)) {
         throw new Error(`Annotation ${id} already existing`);
@@ -17,7 +20,7 @@ function createDecoration(line, contentText, color = 'grey', backgroundColor = '
     const decorator = vscode.window.createTextEditorDecorationType({
         after: {
             contentText,
-            color,
+            color: color,
             backgroundColor,
             margin: '20px',
         },
@@ -25,6 +28,14 @@ function createDecoration(line, contentText, color = 'grey', backgroundColor = '
     const range = lineToRange(line);
     activeEditor?.setDecorations(decorator, [{ range }]);
     return decorator;
+}
+function highlightLine(line) {
+    const activeEditor = vscode.window.activeTextEditor;
+    activeEditor?.setDecorations(LINE_HIGHLIGHT, [{ range: lineToRange(line) }]);
+}
+function removeHighlightLine() {
+    const activeEditor = vscode.window.activeTextEditor;
+    activeEditor?.setDecorations(LINE_HIGHLIGHT, []);
 }
 function lineToRange(line) {
     const end = 10000; // a large number
@@ -44,28 +55,19 @@ exports.removeAnnotation = removeAnnotation;
 function removeAllAnnotations() {
     annotations.forEach((decorator) => decorator.dispose());
     annotations.clear();
+    removeHighlightLine();
 }
 exports.removeAllAnnotations = removeAllAnnotations;
-function updateAnnotation(id, line, annotation, timeout = 500) {
+function updateAnnotation(id, line, annotation) {
     if (!annotations.has(id)) {
         // annotaiton does not exist. Exit
         return;
     }
+    highlightLine(line);
     const curr = annotations.get(id);
     curr.dispose();
-    // flashing highlight if timeout if > 0
-    if (timeout > 0) {
-        const highlight = createDecoration(line, annotation.contentText, HIGHLIGH_COLOR);
-        setTimeout(() => {
-            highlight.dispose();
-            const decoration = createDecoration(line, annotation.contentText, annotation.color, annotation.backgroundColor);
-            annotations.set(id, decoration);
-        }, timeout);
-    }
-    else {
-        const decoration = createDecoration(line, annotation.contentText, annotation.color, annotation.backgroundColor);
-        annotations.set(id, decoration);
-    }
+    const decoration = createDecoration(line, annotation.contentText, annotation.color, annotation.backgroundColor);
+    annotations.set(id, decoration);
 }
 exports.updateAnnotation = updateAnnotation;
 //# sourceMappingURL=annotations.js.map

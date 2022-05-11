@@ -6,8 +6,12 @@ type Annotation = {
   backgroundColor?: string;
 };
 
+const LINE_HIGHLIGHT = vscode.window.createTextEditorDecorationType({
+  isWholeLine: true,
+  backgroundColor: 'rgb(205, 187, 8)',
+});
+
 const annotations: Map<String, vscode.TextEditorDecorationType> = new Map();
-const HIGHLIGH_COLOR = 'yellow';
 
 function addAnnotation(id: string, line: number, annotation: Annotation) {
   if (annotations.has(id)) {
@@ -29,7 +33,7 @@ function createDecoration(
   const decorator = vscode.window.createTextEditorDecorationType({
     after: {
       contentText,
-      color,
+      color: color,
       backgroundColor,
       margin: '20px',
     },
@@ -38,6 +42,16 @@ function createDecoration(
   const range = lineToRange(line);
   activeEditor?.setDecorations(decorator, [{ range }]);
   return decorator;
+}
+
+function highlightLine(line: number) {
+  const activeEditor = vscode.window.activeTextEditor;
+  activeEditor?.setDecorations(LINE_HIGHLIGHT, [{ range: lineToRange(line) }]);
+}
+
+function removeHighlightLine() {
+  const activeEditor = vscode.window.activeTextEditor;
+  activeEditor?.setDecorations(LINE_HIGHLIGHT, []);
 }
 
 function lineToRange(line: number): vscode.Range {
@@ -60,49 +74,26 @@ function removeAnnotation(id: string) {
 function removeAllAnnotations() {
   annotations.forEach((decorator) => decorator.dispose());
   annotations.clear();
+  removeHighlightLine();
 }
 
-function updateAnnotation(
-  id: string,
-  line: number,
-  annotation: Annotation,
-  timeout: number = 500
-) {
+function updateAnnotation(id: string, line: number, annotation: Annotation) {
   if (!annotations.has(id)) {
     // annotaiton does not exist. Exit
     return;
   }
 
+  highlightLine(line);
   const curr = annotations.get(id)!;
   curr.dispose();
 
-  // flashing highlight if timeout if > 0
-  if (timeout > 0) {
-    const highlight = createDecoration(
-      line,
-      annotation.contentText,
-      HIGHLIGH_COLOR
-    );
-
-    setTimeout(() => {
-      highlight.dispose();
-      const decoration = createDecoration(
-        line,
-        annotation.contentText,
-        annotation.color,
-        annotation.backgroundColor
-      );
-      annotations.set(id, decoration);
-    }, timeout);
-  } else {
-    const decoration = createDecoration(
-      line,
-      annotation.contentText,
-      annotation.color,
-      annotation.backgroundColor
-    );
-    annotations.set(id, decoration);
-  }
+  const decoration = createDecoration(
+    line,
+    annotation.contentText,
+    annotation.color,
+    annotation.backgroundColor
+  );
+  annotations.set(id, decoration);
 }
 
 export {
