@@ -5,6 +5,7 @@ const vscode = require("vscode");
 const ui = require("./ui");
 const extension_1 = require("./extension");
 const virtual_arduino_1 = require("./virtual-arduino");
+const annotations_1 = require("./annotations");
 async function startConnectionToServer() {
     await virtual_arduino_1.VirtualArduino.getInstance()
         .connectToServer()
@@ -25,16 +26,14 @@ async function activate(context) {
     // Disconnect from serial port
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.disconnect', extension_1.disconnectSerial));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
+    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.clearAnnotations', extension_1.removeAnnotationsFromCode));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.hello', extension_1.hello));
 }
 exports.activate = activate;
 /**
  * @param {vscode.TextDocumentChangeEvent} event
  */
-vscode.workspace.onDidChangeTextDocument((event) => {
-    // console.log('text change ' + event.document.fileName);
-    // AnnotationManager.getInstance().updateAnnotations();
-});
+vscode.workspace.onDidChangeTextDocument(annotations_1.removeAllAnnotations);
 vscode.window.onDidChangeActiveTextEditor(() => {
     console.log('editor change');
 });

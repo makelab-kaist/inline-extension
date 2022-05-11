@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hello = exports.decorateEditor = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = void 0;
+exports.hello = exports.removeAnnotationsFromCode = exports.decorateEditor = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = void 0;
+const vscode = require("vscode");
 const ui = require("./ui");
 const virtual_arduino_1 = require("./virtual-arduino");
 const codeManager_1 = require("./codeManager");
@@ -40,9 +41,13 @@ function onSerialData(ack) {
     // should start with $
     if (data.charAt(0) !== '$')
         return;
-    const [id, line, value] = data.slice(1).split(','); // e.g., $b4999c,9,1
-    console.log(id, line, value);
+    const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
+    console.log(id, line, values);
     // createAnnotation(id, +line);
+    (0, annotations_1.updateAnnotation)(id, +line, {
+        contentText: values.toString(),
+        color: 'green',
+    }, 0);
 }
 function connectSerial() {
     virtual_arduino_1.VirtualArduino.getInstance()
@@ -64,6 +69,7 @@ function compileAndUpload() {
         // Get all lines with valid code
         const lines = codeManager_1.CodeManager.getInstance().getFilteredLines('function');
         const code = codeManager_1.CodeManager.getInstance().generateCode(lines);
+        console.log(code);
         // Compile and upload
         virtual_arduino_1.VirtualArduino.getInstance()
             .compileAndUpload(code)
@@ -81,15 +87,13 @@ exports.compileAndUpload = compileAndUpload;
 function decorateEditor() {
     try {
         // remove all annotations if they exist
-        // removeAllAnnotations();
+        (0, annotations_1.removeAllAnnotations)();
         // Get all the lines with the '//?' queries
         const queries = codeManager_1.CodeManager.getInstance().getFilteredLines('query');
         queries.forEach(({ id, line }) => {
-            // createAnnotation(id, line);
-            (0, annotations_1.addAndShowAnnotation)(id, line, 'NaN', {
-                color: 'green',
-                backgroundColor: 'none',
-                highlightColor: 'yellow',
+            (0, annotations_1.addAnnotation)(id, line, {
+                contentText: 'NaN',
+                color: 'grey',
             });
         });
         // console.log(JSON.stringify(queries, null, ' '));
@@ -100,8 +104,31 @@ function decorateEditor() {
     }
 }
 exports.decorateEditor = decorateEditor;
+function removeAnnotationsFromCode() {
+    (0, annotations_1.removeAllAnnotations)();
+    // swap code
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        ui.vsError('Not a valid file');
+        return;
+    }
+    const newCode = codeManager_1.CodeManager.getInstance().removeQueriesFromCode();
+    // replace old code with new one
+    const doc = editor.document;
+    const lines = doc.lineCount;
+    const lastCol = doc.lineAt(lines - 1).range.end.character;
+    editor.edit((editBuilder) => {
+        const start = new vscode.Position(0, 0);
+        const end = new vscode.Position(doc.lineCount, lastCol);
+        const range = new vscode.Range(start, end);
+        editBuilder.replace(range, newCode);
+        ui.vsInfo('All annotations //? removed');
+    });
+}
+exports.removeAnnotationsFromCode = removeAnnotationsFromCode;
 function hello() {
-    // createAnnotation('1231', 1);
+    // const deco = createDecoration('1231', 1);
+    // console.log(deco);
     // addAndShowAnnotation('1231', 1, 'hello');
     // let i = 0;
     // setInterval(() => {

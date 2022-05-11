@@ -20,11 +20,24 @@ class CodeManager {
     return doc.getText();
   }
 
-  // parseCode(): parser.LineData[] {
-  //   const code = this.getCurrentCode();
-  //   const lines: parser.LineData[] = parser.getParsedData(code);
-  //   return lines;
-  // }
+  // remove all the //? from the current code
+  removeQueriesFromCode(): string {
+    const code = this.getCurrentCode();
+    const lines = code.split('\n');
+    const queries: parser.LineData[] =
+      CodeManager.getInstance().getFilteredLines('query');
+
+    // Loop for the lines with //? and remove those
+    for (let { id, line, data } of queries) {
+      const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
+      const textLine = lines[editorLine];
+      const { location } = data[0];
+      const newText = textLine.slice(0, location.startCol);
+      lines[editorLine] = newText;
+    }
+    const newCode = lines.join('\n');
+    return newCode;
+  }
 
   generateCode(
     fundata: parser.LineData[],
@@ -45,37 +58,6 @@ class CodeManager {
     // add library
     return libCode + newCode;
   }
-
-  // parseAndDecorate() {
-  //   let code = '';
-  //   try {
-  //     // Get current code
-  //     code = this.getCurrentCode();
-  //   } catch (err) {
-  //     throw new Error('Unable to parse the code');
-  //   }
-
-  //   // Get all lines with valid code
-  //   const lines: parser.LineData[] = this.getFilteredLines(code, 'function');
-
-  // Decorations
-  //   const flat = lines
-  //     .map(({ data }) => data)
-  //     .reduce((acc, curr) => [...acc, ...curr], [])
-  //     .map(({ location }) => location);
-
-  //   const ranges = flat.reduce(
-  //     (acc: vscode.Range[], { line, startCol, endCol }): vscode.Range[] => {
-  //       const range = new vscode.Range(
-  //         new vscode.Position(line - 1, startCol),
-  //         new vscode.Position(line - 1, endCol)
-  //       );
-  //       return [...acc, range];
-  //     },
-  //     []
-  //   );
-  //   DecorationManager.getInstance().decorateFunctions(ranges);
-  // }
 
   getFilteredLines(
     queryType: 'function' | 'query',

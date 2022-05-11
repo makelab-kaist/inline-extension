@@ -8,8 +8,10 @@ import {
   compileAndUpload,
   decorateEditor,
   hello,
+  removeAnnotationsFromCode,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
+import { removeAllAnnotations } from './annotations';
 
 async function startConnectionToServer() {
   await VirtualArduino.getInstance()
@@ -55,6 +57,13 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.clearAnnotations',
+      removeAnnotationsFromCode
+    )
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('double-cheese.hello', hello)
   );
 }
@@ -62,10 +71,7 @@ export async function activate(context: vscode.ExtensionContext) {
 /**
  * @param {vscode.TextDocumentChangeEvent} event
  */
-vscode.workspace.onDidChangeTextDocument((event) => {
-  // console.log('text change ' + event.document.fileName);
-  // AnnotationManager.getInstance().updateAnnotations();
-});
+vscode.workspace.onDidChangeTextDocument(removeAllAnnotations);
 
 vscode.window.onDidChangeActiveTextEditor(() => {
   console.log('editor change');

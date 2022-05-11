@@ -1,9 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addAndShowAnnotation = void 0;
+exports.removeAnnotation = exports.removeAllAnnotations = exports.updateAnnotation = exports.addAnnotation = void 0;
 const vscode = require("vscode");
 const annotations = new Map();
-function createDecoration(contentText, line, color = 'grey', backgroundColor = 'none') {
+const HIGHLIGH_COLOR = 'yellow';
+function addAnnotation(id, line, annotation) {
+    if (annotations.has(id)) {
+        throw new Error(`Annotation ${id} already existing`);
+    }
+    const decoration = createDecoration(line, annotation.contentText);
+    annotations.set(id, decoration);
+}
+exports.addAnnotation = addAnnotation;
+function createDecoration(line, contentText, color = 'grey', backgroundColor = 'none') {
+    const activeEditor = vscode.window.activeTextEditor;
     const decorator = vscode.window.createTextEditorDecorationType({
         after: {
             contentText,
@@ -13,28 +23,8 @@ function createDecoration(contentText, line, color = 'grey', backgroundColor = '
         },
     });
     const range = lineToRange(line);
-    return {
-        decorator,
-        location: range,
-    };
-}
-function showDecoration(decoration) {
-    const activeEditor = vscode.window.activeTextEditor;
-    activeEditor?.setDecorations(decoration.decorator, [
-        { range: decoration.location },
-    ]);
-}
-function showAnnotation(annotation, timeout = 500) {
-    const { text, line, color } = annotation;
-    const highlight = createDecoration(text, line, color.highlightColor);
-    const normal = createDecoration(text, line, color.color);
-    showDecoration(highlight);
-    if (timeout > 0) {
-        setTimeout(() => {
-            highlight.decorator.dispose();
-            showDecoration(normal);
-        }, timeout);
-    }
+    activeEditor?.setDecorations(decorator, [{ range }]);
+    return decorator;
 }
 function lineToRange(line) {
     const end = 10000; // a large number
@@ -43,22 +33,39 @@ function lineToRange(line) {
     );
     return range;
 }
-function addAndShowAnnotation(id, line, text = ' NaN', color = {
-    color: 'grey',
-    backgroundColor: 'none',
-    highlightColor: 'grey',
-}) {
+function removeAnnotation(id) {
     if (annotations.has(id)) {
-        throw new Error(`Annotation ${id} already existing`);
+        const decorator = annotations.get(id);
+        decorator.dispose();
+        annotations.delete(id);
     }
-    const annotation = {
-        id,
-        line,
-        text,
-        color,
-    };
-    showAnnotation(annotation);
-    annotations.set(id, annotation);
 }
-exports.addAndShowAnnotation = addAndShowAnnotation;
+exports.removeAnnotation = removeAnnotation;
+function removeAllAnnotations() {
+    annotations.forEach((decorator) => decorator.dispose());
+    annotations.clear();
+}
+exports.removeAllAnnotations = removeAllAnnotations;
+function updateAnnotation(id, line, annotation, timeout = 500) {
+    if (!annotations.has(id)) {
+        // annotaiton does not exist. Exit
+        return;
+    }
+    const curr = annotations.get(id);
+    curr.dispose();
+    // flashing highlight if timeout if > 0
+    if (timeout > 0) {
+        const highlight = createDecoration(line, annotation.contentText, HIGHLIGH_COLOR);
+        setTimeout(() => {
+            highlight.dispose();
+            const decoration = createDecoration(line, annotation.contentText, annotation.color, annotation.backgroundColor);
+            annotations.set(id, decoration);
+        }, timeout);
+    }
+    else {
+        const decoration = createDecoration(line, annotation.contentText, annotation.color, annotation.backgroundColor);
+        annotations.set(id, decoration);
+    }
+}
+exports.updateAnnotation = updateAnnotation;
 //# sourceMappingURL=annotations.js.map
