@@ -44,11 +44,11 @@ class SideViewProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  // public sendMessage(msg:string) {
-  //   if (this._view) {
-  //     this._view.webview.postMessage({ cmd: msg });
-  //   }
-  // }
+  public sendMessage(msg: string) {
+    if (this._view) {
+      this._view.webview.postMessage({ cmd: msg });
+    }
+  }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     const bundleScript = webview.asWebviewUri(

@@ -7,8 +7,9 @@ import {
   disconnectSerial,
   compileAndUpload,
   decorateEditor,
-  hello,
+  registerSideView,
   removeAnnotationsFromCode,
+  hello,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { removeAllAnnotations } from './annotations';
@@ -30,12 +31,14 @@ export async function activate(context: vscode.ExtensionContext) {
   await startConnectionToServer();
 
   // Side View
+  const sideview = new SideViewProvider(context.extensionUri);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       SideViewProvider.viewType,
-      new SideViewProvider(context.extensionUri)
+      sideview
     )
   );
+  registerSideView(sideview);
 
   // First time config
   context.subscriptions.push(

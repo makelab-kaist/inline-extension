@@ -381,10 +381,10 @@ var app = (function () {
     			button1 = element("button");
     			button1.textContent = "Disonnect";
     			attr_dev(button0, "class", "svelte-197fpe6");
-    			add_location(button0, file, 64, 2, 1458);
+    			add_location(button0, file, 42, 2, 839);
     			attr_dev(button1, "class", "svelte-197fpe6");
-    			add_location(button1, file, 65, 2, 1514);
-    			add_location(main, file, 63, 0, 1449);
+    			add_location(button1, file, 43, 2, 895);
+    			add_location(main, file, 41, 0, 830);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -429,6 +429,21 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
+
+    	onMount(async () => {
+    		// Listen to events
+    		window.addEventListener('message', async event => {
+    			// console.log(event.data);
+    			const message = event.data.cmd;
+
+    			switch (message) {
+    				case 'hi':
+    					console.log('hello');
+    					break;
+    			}
+    		});
+    	});
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {

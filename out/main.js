@@ -21,7 +21,9 @@ async function activate(context) {
     // Connect to server before we start
     await startConnectionToServer();
     // Side View
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider(sidebarViewProvider_1.SideViewProvider.viewType, new sidebarViewProvider_1.SideViewProvider(context.extensionUri)));
+    const sideview = new sidebarViewProvider_1.SideViewProvider(context.extensionUri);
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider(sidebarViewProvider_1.SideViewProvider.viewType, sideview));
+    (0, extension_1.registerSideView)(sideview);
     // First time config
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.configureConnection', extension_1.configureConnection));
     // Connect to the serial port

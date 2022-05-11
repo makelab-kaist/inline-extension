@@ -8,6 +8,13 @@ import {
   addAnnotation,
   removeAllAnnotations,
 } from './annotations';
+import { SideViewProvider } from './sidebarViewProvider';
+
+let sideView: SideViewProvider;
+
+function registerSideView(_sideView: SideViewProvider) {
+  if (_sideView) sideView = _sideView;
+}
 
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
@@ -138,43 +145,7 @@ function removeAnnotationsFromCode() {
 }
 
 function hello() {
-  let i = 0;
-
-  let decorator = vscode.window.createTextEditorDecorationType({
-    after: {
-      contentText: `${i}`,
-      color: 'pink',
-      backgroundColor: 'none',
-      margin: '20px',
-    },
-  });
-
-  const range = new vscode.Range(
-    new vscode.Position(0, 1000), // lines starts at 0
-    new vscode.Position(0, 1000) // lines start at 0
-  );
-
-  const activeEditor = vscode.window.activeTextEditor;
-  activeEditor?.setDecorations(decorator, [{ range }]);
-
-  setInterval(
-    () => {
-      i++;
-      // decorator = vscode.window.createTextEditorDecorationType({
-      //   after: {
-      //     contentText: `${i}`,
-      //     color: 'pink',
-      //     backgroundColor: 'none',
-      //     margin: '20px',
-      //   },
-      // });
-      activeEditor?.setDecorations(decorator, []);
-    },
-
-    1000
-  );
-
-  return decorator;
+  sideView?.sendMessage('hi');
 }
 
 export {
@@ -184,5 +155,6 @@ export {
   compileAndUpload,
   decorateEditor,
   removeAnnotationsFromCode,
+  registerSideView,
   hello,
 };

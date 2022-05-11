@@ -1,11 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hello = exports.removeAnnotationsFromCode = exports.decorateEditor = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = void 0;
+exports.hello = exports.registerSideView = exports.removeAnnotationsFromCode = exports.decorateEditor = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = void 0;
 const vscode = require("vscode");
 const ui = require("./ui");
 const virtual_arduino_1 = require("./virtual-arduino");
 const codeManager_1 = require("./codeManager");
 const annotations_1 = require("./annotations");
+let sideView;
+function registerSideView(_sideView) {
+    if (_sideView)
+        sideView = _sideView;
+}
+exports.registerSideView = registerSideView;
 async function configureConnection() {
     const ports = await virtual_arduino_1.VirtualArduino.getInstance().getAvailablePorts();
     const selectPort = async () => {
@@ -125,33 +131,7 @@ function removeAnnotationsFromCode() {
 }
 exports.removeAnnotationsFromCode = removeAnnotationsFromCode;
 function hello() {
-    let i = 0;
-    let decorator = vscode.window.createTextEditorDecorationType({
-        after: {
-            contentText: `${i}`,
-            color: 'pink',
-            backgroundColor: 'none',
-            margin: '20px',
-        },
-    });
-    const range = new vscode.Range(new vscode.Position(0, 1000), // lines starts at 0
-    new vscode.Position(0, 1000) // lines start at 0
-    );
-    const activeEditor = vscode.window.activeTextEditor;
-    activeEditor?.setDecorations(decorator, [{ range }]);
-    setInterval(() => {
-        i++;
-        // decorator = vscode.window.createTextEditorDecorationType({
-        //   after: {
-        //     contentText: `${i}`,
-        //     color: 'pink',
-        //     backgroundColor: 'none',
-        //     margin: '20px',
-        //   },
-        // });
-        activeEditor?.setDecorations(decorator, []);
-    }, 1000);
-    return decorator;
+    sideView?.sendMessage('hi');
 }
 exports.hello = hello;
 //# sourceMappingURL=extension.js.map

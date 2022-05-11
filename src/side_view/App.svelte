@@ -18,46 +18,24 @@
   //   vscode?.postMessage({ message: 'sideBarOpen' });
   // }
 
-  /*
+  
   onMount(async () => {
-    // Notify that the sidebar is open
-    sideBarOpen();
     // Listen to events
     window.addEventListener('message', async (event) => {
-      const message = event.data.message;
-      const params = event.data.params;
-
+      // console.log(event.data);
+      const message = event.data.cmd;
+      
       switch (message) {
-        case 'connectingSerial':
-          spinner = true;
-          portName = '';
+        case 'hi':
+          console.log('hello');
           break;
-        case 'ready':
-          connected = true;
-          spinner = false;
-          portName = params.serialPortName;
-          break;
-        case 'cancelConnection':
-          connected = false;
-          spinner = false;
-          portName = '';
-          break;
-        case 'disconnect':
-          connected = false;
-          portName = 'none';
-          break;
-        case 'updateMappings':
-          mappings = params;
-          break;
-        case 'errorLogs':
-          errorLogs = params;
-          break;
+
         default:
           break;
       }
     });
   });
-  */
+  
 
 </script>
 
