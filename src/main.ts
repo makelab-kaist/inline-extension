@@ -12,6 +12,7 @@ import {
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { removeAllAnnotations } from './annotations';
+import { SideViewProvider } from './sidebarViewProvider';
 
 async function startConnectionToServer() {
   await VirtualArduino.getInstance()
@@ -27,6 +28,14 @@ async function startConnectionToServer() {
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
   await startConnectionToServer();
+
+  // Side View
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      SideViewProvider.viewType,
+      new SideViewProvider(context.extensionUri)
+    )
+  );
 
   // First time config
   context.subscriptions.push(

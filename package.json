@@ -11,6 +11,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onView:double-cheese.view",
     "onCommand:double-cheese.configureConnection",
     "onCommand:double-cheese.connect",
     "onCommand:double-cheese.disconnect",
@@ -21,6 +22,15 @@
   ],
   "main": "./out/main.js",
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "double-cheese.view",
+          "name": "Double Cheese"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "double-cheese.configureConnection",
@@ -60,7 +70,10 @@
     "watch": "tsc -watch -p ./",
     "test": "jest --watchAll --verbose",
     "check_license": "npx license-checker --summary",
-    "compile_grammars": "npx jison ./src/parser/grammar.jison -o ./src/parser/grammar.js && cp -prf ./src/parser/grammar.js ./out/parser"
+    "compile_grammars": "npx jison ./src/parser/grammar.jison -o ./src/parser/grammar.js && cp -prf ./src/parser/grammar.js ./out/parser",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "sirv public --no-clear"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",
@@ -74,13 +87,22 @@
     "eslint": "^8.1.0",
     "glob": "^7.1.7",
     "mocha": "^9.1.3",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "rollup": "^2.3.4",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.37.0"
   },
   "dependencies": {
     "@types/socket.io-client": "^3.0.0",
     "crypto-js": "^4.1.1",
     "fs": "^0.0.1-security",
     "jest": "^27.4.5",
-    "socket.io-client": "^4.4.0"
+    "socket.io-client": "^4.4.0",
+    "sirv-cli": "^1.0.0"
   }
 }

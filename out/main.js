@@ -6,6 +6,7 @@ const ui = require("./ui");
 const extension_1 = require("./extension");
 const virtual_arduino_1 = require("./virtual-arduino");
 const annotations_1 = require("./annotations");
+const sidebarViewProvider_1 = require("./sidebarViewProvider");
 async function startConnectionToServer() {
     await virtual_arduino_1.VirtualArduino.getInstance()
         .connectToServer()
@@ -19,6 +20,8 @@ async function startConnectionToServer() {
 async function activate(context) {
     // Connect to server before we start
     await startConnectionToServer();
+    // Side View
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider(sidebarViewProvider_1.SideViewProvider.viewType, new sidebarViewProvider_1.SideViewProvider(context.extensionUri)));
     // First time config
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.configureConnection', extension_1.configureConnection));
     // Connect to the serial port

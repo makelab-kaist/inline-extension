@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as ui from './ui';
-
 import { ArduinoAck, VirtualArduino } from './virtual-arduino';
 import * as parser from './parser';
 import { CodeManager } from './codeManager';
