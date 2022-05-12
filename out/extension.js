@@ -35,7 +35,10 @@ async function configureConnection() {
     const autoConnect = ans === 'Yes';
     virtual_arduino_1.VirtualArduino.getInstance()
         .beginSerial({ portName, baud, autoConnect }, onSerialData)
-        .then((msg) => ui.vsInfo(msg))
+        .then((msg) => {
+        ui.vsInfo(msg);
+        sideView?.sendMessage({ message: 'configureConnection', portName });
+    })
         .catch((msg) => ui.vsError(msg));
 }
 exports.configureConnection = configureConnection;
@@ -57,14 +60,20 @@ function onSerialData(ack) {
 function connectSerial() {
     virtual_arduino_1.VirtualArduino.getInstance()
         .connectSerial()
-        .then((msg) => ui.vsInfo(msg))
+        .then((msg) => {
+        ui.vsInfo(msg);
+        sideView?.sendMessage({ message: 'connected' });
+    })
         .catch((msg) => ui.vsError(msg));
 }
 exports.connectSerial = connectSerial;
 function disconnectSerial() {
     virtual_arduino_1.VirtualArduino.getInstance()
         .disconnectSerial()
-        .then((msg) => ui.vsInfo(msg))
+        .then((msg) => {
+        ui.vsInfo(msg);
+        sideView?.sendMessage({ message: 'disconnected' });
+    })
         .catch((msg) => ui.vsError(msg));
 }
 exports.disconnectSerial = disconnectSerial;
@@ -131,7 +140,7 @@ function removeAnnotationsFromCode() {
 }
 exports.removeAnnotationsFromCode = removeAnnotationsFromCode;
 function hello() {
-    sideView?.sendMessage('hi');
+    // sideView?.sendMessage('hi');
 }
 exports.hello = hello;
 //# sourceMappingURL=extension.js.map

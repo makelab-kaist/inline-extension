@@ -76,6 +76,8 @@
     "start": "sirv public --no-clear"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
     "@types/glob": "^7.1.4",
     "@types/jest": "^27.0.3",
     "@types/mocha": "^9.0.0",
@@ -87,22 +89,21 @@
     "eslint": "^8.1.0",
     "glob": "^7.1.7",
     "mocha": "^9.1.3",
-    "typescript": "^4.4.4",
     "rollup": "^2.3.4",
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.37.0"
+    "svelte": "^3.37.0",
+    "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
     "@types/socket.io-client": "^3.0.0",
     "crypto-js": "^4.1.1",
     "fs": "^0.0.1-security",
     "jest": "^27.4.5",
-    "socket.io-client": "^4.4.0",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "socket.io-client": "^4.4.0"
   }
 }

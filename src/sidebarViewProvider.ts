@@ -8,6 +8,11 @@ import {
   removeAnnotationsFromCode,
 } from './extension';
 
+type Message = {
+  message: string;
+  [key: string]: string;
+};
+
 class SideViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'double-cheese.view';
 
@@ -30,23 +35,38 @@ class SideViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(({ cmd }: { cmd: string }) => {
-      console.log(cmd);
+    webviewView.webview.onDidReceiveMessage(
+      ({ message }: { message: string }) => {
+        switch (message) {
+          case 'configureConnection':
+            configureConnection();
+            break;
+          case 'connectSerial':
+            connectSerial();
+            break;
+          case 'disconnectSerial':
+            disconnectSerial();
+            break;
+          case 'uploadSketch':
+            compileAndUpload();
+            break;
+          case 'refreshAnnotations':
+            decorateEditor();
+            break;
+          case 'clearAnnotations':
+            removeAnnotationsFromCode();
+            break;
 
-      switch (cmd) {
-        case 'connectSerial':
-          connectSerial();
-          break;
-
-        default:
-          break;
+          default: /* none */
+            break;
+        }
       }
-    });
+    );
   }
 
-  public sendMessage(msg: string) {
+  public sendMessage(msg: Message) {
     if (this._view) {
-      this._view.webview.postMessage({ cmd: msg });
+      this._view.webview.postMessage(msg);
     }
   }
 

@@ -42,7 +42,10 @@ async function configureConnection() {
 
   VirtualArduino.getInstance()
     .beginSerial({ portName, baud, autoConnect }, onSerialData)
-    .then((msg) => ui.vsInfo(msg))
+    .then((msg) => {
+      ui.vsInfo(msg);
+      sideView?.sendMessage({ message: 'configureConnection', portName });
+    })
     .catch((msg) => ui.vsError(msg));
 }
 
@@ -64,14 +67,20 @@ function onSerialData(ack: ArduinoAck) {
 function connectSerial() {
   VirtualArduino.getInstance()
     .connectSerial()
-    .then((msg) => ui.vsInfo(msg))
+    .then((msg) => {
+      ui.vsInfo(msg);
+      sideView?.sendMessage({ message: 'connected' });
+    })
     .catch((msg) => ui.vsError(msg));
 }
 
 function disconnectSerial() {
   VirtualArduino.getInstance()
     .disconnectSerial()
-    .then((msg) => ui.vsInfo(msg))
+    .then((msg) => {
+      ui.vsInfo(msg);
+      sideView?.sendMessage({ message: 'disconnected' });
+    })
     .catch((msg) => ui.vsError(msg));
 }
 
@@ -145,7 +154,7 @@ function removeAnnotationsFromCode() {
 }
 
 function hello() {
-  sideView?.sendMessage('hi');
+  // sideView?.sendMessage('hi');
 }
 
 export {
