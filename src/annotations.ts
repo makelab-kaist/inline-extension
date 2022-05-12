@@ -96,6 +96,18 @@ function updateAnnotation(id: string, line: number, annotation: Annotation) {
   annotations.set(id, decoration);
 }
 
+function evaluateExpression(expression: string, values: string[]) {
+  let substituion = expression.replace(/\$[0-9]/gi, function (x: string) {
+    const index = parseInt(x.slice(1));
+    return values[index];
+  });
+  try {
+    return `${eval(substituion)}`;
+  } catch (err) {
+    return '';
+  }
+}
+
 export {
   addAnnotation,
   updateAnnotation,
