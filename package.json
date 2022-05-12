@@ -60,7 +60,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && npm run compile_grammars",
     "watch": "tsc -watch -p ./",
     "test": "jest --watchAll --verbose",
     "check_license": "npx license-checker --summary",
