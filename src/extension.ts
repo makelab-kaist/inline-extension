@@ -116,7 +116,9 @@ function decorateEditor() {
     const queries: parser.LineData[] =
       CodeManager.getInstance().getFilteredLines('query');
 
-    queries.forEach(({ id, line }) => {
+    queries.forEach(({ id, line, data }) => {
+      console.log(data[0].expression); // only 1 data for queries
+
       addAnnotation(id, line, {
         contentText: 'NaN',
         color: 'grey',

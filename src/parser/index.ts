@@ -11,6 +11,7 @@ type Data = {
   type: 'function' | 'query';
   function?: string;
   args?: string;
+  expression?: string;
   location: TextLocation;
 };
 

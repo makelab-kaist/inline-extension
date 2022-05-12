@@ -164,6 +164,7 @@ break;
 case 16:
 
     this.$= { type: "query",
+          expression: $$[$0].slice(2,-1).trim(),
           location: {
             line: this._$.first_line,
             startCol: this._$.first_column,

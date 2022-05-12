@@ -189,6 +189,7 @@ query
   : QUERY
   {
     $$= { type: "query",
+          expression: $1.slice(2,-1).trim(),
           location: {
             line: @$.first_line,
             startCol: @$.first_column,

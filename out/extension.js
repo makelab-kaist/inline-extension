@@ -105,7 +105,8 @@ function decorateEditor() {
         (0, annotations_1.removeAllAnnotations)();
         // Get all the lines with the '//?' queries
         const queries = codeManager_1.CodeManager.getInstance().getFilteredLines('query');
-        queries.forEach(({ id, line }) => {
+        queries.forEach(({ id, line, data }) => {
+            console.log(data[0].expression); // only 1 data for queries
             (0, annotations_1.addAnnotation)(id, line, {
                 contentText: 'NaN',
                 color: 'grey',
