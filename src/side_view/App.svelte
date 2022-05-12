@@ -15,6 +15,7 @@
     initialized = false;
     noTooltip();
     disconnectSerial();
+    refreshAnnotations();
   }
 
   function tooltip(value) {

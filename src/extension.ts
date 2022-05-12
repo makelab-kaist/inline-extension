@@ -45,6 +45,7 @@ async function configureConnection() {
     .then((msg) => {
       ui.vsInfo(msg);
       sideView?.sendMessage({ message: 'configureConnection', portName });
+      if (autoConnect) sideView?.sendMessage({ message: 'connected' });
     })
     .catch((msg) => ui.vsError(msg));
 }
