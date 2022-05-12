@@ -70,4 +70,16 @@ function updateAnnotation(id, line, annotation) {
     annotations.set(id, decoration);
 }
 exports.updateAnnotation = updateAnnotation;
+function evaluateExpression(expression, values) {
+    let substituion = expression.replace(/\$[0-9]/gi, function (x) {
+        const index = parseInt(x.slice(1));
+        return values[index];
+    });
+    try {
+        return `${eval(substituion)}`;
+    }
+    catch (err) {
+        return '';
+    }
+}
 //# sourceMappingURL=annotations.js.map
