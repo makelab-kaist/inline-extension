@@ -156,10 +156,6 @@ function removeAnnotationsFromCode() {
   });
 }
 
-function hello() {
-  // sideView?.sendMessage('hi');
-}
-
 export {
   configureConnection,
   connectSerial,
@@ -168,5 +164,4 @@ export {
   decorateEditor,
   removeAnnotationsFromCode,
   registerSideView,
-  hello,
 };
