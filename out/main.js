@@ -32,7 +32,6 @@ async function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.disconnect', extension_1.disconnectSerial));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.compileUpload', extension_1.compileAndUpload));
     context.subscriptions.push(vscode.commands.registerCommand('double-cheese.clearAnnotations', extension_1.removeAnnotationsFromCode));
-    context.subscriptions.push(vscode.commands.registerCommand('double-cheese.hello', extension_1.hello));
 }
 exports.activate = activate;
 /**

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hello = exports.registerSideView = exports.removeAnnotationsFromCode = exports.decorateEditor = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = void 0;
+exports.registerSideView = exports.removeAnnotationsFromCode = exports.decorateEditor = exports.compileAndUpload = exports.disconnectSerial = exports.connectSerial = exports.configureConnection = void 0;
 const vscode = require("vscode");
 const ui = require("./ui");
 const virtual_arduino_1 = require("./virtual-arduino");
@@ -142,8 +142,4 @@ function removeAnnotationsFromCode() {
     });
 }
 exports.removeAnnotationsFromCode = removeAnnotationsFromCode;
-function hello() {
-    // sideView?.sendMessage('hi');
-}
-exports.hello = hello;
 //# sourceMappingURL=extension.js.map
