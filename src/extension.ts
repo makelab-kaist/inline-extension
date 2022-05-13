@@ -153,6 +153,7 @@ function removeAnnotationsFromCode() {
 function toggleHighlight() {
   highlight = !highlight;
   if (!highlight) removeHighlightLine();
+  sideView?.sendMessage({ message: 'toggleHighlight', highlight });
 }
 
 export {

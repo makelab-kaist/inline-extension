@@ -4,6 +4,7 @@
   export let icon = 'fa-flask';
   export let green;
   export let red;
+  export let gray;
 </script>
 
 <div
@@ -14,7 +15,8 @@
   on:blur
   class="but"
   class:green
-  class:red>
+  class:red
+  class:gray>
   <i class="fa-solid {icon}" />
 </div>
 
@@ -47,5 +49,9 @@
 
   .red {
     background-color: red;
+  }
+
+  .gray {
+    background-color: gray;
   }
 </style>

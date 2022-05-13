@@ -8,8 +8,9 @@
 
   let initialized = false;
   let tooltipText = '';
-  let connected = '';
+  let connected = false;
   let portName = '';
+  let highlight = true;
 
   function reset() {
     initialized = false;
@@ -50,6 +51,10 @@
     vscode?.postMessage({ message: 'clearAnnotations' });
   }
 
+  function toggleHighlight() {
+    vscode?.postMessage({ message: 'toggleHighlight' });
+  }
+
   onMount(async () => {
     // Listen to events
     window.addEventListener('message', async (event) => {
@@ -67,6 +72,9 @@
         case 'disconnected':
           connected = false;
           break;
+        case 'toggleHighlight':
+          highlight = event.data.highlight;
+          break;
 
         default:
           break;
@@ -82,18 +90,21 @@
     <h3>Menu:</h3>
     <div class="container">
       <div class="flex">
-        <IconButton
-          on:click={connectSerial}
-          on:mouseover={() => tooltip('Connect')}
-          on:mouseout={noTooltip}
-          icon="fa-link"
-          green={true} />
-        <IconButton
-          on:click={disconnectSerial}
-          on:mouseover={() => tooltip('Disconnect')}
-          on:mouseout={noTooltip}
-          icon="fa-link-slash"
-          red={true} />
+        {#if !connected}
+          <IconButton
+            on:click={connectSerial}
+            on:mouseover={() => tooltip('Connect')}
+            on:mouseout={noTooltip}
+            icon="fa-link"
+            red={true} />
+        {:else}
+          <IconButton
+            on:click={disconnectSerial}
+            on:mouseover={() => tooltip('Disconnect')}
+            on:mouseout={noTooltip}
+            icon="fa-link-slash"
+            green={true} />
+        {/if}
         <IconButton
           on:click={uploadSketch}
           on:mouseover={() => tooltip('Upload sketch')}
@@ -103,12 +114,18 @@
           on:click={refreshAnnotations}
           on:mouseover={() => tooltip('Update annotations')}
           on:mouseout={noTooltip}
-          icon="fa-highlighter" />
+          icon="fa-arrows-spin" />
         <IconButton
           on:click={clearAnnotations}
           on:mouseover={() => tooltip('Remove annotations')}
           on:mouseout={noTooltip}
           icon="fa-eraser" />
+        <IconButton
+          on:click={toggleHighlight}
+          on:mouseover={() => tooltip('Toggle line marking')}
+          on:mouseout={noTooltip}
+          icon="fa-highlighter"
+          gray={!highlight} />
       </div>
       <span>{tooltipText}</span>
     </div>

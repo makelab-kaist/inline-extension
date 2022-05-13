@@ -6,11 +6,12 @@ import {
   compileAndUpload,
   decorateEditor,
   removeAnnotationsFromCode,
+  toggleHighlight,
 } from './extension';
 
 type Message = {
   message: string;
-  [key: string]: string;
+  [key: string]: string | boolean;
 };
 
 class SideViewProvider implements vscode.WebviewViewProvider {
@@ -55,6 +56,9 @@ class SideViewProvider implements vscode.WebviewViewProvider {
             break;
           case 'clearAnnotations':
             removeAnnotationsFromCode();
+            break;
+          case 'toggleHighlight':
+            toggleHighlight();
             break;
 
           default: /* none */

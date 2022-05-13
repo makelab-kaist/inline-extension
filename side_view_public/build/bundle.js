@@ -5926,12 +5926,13 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			i = element("i");
-    			attr_dev(i, "class", i_class_value = "fa-solid " + /*icon*/ ctx[0] + " svelte-13lxd2f");
-    			add_location(i, file$2, 17, 2, 263);
-    			attr_dev(div, "class", "but svelte-13lxd2f");
+    			attr_dev(i, "class", i_class_value = "fa-solid " + /*icon*/ ctx[0] + " svelte-1w6zdy0");
+    			add_location(i, file$2, 19, 2, 295);
+    			attr_dev(div, "class", "but svelte-1w6zdy0");
     			toggle_class(div, "green", /*green*/ ctx[1]);
     			toggle_class(div, "red", /*red*/ ctx[2]);
-    			add_location(div, file$2, 8, 0, 154);
+    			toggle_class(div, "gray", /*gray*/ ctx[3]);
+    			add_location(div, file$2, 9, 0, 173);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5942,18 +5943,18 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(div, "click", /*click_handler*/ ctx[3], false, false, false),
-    					listen_dev(div, "mouseover", /*mouseover_handler*/ ctx[4], false, false, false),
-    					listen_dev(div, "mouseout", /*mouseout_handler*/ ctx[5], false, false, false),
-    					listen_dev(div, "focus", /*focus_handler*/ ctx[6], false, false, false),
-    					listen_dev(div, "blur", /*blur_handler*/ ctx[7], false, false, false)
+    					listen_dev(div, "click", /*click_handler*/ ctx[4], false, false, false),
+    					listen_dev(div, "mouseover", /*mouseover_handler*/ ctx[5], false, false, false),
+    					listen_dev(div, "mouseout", /*mouseout_handler*/ ctx[6], false, false, false),
+    					listen_dev(div, "focus", /*focus_handler*/ ctx[7], false, false, false),
+    					listen_dev(div, "blur", /*blur_handler*/ ctx[8], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*icon*/ 1 && i_class_value !== (i_class_value = "fa-solid " + /*icon*/ ctx[0] + " svelte-13lxd2f")) {
+    			if (dirty & /*icon*/ 1 && i_class_value !== (i_class_value = "fa-solid " + /*icon*/ ctx[0] + " svelte-1w6zdy0")) {
     				attr_dev(i, "class", i_class_value);
     			}
 
@@ -5963,6 +5964,10 @@ var app = (function () {
 
     			if (dirty & /*red*/ 4) {
     				toggle_class(div, "red", /*red*/ ctx[2]);
+    			}
+
+    			if (dirty & /*gray*/ 8) {
+    				toggle_class(div, "gray", /*gray*/ ctx[3]);
     			}
     		},
     		i: noop,
@@ -5991,7 +5996,8 @@ var app = (function () {
     	let { icon = 'fa-flask' } = $$props;
     	let { green } = $$props;
     	let { red } = $$props;
-    	const writable_props = ['icon', 'green', 'red'];
+    	let { gray } = $$props;
+    	const writable_props = ['icon', 'green', 'red', 'gray'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<IconButton> was created with unknown prop '${key}'`);
@@ -6021,14 +6027,16 @@ var app = (function () {
     		if ('icon' in $$props) $$invalidate(0, icon = $$props.icon);
     		if ('green' in $$props) $$invalidate(1, green = $$props.green);
     		if ('red' in $$props) $$invalidate(2, red = $$props.red);
+    		if ('gray' in $$props) $$invalidate(3, gray = $$props.gray);
     	};
 
-    	$$self.$capture_state = () => ({ all, icon, green, red });
+    	$$self.$capture_state = () => ({ all, icon, green, red, gray });
 
     	$$self.$inject_state = $$props => {
     		if ('icon' in $$props) $$invalidate(0, icon = $$props.icon);
     		if ('green' in $$props) $$invalidate(1, green = $$props.green);
     		if ('red' in $$props) $$invalidate(2, red = $$props.red);
+    		if ('gray' in $$props) $$invalidate(3, gray = $$props.gray);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -6039,6 +6047,7 @@ var app = (function () {
     		icon,
     		green,
     		red,
+    		gray,
     		click_handler,
     		mouseover_handler,
     		mouseout_handler,
@@ -6050,7 +6059,7 @@ var app = (function () {
     class IconButton extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { icon: 0, green: 1, red: 2 });
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { icon: 0, green: 1, red: 2, gray: 3 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -6068,6 +6077,10 @@ var app = (function () {
 
     		if (/*red*/ ctx[2] === undefined && !('red' in props)) {
     			console.warn("<IconButton> was created without expected prop 'red'");
+    		}
+
+    		if (/*gray*/ ctx[3] === undefined && !('gray' in props)) {
+    			console.warn("<IconButton> was created without expected prop 'gray'");
     		}
     	}
 
@@ -6092,6 +6105,14 @@ var app = (function () {
     	}
 
     	set red(value) {
+    		throw new Error("<IconButton>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get gray() {
+    		throw new Error("<IconButton>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set gray(value) {
     		throw new Error("<IconButton>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -6310,21 +6331,22 @@ var app = (function () {
     /* src/side_view/App.svelte generated by Svelte v3.48.0 */
     const file = "src/side_view/App.svelte";
 
-    // (81:2) {:else}
+    // (89:2) {:else}
     function create_else_block(ctx) {
     	let h30;
     	let t1;
     	let div1;
     	let div0;
-    	let iconbutton0;
+    	let current_block_type_index;
+    	let if_block;
     	let t2;
-    	let iconbutton1;
+    	let iconbutton0;
     	let t3;
-    	let iconbutton2;
+    	let iconbutton1;
     	let t4;
-    	let iconbutton3;
+    	let iconbutton2;
     	let t5;
-    	let iconbutton4;
+    	let iconbutton3;
     	let t6;
     	let span;
     	let t7;
@@ -6337,51 +6359,55 @@ var app = (function () {
     	let current;
     	let mounted;
     	let dispose;
+    	const if_block_creators = [create_if_block_1, create_else_block_1];
+    	const if_blocks = [];
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (!/*connected*/ ctx[2]) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type_1(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
     	iconbutton0 = new IconButton({
-    			props: { icon: "fa-link", green: true },
-    			$$inline: true
-    		});
-
-    	iconbutton0.$on("click", connectSerial);
-    	iconbutton0.$on("mouseover", /*mouseover_handler*/ ctx[7]);
-    	iconbutton0.$on("mouseout", /*noTooltip*/ ctx[6]);
-
-    	iconbutton1 = new IconButton({
-    			props: { icon: "fa-link-slash", red: true },
-    			$$inline: true
-    		});
-
-    	iconbutton1.$on("click", disconnectSerial);
-    	iconbutton1.$on("mouseover", /*mouseover_handler_1*/ ctx[8]);
-    	iconbutton1.$on("mouseout", /*noTooltip*/ ctx[6]);
-
-    	iconbutton2 = new IconButton({
     			props: { icon: "fa-upload" },
     			$$inline: true
     		});
 
-    	iconbutton2.$on("click", uploadSketch);
-    	iconbutton2.$on("mouseover", /*mouseover_handler_2*/ ctx[9]);
-    	iconbutton2.$on("mouseout", /*noTooltip*/ ctx[6]);
+    	iconbutton0.$on("click", uploadSketch);
+    	iconbutton0.$on("mouseover", /*mouseover_handler_2*/ ctx[10]);
+    	iconbutton0.$on("mouseout", /*noTooltip*/ ctx[7]);
 
-    	iconbutton3 = new IconButton({
-    			props: { icon: "fa-highlighter" },
+    	iconbutton1 = new IconButton({
+    			props: { icon: "fa-arrows-spin" },
     			$$inline: true
     		});
 
-    	iconbutton3.$on("click", refreshAnnotations);
-    	iconbutton3.$on("mouseover", /*mouseover_handler_3*/ ctx[10]);
-    	iconbutton3.$on("mouseout", /*noTooltip*/ ctx[6]);
+    	iconbutton1.$on("click", refreshAnnotations);
+    	iconbutton1.$on("mouseover", /*mouseover_handler_3*/ ctx[11]);
+    	iconbutton1.$on("mouseout", /*noTooltip*/ ctx[7]);
 
-    	iconbutton4 = new IconButton({
+    	iconbutton2 = new IconButton({
     			props: { icon: "fa-eraser" },
     			$$inline: true
     		});
 
-    	iconbutton4.$on("click", clearAnnotations);
-    	iconbutton4.$on("mouseover", /*mouseover_handler_4*/ ctx[11]);
-    	iconbutton4.$on("mouseout", /*noTooltip*/ ctx[6]);
+    	iconbutton2.$on("click", clearAnnotations);
+    	iconbutton2.$on("mouseover", /*mouseover_handler_4*/ ctx[12]);
+    	iconbutton2.$on("mouseout", /*noTooltip*/ ctx[7]);
+
+    	iconbutton3 = new IconButton({
+    			props: {
+    				icon: "fa-highlighter",
+    				gray: !/*highlight*/ ctx[4]
+    			},
+    			$$inline: true
+    		});
+
+    	iconbutton3.$on("click", toggleHighlight);
+    	iconbutton3.$on("mouseover", /*mouseover_handler_5*/ ctx[13]);
+    	iconbutton3.$on("mouseout", /*noTooltip*/ ctx[7]);
 
     	serialmenu = new SerialMenu({
     			props: {
@@ -6398,15 +6424,15 @@ var app = (function () {
     			t1 = space();
     			div1 = element("div");
     			div0 = element("div");
-    			create_component(iconbutton0.$$.fragment);
+    			if_block.c();
     			t2 = space();
-    			create_component(iconbutton1.$$.fragment);
+    			create_component(iconbutton0.$$.fragment);
     			t3 = space();
-    			create_component(iconbutton2.$$.fragment);
+    			create_component(iconbutton1.$$.fragment);
     			t4 = space();
-    			create_component(iconbutton3.$$.fragment);
+    			create_component(iconbutton2.$$.fragment);
     			t5 = space();
-    			create_component(iconbutton4.$$.fragment);
+    			create_component(iconbutton3.$$.fragment);
     			t6 = space();
     			span = element("span");
     			t7 = text(/*tooltipText*/ ctx[1]);
@@ -6418,31 +6444,31 @@ var app = (function () {
     			h31.textContent = "Serial status";
     			t12 = space();
     			create_component(serialmenu.$$.fragment);
-    			add_location(h30, file, 81, 4, 1813);
+    			add_location(h30, file, 89, 4, 2026);
     			attr_dev(div0, "class", "flex svelte-1cecmo7");
-    			add_location(div0, file, 83, 6, 1862);
+    			add_location(div0, file, 91, 6, 2075);
     			attr_dev(span, "class", "svelte-1cecmo7");
-    			add_location(span, file, 112, 6, 2837);
+    			add_location(span, file, 129, 6, 3345);
     			attr_dev(div1, "class", "container svelte-1cecmo7");
-    			add_location(div1, file, 82, 4, 1832);
+    			add_location(div1, file, 90, 4, 2045);
     			attr_dev(button, "class", "svelte-1cecmo7");
-    			add_location(button, file, 115, 4, 2880);
-    			add_location(h31, file, 116, 4, 2924);
+    			add_location(button, file, 132, 4, 3388);
+    			add_location(h31, file, 133, 4, 3432);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h30, anchor);
     			insert_dev(target, t1, anchor);
     			insert_dev(target, div1, anchor);
     			append_dev(div1, div0);
-    			mount_component(iconbutton0, div0, null);
+    			if_blocks[current_block_type_index].m(div0, null);
     			append_dev(div0, t2);
-    			mount_component(iconbutton1, div0, null);
+    			mount_component(iconbutton0, div0, null);
     			append_dev(div0, t3);
-    			mount_component(iconbutton2, div0, null);
+    			mount_component(iconbutton1, div0, null);
     			append_dev(div0, t4);
-    			mount_component(iconbutton3, div0, null);
+    			mount_component(iconbutton2, div0, null);
     			append_dev(div0, t5);
-    			mount_component(iconbutton4, div0, null);
+    			mount_component(iconbutton3, div0, null);
     			append_dev(div1, t6);
     			append_dev(div1, span);
     			append_dev(span, t7);
@@ -6455,11 +6481,40 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*reset*/ ctx[4], false, false, false);
+    				dispose = listen_dev(button, "click", /*reset*/ ctx[5], false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type_1(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				} else {
+    					if_block.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(div0, t2);
+    			}
+
+    			const iconbutton3_changes = {};
+    			if (dirty & /*highlight*/ 16) iconbutton3_changes.gray = !/*highlight*/ ctx[4];
+    			iconbutton3.$set(iconbutton3_changes);
     			if (!current || dirty & /*tooltipText*/ 2) set_data_dev(t7, /*tooltipText*/ ctx[1]);
     			const serialmenu_changes = {};
     			if (dirty & /*connected*/ 4) serialmenu_changes.connected = /*connected*/ ctx[2];
@@ -6468,20 +6523,20 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(if_block);
     			transition_in(iconbutton0.$$.fragment, local);
     			transition_in(iconbutton1.$$.fragment, local);
     			transition_in(iconbutton2.$$.fragment, local);
     			transition_in(iconbutton3.$$.fragment, local);
-    			transition_in(iconbutton4.$$.fragment, local);
     			transition_in(serialmenu.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(if_block);
     			transition_out(iconbutton0.$$.fragment, local);
     			transition_out(iconbutton1.$$.fragment, local);
     			transition_out(iconbutton2.$$.fragment, local);
     			transition_out(iconbutton3.$$.fragment, local);
-    			transition_out(iconbutton4.$$.fragment, local);
     			transition_out(serialmenu.$$.fragment, local);
     			current = false;
     		},
@@ -6489,11 +6544,11 @@ var app = (function () {
     			if (detaching) detach_dev(h30);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(div1);
+    			if_blocks[current_block_type_index].d();
     			destroy_component(iconbutton0);
     			destroy_component(iconbutton1);
     			destroy_component(iconbutton2);
     			destroy_component(iconbutton3);
-    			destroy_component(iconbutton4);
     			if (detaching) detach_dev(t8);
     			if (detaching) detach_dev(button);
     			if (detaching) detach_dev(t10);
@@ -6509,14 +6564,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(81:2) {:else}",
+    		source: "(89:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (79:2) {#if !initialized}
+    // (87:2) {#if !initialized}
     function create_if_block(ctx) {
     	let button;
     	let mounted;
@@ -6527,7 +6582,7 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "Initialize Serial";
     			attr_dev(button, "class", "svelte-1cecmo7");
-    			add_location(button, file, 79, 4, 1733);
+    			add_location(button, file, 87, 4, 1946);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -6551,7 +6606,103 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(79:2) {#if !initialized}",
+    		source: "(87:2) {#if !initialized}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (100:8) {:else}
+    function create_else_block_1(ctx) {
+    	let iconbutton;
+    	let current;
+
+    	iconbutton = new IconButton({
+    			props: { icon: "fa-link-slash", green: true },
+    			$$inline: true
+    		});
+
+    	iconbutton.$on("click", disconnectSerial);
+    	iconbutton.$on("mouseover", /*mouseover_handler_1*/ ctx[9]);
+    	iconbutton.$on("mouseout", /*noTooltip*/ ctx[7]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(iconbutton.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(iconbutton, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(iconbutton.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(iconbutton.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(iconbutton, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_1.name,
+    		type: "else",
+    		source: "(100:8) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (93:8) {#if !connected}
+    function create_if_block_1(ctx) {
+    	let iconbutton;
+    	let current;
+
+    	iconbutton = new IconButton({
+    			props: { icon: "fa-link", red: true },
+    			$$inline: true
+    		});
+
+    	iconbutton.$on("click", connectSerial);
+    	iconbutton.$on("mouseover", /*mouseover_handler*/ ctx[8]);
+    	iconbutton.$on("mouseout", /*noTooltip*/ ctx[7]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(iconbutton.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(iconbutton, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(iconbutton.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(iconbutton.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(iconbutton, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(93:8) {#if !connected}",
     		ctx
     	});
 
@@ -6578,7 +6729,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			if_block.c();
-    			add_location(main, file, 77, 0, 1701);
+    			add_location(main, file, 85, 0, 1914);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6665,13 +6816,18 @@ var app = (function () {
     	vscode?.postMessage({ message: 'clearAnnotations' });
     }
 
+    function toggleHighlight() {
+    	vscode?.postMessage({ message: 'toggleHighlight' });
+    }
+
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
     	let initialized = false;
     	let tooltipText = '';
-    	let connected = '';
+    	let connected = false;
     	let portName = '';
+    	let highlight = true;
 
     	function reset() {
     		$$invalidate(0, initialized = false);
@@ -6705,6 +6861,9 @@ var app = (function () {
     				case 'disconnected':
     					$$invalidate(2, connected = false);
     					break;
+    				case 'toggleHighlight':
+    					$$invalidate(4, highlight = event.data.highlight);
+    					break;
     			}
     		});
     	});
@@ -6720,6 +6879,7 @@ var app = (function () {
     	const mouseover_handler_2 = () => tooltip('Upload sketch');
     	const mouseover_handler_3 = () => tooltip('Update annotations');
     	const mouseover_handler_4 = () => tooltip('Remove annotations');
+    	const mouseover_handler_5 = () => tooltip('Toggle line marking');
 
     	$$self.$capture_state = () => ({
     		onMount,
@@ -6729,6 +6889,7 @@ var app = (function () {
     		tooltipText,
     		connected,
     		portName,
+    		highlight,
     		reset,
     		tooltip,
     		noTooltip,
@@ -6737,7 +6898,8 @@ var app = (function () {
     		disconnectSerial,
     		uploadSketch,
     		refreshAnnotations,
-    		clearAnnotations
+    		clearAnnotations,
+    		toggleHighlight
     	});
 
     	$$self.$inject_state = $$props => {
@@ -6745,6 +6907,7 @@ var app = (function () {
     		if ('tooltipText' in $$props) $$invalidate(1, tooltipText = $$props.tooltipText);
     		if ('connected' in $$props) $$invalidate(2, connected = $$props.connected);
     		if ('portName' in $$props) $$invalidate(3, portName = $$props.portName);
+    		if ('highlight' in $$props) $$invalidate(4, highlight = $$props.highlight);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -6756,6 +6919,7 @@ var app = (function () {
     		tooltipText,
     		connected,
     		portName,
+    		highlight,
     		reset,
     		tooltip,
     		noTooltip,
@@ -6763,7 +6927,8 @@ var app = (function () {
     		mouseover_handler_1,
     		mouseover_handler_2,
     		mouseover_handler_3,
-    		mouseover_handler_4
+    		mouseover_handler_4,
+    		mouseover_handler_5
     	];
     }
 
