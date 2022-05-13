@@ -160,44 +160,6 @@ function parseExpression(expression: string, values: string[]): string {
   return substituion;
 }
 
-/*
-function evaluateExpression(expression: string, values: string[]) {
-  if (expression === '') {
-    return values.toString();
-  }
-
-  // Evaluate the expression
-  try {
-    // substitute al the $NUMBER variables
-    let substituion = expression.replace(/[\$@][0-9]+/gi, function (x: string) {
-      const type = x.charAt(0); // $ or @
-      const index = parseInt(x.slice(1));
-
-      if (type === '$') {
-        const res = values[index];
-        if (!res) throw new Error(`${x} does not exist`);
-        return res;
-      } else if (type === '@') {
-        const prev = getAnnotationAtLine(index);
-        if (!prev) throw new Error(`${x} is not a valid line`);
-        const res = prev.evaluatedValue;
-        if (!res) throw new Error(`${x} does not exist`);
-        return res;
-      }
-      return '';
-    });
-
-    // Replace white space with commas
-    substituion = substituion.replace(/ /gi, ',');
-    console.log('==>', substituion, '<===');
-
-    return `${eval(substituion)}`;
-  } catch (err: any) {
-    return err.message;
-  }
-}
-*/
-
 function getAnnotationAtLine(lineNumber: number) {
   return Array.from(annotations, (item) => item[1]).find(
     ({ line }) => line === lineNumber
