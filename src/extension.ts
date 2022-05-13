@@ -13,6 +13,7 @@ import { SideViewProvider } from './sidebarViewProvider';
 
 let sideView: SideViewProvider;
 let highlight: boolean = true;
+let codeHash: string = '';
 
 function registerSideView(_sideView: SideViewProvider) {
   if (_sideView) sideView = _sideView;
@@ -99,12 +100,20 @@ function compileAndUpload() {
       .compileAndUpload(code)
       .then(([message, link]: string[]) => {
         ui.vsInfoWithLink(message, link);
+        updateCodeHash(); // new code hash
+        sideView?.sendMessage({ message: 'codeDirty', value: false });
       })
       .catch((msg) => ui.vsError(msg));
   } catch (err: any) {
     ui.vsError(err.message);
     return;
   }
+}
+
+function onInput() {
+  removeAllAnnotations();
+  // check if the code was modified
+  sideView?.sendMessage({ message: 'codeDirty', value: isCodeDirty() });
 }
 
 function decorateEditor() {
@@ -156,6 +165,14 @@ function toggleHighlight() {
   sideView?.sendMessage({ message: 'toggleHighlight', highlight });
 }
 
+function isCodeDirty() {
+  return codeHash !== CodeManager.getInstance().computeCodeHash();
+}
+
+function updateCodeHash() {
+  codeHash = CodeManager.getInstance().computeCodeHash();
+}
+
 export {
   configureConnection,
   connectSerial,
@@ -165,4 +182,5 @@ export {
   removeAnnotationsFromCode,
   registerSideView,
   toggleHighlight,
+  onInput,
 };

@@ -10,6 +10,7 @@ import {
   registerSideView,
   removeAnnotationsFromCode,
   toggleHighlight,
+  onInput,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { removeAllAnnotations } from './annotations';
@@ -86,7 +87,7 @@ export async function activate(context: vscode.ExtensionContext) {
 /**
  * @param {vscode.TextDocumentChangeEvent} event
  */
-vscode.workspace.onDidChangeTextDocument(removeAllAnnotations);
+vscode.workspace.onDidChangeTextDocument(onInput);
 
 vscode.window.onDidChangeActiveTextEditor(() => {
   console.log('editor change');

@@ -8,18 +8,19 @@
 
   let state = vscode.getState() || {
     initialized: false,
-    connected: false,
-    portName: '',
-    highlight: true,
   };
+  let highlight = true;
+  let portName = '';
+  let connected = false;
   let tooltipText = '';
+  let needRefresh = false;
 
   function reset() {
     state.initialized = false;
+    vscode.setState(state);
     noTooltip();
     disconnectSerial();
     refreshAnnotations();
-    vscode.setState(state);
   }
 
   function tooltip(value) {
@@ -67,22 +68,26 @@
       switch (message) {
         case 'configureConnection':
           state.initialized = true;
-          state.portName = event.data.portName;
+          vscode.setState(state);
+          portName = event.data.portName;
           break;
         case 'connected':
-          state.connected = true;
+          connected = true;
           break;
         case 'disconnected':
-          state.connected = false;
+          connected = false;
           break;
         case 'toggleHighlight':
-          state.highlight = event.data.highlight;
+          highlight = event.data.highlight;
+          break;
+        case 'codeDirty':
+          needRefresh = event.data.value;
+          console.log(needRefresh);
           break;
 
         default:
           break;
       }
-      vscode.setState(state);
     });
   });
 </script>
@@ -94,26 +99,27 @@
     <h3>Menu:</h3>
     <div class="container">
       <div class="flex">
-        {#if !state.connected}
+        {#if !connected}
           <IconButton
             on:click={connectSerial}
             on:mouseover={() => tooltip('Connect')}
             on:mouseout={noTooltip}
             icon="fa-link"
-            red={true} />
+            gray={true} />
         {:else}
           <IconButton
             on:click={disconnectSerial}
             on:mouseover={() => tooltip('Disconnect')}
             on:mouseout={noTooltip}
-            icon="fa-link-slash"
-            green={true} />
+            icon="fa-link-slash" />
         {/if}
         <IconButton
           on:click={uploadSketch}
           on:mouseover={() => tooltip('Upload sketch')}
           on:mouseout={noTooltip}
-          icon="fa-upload" />
+          icon="fa-upload"
+          red={needRefresh}
+          green={!needRefresh} />
         <IconButton
           on:click={refreshAnnotations}
           on:mouseover={() => tooltip('Update annotations')}
@@ -129,14 +135,14 @@
           on:mouseover={() => tooltip('Toggle line marking')}
           on:mouseout={noTooltip}
           icon="fa-highlighter"
-          gray={!state.highlight} />
+          gray={!highlight} />
       </div>
       <span>{tooltipText}</span>
     </div>
 
     <button on:click={reset}>Reset</button>
     <h3>Serial status</h3>
-    <SerialMenu connected={state.connected} portName={state.portName} />
+    <SerialMenu {connected} {portName} />
   {/if}
 </main>
 

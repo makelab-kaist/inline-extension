@@ -20,6 +20,16 @@ class CodeManager {
     return doc.getText();
   }
 
+  computeCodeHash(): string {
+    const code = this.getCurrentCode();
+    const lines = code.split('\n');
+    const allIds = CodeManager.getInstance()
+      .getFilteredLines('function')
+      .map(({ id }) => id);
+
+    return allIds.join('-');
+  }
+
   // remove all the //? from the current code
   removeQueriesFromCode(): string {
     const code = this.getCurrentCode();
