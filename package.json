@@ -17,6 +17,7 @@
     "onCommand:double-cheese.disconnect",
     "onCommand:double-cheese.compileUpload",
     "onCommand:double-cheese.clearAnnotations",
+    "onCommand:double-cheese.toggleHighlight",
     "onLanguage:cpp"
   ],
   "main": "./out/main.js",
@@ -55,6 +56,11 @@
         "command": "double-cheese.clearAnnotations",
         "category": "doublecheese",
         "title": "Remove annotations //? from code"
+      },
+      {
+        "command": "double-cheese.toggleHighlight",
+        "category": "doublecheese",
+        "title": "Toggle highlight"
       }
     ]
   },

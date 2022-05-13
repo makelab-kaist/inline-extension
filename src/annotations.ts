@@ -1,9 +1,12 @@
 import * as vscode from 'vscode';
 
 type Annotation = {
-  contentText: string;
-  color?: string;
-  backgroundColor?: string;
+  expressions: string[];
+  line: number;
+  decoration: vscode.TextEditorDecorationType;
+  evaluatedValues?: string[];
+  color: string;
+  backgroundColor: string;
 };
 
 const LINE_HIGHLIGHT = vscode.window.createTextEditorDecorationType({
@@ -11,22 +14,42 @@ const LINE_HIGHLIGHT = vscode.window.createTextEditorDecorationType({
   backgroundColor: 'rgb(205, 187, 8)',
 });
 
-const annotations: Map<String, vscode.TextEditorDecorationType> = new Map();
+const annotations: Map<String, Annotation> = new Map();
 
-function addAnnotation(id: string, line: number, annotation: Annotation) {
+function addAnnotation(
+  id: string,
+  line: number,
+  contentText: string,
+  expressionText: string = '',
+  color: string = 'grey',
+  backgroundColor: string = 'none'
+) {
   if (annotations.has(id)) {
     throw new Error(`Annotation ${id} already existing`);
   }
 
-  const decoration = createDecoration(line, annotation.contentText);
-  annotations.set(id, decoration);
+  const decoration = createDecoration(
+    line,
+    contentText,
+    color,
+    backgroundColor
+  );
+
+  const annotation = {
+    expressions: expressionText.split(','),
+    line,
+    decoration,
+    color,
+    backgroundColor,
+  };
+  annotations.set(id, annotation);
 }
 
 function createDecoration(
   line: number,
   contentText: string,
-  color: string = 'grey',
-  backgroundColor: string = 'none'
+  color: string,
+  backgroundColor: string
 ): vscode.TextEditorDecorationType {
   const activeEditor = vscode.window.activeTextEditor;
 
@@ -65,47 +88,120 @@ function lineToRange(line: number): vscode.Range {
 
 function removeAnnotation(id: string) {
   if (annotations.has(id)) {
-    const decorator = annotations.get(id)!;
-    decorator.dispose();
+    const { decoration } = annotations.get(id)!;
+    decoration.dispose();
     annotations.delete(id);
   }
 }
 
 function removeAllAnnotations() {
-  annotations.forEach((decorator) => decorator.dispose());
+  annotations.forEach(({ decoration }) => decoration.dispose());
   annotations.clear();
   removeHighlightLine();
 }
 
-function updateAnnotation(id: string, line: number, annotation: Annotation) {
+function updateAnnotation(
+  id: string,
+  line: number,
+  values: string[],
+  highlight: boolean = true
+) {
   if (!annotations.has(id)) {
     // annotaiton does not exist. Exit
     return;
   }
+  // highlight the line
+  if (highlight) highlightLine(line);
 
-  highlightLine(line);
-  const curr = annotations.get(id)!;
-  curr.dispose();
+  // Replace the decorator
+  const annotation = annotations.get(id)!;
+  annotation.decoration?.dispose();
 
-  const decoration = createDecoration(
+  // Text substitution
+  const expressionsResults: string[] = [];
+  for (const expr of annotation.expressions) {
+    const substituion = parseExpression(expr, values);
+    expressionsResults.push(`${eval(substituion)}`);
+  }
+  annotation.evaluatedValues = expressionsResults;
+
+  // Update decoration
+  const contentText = annotation.evaluatedValues.toString();
+
+  annotation.decoration = createDecoration(
     line,
-    annotation.contentText,
+    contentText,
     annotation.color,
     annotation.backgroundColor
   );
-  annotations.set(id, decoration);
 }
 
-function evaluateExpression(expression: string, values: string[]) {
-  let substituion = expression.replace(/\$[0-9]/gi, function (x: string) {
-    const index = parseInt(x.slice(1));
-    return values[index];
-  });
-  try {
-    return `${eval(substituion)}`;
-  } catch (err) {
-    return '';
+function parseExpression(expression: string, values: string[]): string {
+  if (expression === '') {
+    return values.toString();
   }
+
+  let substituion = expression.replace(/[\$@][0-9]+/gi, function (x: string) {
+    const type = x.charAt(0); // $ or @
+    const index = parseInt(x.slice(1));
+
+    if (type === '$') {
+      const res = values[index];
+      if (!res) return `"${x} does not exist"`;
+      return res;
+    } else if (type === '@') {
+      const prev = getAnnotationAtLine(index);
+      if (!prev) return `"${x} is not a valid line"`;
+      if (!prev.evaluatedValues) return `"${x} does not exist"`;
+      return `"${prev.evaluatedValues}"`;
+    }
+    return '';
+  });
+  return substituion;
+}
+
+/*
+function evaluateExpression(expression: string, values: string[]) {
+  if (expression === '') {
+    return values.toString();
+  }
+
+  // Evaluate the expression
+  try {
+    // substitute al the $NUMBER variables
+    let substituion = expression.replace(/[\$@][0-9]+/gi, function (x: string) {
+      const type = x.charAt(0); // $ or @
+      const index = parseInt(x.slice(1));
+
+      if (type === '$') {
+        const res = values[index];
+        if (!res) throw new Error(`${x} does not exist`);
+        return res;
+      } else if (type === '@') {
+        const prev = getAnnotationAtLine(index);
+        if (!prev) throw new Error(`${x} is not a valid line`);
+        const res = prev.evaluatedValue;
+        if (!res) throw new Error(`${x} does not exist`);
+        return res;
+      }
+      return '';
+    });
+
+    // Replace white space with commas
+    substituion = substituion.replace(/ /gi, ',');
+    console.log('==>', substituion, '<===');
+
+    return `${eval(substituion)}`;
+  } catch (err: any) {
+    return err.message;
+  }
+}
+*/
+
+function getAnnotationAtLine(lineNumber: number) {
+  return Array.from(annotations, (item) => item[1]).find(
+    ({ line }) => line === lineNumber
+  );
 }
 
 export {
@@ -113,4 +209,5 @@ export {
   updateAnnotation,
   removeAllAnnotations,
   removeAnnotation,
+  removeHighlightLine,
 };

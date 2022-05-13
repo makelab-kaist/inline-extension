@@ -9,6 +9,7 @@ import {
   decorateEditor,
   registerSideView,
   removeAnnotationsFromCode,
+  toggleHighlight,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { removeAllAnnotations } from './annotations';
@@ -71,6 +72,13 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       'double-cheese.clearAnnotations',
       removeAnnotationsFromCode
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.toggleHighlight',
+      toggleHighlight
     )
   );
 }

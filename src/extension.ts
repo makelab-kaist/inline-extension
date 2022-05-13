@@ -7,10 +7,12 @@ import {
   updateAnnotation,
   addAnnotation,
   removeAllAnnotations,
+  removeHighlightLine,
 } from './annotations';
 import { SideViewProvider } from './sidebarViewProvider';
 
 let sideView: SideViewProvider;
+let highlight: boolean = true;
 
 function registerSideView(_sideView: SideViewProvider) {
   if (_sideView) sideView = _sideView;
@@ -58,11 +60,8 @@ function onSerialData(ack: ArduinoAck) {
   // should start with $
   if (data.charAt(0) !== '$') return;
   const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
-  // console.log(id, line, values);
-  updateAnnotation(id, +line, {
-    contentText: values.toString(),
-    color: 'green',
-  });
+
+  updateAnnotation(id, +line, values, highlight);
 }
 
 function connectSerial() {
@@ -117,14 +116,9 @@ function decorateEditor() {
       CodeManager.getInstance().getFilteredLines('query');
 
     queries.forEach(({ id, line, data }) => {
-      console.log(data[0].expression); // only 1 data for queries
-
-      addAnnotation(id, line, {
-        contentText: 'NaN',
-        color: 'grey',
-      });
+      const expression = data[0].expression;
+      addAnnotation(id, line, 'NaN', expression, 'DodgerBlue');
     });
-    // console.log(JSON.stringify(queries, null, ' '));
   } catch (err: any) {
     ui.vsError(err.message);
     return;
@@ -156,6 +150,11 @@ function removeAnnotationsFromCode() {
   });
 }
 
+function toggleHighlight() {
+  highlight = !highlight;
+  if (!highlight) removeHighlightLine();
+}
+
 export {
   configureConnection,
   connectSerial,
@@ -164,4 +163,5 @@ export {
   decorateEditor,
   removeAnnotationsFromCode,
   registerSideView,
+  toggleHighlight,
 };
