@@ -6444,16 +6444,16 @@ var app = (function () {
     			h31.textContent = "Serial status";
     			t12 = space();
     			create_component(serialmenu.$$.fragment);
-    			add_location(h30, file, 93, 4, 2160);
+    			add_location(h30, file, 93, 4, 2156);
     			attr_dev(div0, "class", "flex svelte-1cecmo7");
-    			add_location(div0, file, 95, 6, 2209);
+    			add_location(div0, file, 95, 6, 2205);
     			attr_dev(span, "class", "svelte-1cecmo7");
-    			add_location(span, file, 133, 6, 3491);
+    			add_location(span, file, 133, 6, 3487);
     			attr_dev(div1, "class", "container svelte-1cecmo7");
-    			add_location(div1, file, 94, 4, 2179);
+    			add_location(div1, file, 94, 4, 2175);
     			attr_dev(button, "class", "svelte-1cecmo7");
-    			add_location(button, file, 136, 4, 3534);
-    			add_location(h31, file, 137, 4, 3578);
+    			add_location(button, file, 136, 4, 3530);
+    			add_location(h31, file, 137, 4, 3574);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h30, anchor);
@@ -6582,7 +6582,7 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "Initialize Serial";
     			attr_dev(button, "class", "svelte-1cecmo7");
-    			add_location(button, file, 91, 4, 2080);
+    			add_location(button, file, 91, 4, 2076);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -6729,7 +6729,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			if_block.c();
-    			add_location(main, file, 89, 0, 2042);
+    			add_location(main, file, 89, 0, 2038);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6838,7 +6838,7 @@ var app = (function () {
     		noTooltip();
     		disconnectSerial();
     		refreshAnnotations();
-    		vscode.setState(undefined);
+    		vscode.setState(state);
     	}
 
     	function tooltip(value) {

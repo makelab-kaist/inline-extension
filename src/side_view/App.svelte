@@ -19,7 +19,7 @@
     noTooltip();
     disconnectSerial();
     refreshAnnotations();
-    vscode.setState(undefined);
+    vscode.setState(state);
   }
 
   function tooltip(value) {
