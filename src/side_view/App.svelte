@@ -6,17 +6,20 @@
   // Do not need to acquire the API here, as it is in the html of the provider
   // const vscode = acquireVsCodeApi();
 
-  let initialized = false;
+  let state = vscode.getState() || {
+    initialized: false,
+    connected: false,
+    portName: '',
+    highlight: true,
+  };
   let tooltipText = '';
-  let connected = false;
-  let portName = '';
-  let highlight = true;
 
   function reset() {
-    initialized = false;
+    state.initialized = false;
     noTooltip();
     disconnectSerial();
     refreshAnnotations();
+    vscode.setState(undefined);
   }
 
   function tooltip(value) {
@@ -63,34 +66,35 @@
 
       switch (message) {
         case 'configureConnection':
-          initialized = true;
-          portName = event.data.portName;
+          state.initialized = true;
+          state.portName = event.data.portName;
           break;
         case 'connected':
-          connected = true;
+          state.connected = true;
           break;
         case 'disconnected':
-          connected = false;
+          state.connected = false;
           break;
         case 'toggleHighlight':
-          highlight = event.data.highlight;
+          state.highlight = event.data.highlight;
           break;
 
         default:
           break;
       }
+      vscode.setState(state);
     });
   });
 </script>
 
 <main>
-  {#if !initialized}
+  {#if !state.initialized}
     <button on:click={configureConnection}>Initialize Serial</button>
   {:else}
     <h3>Menu:</h3>
     <div class="container">
       <div class="flex">
-        {#if !connected}
+        {#if !state.connected}
           <IconButton
             on:click={connectSerial}
             on:mouseover={() => tooltip('Connect')}
@@ -125,14 +129,14 @@
           on:mouseover={() => tooltip('Toggle line marking')}
           on:mouseout={noTooltip}
           icon="fa-highlighter"
-          gray={!highlight} />
+          gray={!state.highlight} />
       </div>
       <span>{tooltipText}</span>
     </div>
 
     <button on:click={reset}>Reset</button>
     <h3>Serial status</h3>
-    <SerialMenu {connected} {portName} />
+    <SerialMenu connected={state.connected} portName={state.portName} />
   {/if}
 </main>
 
