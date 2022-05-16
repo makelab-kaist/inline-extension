@@ -62,6 +62,22 @@
         "category": "doublecheese",
         "title": "Toggle highlight"
       }
+    ],
+    "languages": [
+      {
+        "id": "ino",
+        "extensions": [
+          ".ino",
+          ".cpp"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ino",
+        "path": "./syntaxes/ino.tmLanguage.json",
+        "scopeName": "source.ino"
+      }
     ]
   },
   "scripts": {
