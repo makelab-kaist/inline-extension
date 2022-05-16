@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
-import { libCode } from './inoCodeTemplate';
+import { generateLibraryCode } from './library';
+// import { libCode } from './inoCodeTemplate';
 
 class CodeManager {
   private static _instance: CodeManager;
@@ -57,13 +58,19 @@ class CodeManager {
     const lines = code.split('\n');
 
     // Loop for the lines of interest
+    const functionsUsed: string[] = [];
     for (let { id, line, data } of fundata) {
       const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
       const text = lines[editorLine];
       const newText = this.generateCodeForLine(id, line, text, data);
       lines[editorLine] = newText;
+      // add function used
+      functionsUsed.push(...data.map((fn) => fn.function!));
     }
     const newCode = lines.join('\n');
+
+    const uniqueFunctionsUsed = [...new Set(functionsUsed)];
+    const libCode = generateLibraryCode(uniqueFunctionsUsed);
 
     // add library
     return libCode + newCode;
