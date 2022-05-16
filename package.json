@@ -78,7 +78,22 @@
         "path": "./syntaxes/ino.tmLanguage.json",
         "scopeName": "source.ino"
       }
-    ]
+    ],
+    "configurationDefaults": {
+      "C_Cpp.errorSquiggles": "Disabled",
+      "editor.formatOnSave": false,
+      "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "scope": "special.functions",
+            "settings": {
+              "fontStyle": "underline",
+              "foreground": "#EB64B9"
+            }
+          }
+        ]
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
