@@ -27,7 +27,7 @@
         {
           "type": "webview",
           "id": "double-cheese.view",
-          "name": "Double Cheese"
+          "name": "Inline Logger"
         }
       ]
     },

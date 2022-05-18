@@ -55,15 +55,22 @@ library.set(
 void _analogWrite(uint8_t pin, int value, PARAMS)
 {
   analogWrite(pin, value);
-  if (value == 255){
+  if (value < 0 || value > 255){
+    printValueFormatted(SerialWrapper("Invalid input"), id, line, index, items);
+    return;
+  } else if (value == 255){
     printValueFormatted(SerialWrapper("100%"), id, line, index, items);
     return;
   }
   unsigned long highTime = pulseIn(pin, HIGH);
   unsigned long lowTime = pulseIn(pin, LOW);
   unsigned long dutyCycle = (float)(highTime * 100) / (highTime + lowTime);
-  String perc = String(dutyCycle) + "%";
-  printValueFormatted(SerialWrapper(perc), id, line, index, items);
+  if (dutyCycle == 0){
+    printValueFormatted(SerialWrapper("0% (correct pin?)"), id, line, index, items);
+  }else{
+    String perc = String(dutyCycle) + "%";
+    printValueFormatted(SerialWrapper(perc), id, line, index, items);
+  }
 }
 `
 );

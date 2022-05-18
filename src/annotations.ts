@@ -121,7 +121,11 @@ function updateAnnotation(
   const expressionsResults: string[] = [];
   for (const expr of annotation.expressions) {
     const substituion = parseExpression(expr, values);
-    expressionsResults.push(`${eval(substituion)}`);
+    try {
+      expressionsResults.push(`${eval(substituion)}`);
+    } catch (err) {
+      expressionsResults.push('"Invalid expression"');
+    }
   }
   annotation.evaluatedValues = expressionsResults;
 

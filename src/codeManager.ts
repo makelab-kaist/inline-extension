@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
 import { generateLibraryCode } from './library';
-// import { libCode } from './inoCodeTemplate';
+// import { libCode } from './inoCodeTemplate'; // import the whoole library
 
 class CodeManager {
   private static _instance: CodeManager;
