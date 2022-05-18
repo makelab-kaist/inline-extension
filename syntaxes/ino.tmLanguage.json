@@ -2096,6 +2096,28 @@
           "include": "#operators"
         },
         {
+          "begin": "(?x)\n(?!(?:while|for|do|if|else|switch|catch|enumerate|return|typeid|alignof|alignas|sizeof|[cr]?iterate)\\s*\\()\n(\n pinMode|digitalWrite|digitalRead|analogRead|analogWrite|millis|micros|pulseIn|random|map|min|max|abs|round|radians|degrees|sq|sqrt|constrain|cos|sin|tan|isAlphaNumeric|isAlpha|isAscii|isWhitespace|isControl|isDigit|isGraph|isLowerCase|isPrintable|isPunct|isSpace|isUpperCase|isHexadecimalDigit|toAscii|toLowerCase|toUpperCase|Serial_print|bit|bitClear|bitRead|bitSet|bitToggle|bitWrite|highByte|lowByte|shiftIn|shiftOut|tone # actual name\n|\n(?:(?<=operator)(?:[-*&<>=+!]+|\\(\\)|\\[\\]))\n)\n\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "special.functions"
+            },
+            "2": {
+              "name": "punctuation.section.arguments.begin.bracket.round.c"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.arguments.end.bracket.round.c"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#function-call-innards"
+            }
+          ]
+        },
+        {
           "begin": "(?x)\n(?!(?:while|for|do|if|else|switch|catch|enumerate|return|typeid|alignof|alignas|sizeof|[cr]?iterate)\\s*\\()\n(\n(?:[A-Za-z_][A-Za-z0-9_]*+|::)++  # actual name\n|\n(?:(?<=operator)(?:[-*&<>=+!]+|\\(\\)|\\[\\]))\n)\n\\s*(\\()",
           "beginCaptures": {
             "1": {
