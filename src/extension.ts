@@ -60,10 +60,7 @@ function onSerialData(ack: ArduinoAck) {
 
   // should start with $
   if (data.charAt(0) !== '$') return;
-  const [id, line, ...restValues] = data.slice(1).split(','); // e.g., $b4999c,9,1
-
-  // convert values to the proper representaion: like 12 or "12"
-  const values = restValues.map((e) => (Number(e) ? e : '"' + e + '"'));
+  const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
 
   updateAnnotation(id, +line, values, highlight);
 }

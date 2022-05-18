@@ -27,7 +27,7 @@
         {
           "type": "webview",
           "id": "double-cheese.view",
-          "name": "Inline Logger"
+          "name": "Inline Playground"
         }
       ]
     },

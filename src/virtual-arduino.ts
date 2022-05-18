@@ -47,7 +47,7 @@ class VirtualArduino {
   }
 
   getAvailableBuadRate(): string[] {
-    const baudRates = ['115200', '57600', '38400', '9600'];
+    const baudRates = ['9600', '38400', '57600', '115200'];
     return baudRates;
   }
 

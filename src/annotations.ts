@@ -120,11 +120,12 @@ function updateAnnotation(
   // Text substitution
   const expressionsResults: string[] = [];
   for (const expr of annotation.expressions) {
-    const substituion = parseExpression(expr, values);
+    const substitution = parseExpression(expr, values);
+
     try {
-      expressionsResults.push(`${eval(substituion)}`);
+      expressionsResults.push(`${eval(substitution)}`);
     } catch (err) {
-      expressionsResults.push('"Invalid expression"');
+      expressionsResults.push('Invalid expression'); // just put there the string
     }
   }
   annotation.evaluatedValues = expressionsResults;
@@ -142,7 +143,7 @@ function updateAnnotation(
 
 function parseExpression(expression: string, values: string[]): string {
   if (expression === '') {
-    return values.toString();
+    return `"${values.toString()}"`;
   }
 
   let substituion = expression.replace(/[\$@][0-9]+/gi, function (x: string) {
@@ -152,13 +153,14 @@ function parseExpression(expression: string, values: string[]): string {
     if (type === '$') {
       const res = values[index];
       if (!res) return `"${x} does not exist"`;
-      return res;
+      return `"${res}"`;
     } else if (type === '@') {
       const prev = getAnnotationAtLine(index);
       if (!prev) return `"${x} is not a valid line"`;
       if (!prev.evaluatedValues) return `"${x} does not exist"`;
       return `"${prev.evaluatedValues}"`;
     }
+
     return '';
   });
   return substituion;
