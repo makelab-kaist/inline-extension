@@ -16,6 +16,7 @@
     "onCommand:double-cheese.connect",
     "onCommand:double-cheese.disconnect",
     "onCommand:double-cheese.compileUpload",
+    "onCommand:double-cheese.compileUploadRelease",
     "onCommand:double-cheese.clearAnnotations",
     "onCommand:double-cheese.toggleHighlight",
     "onLanguage:cpp"
@@ -27,7 +28,7 @@
         {
           "type": "webview",
           "id": "double-cheese.view",
-          "name": "Inline Playground"
+          "name": "Double-Cheese Playground"
         }
       ]
     },

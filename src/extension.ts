@@ -110,6 +110,23 @@ function compileAndUpload() {
   }
 }
 
+function compileAndUploadRelease() {
+  try {
+    const code = CodeManager.getInstance().getCurrentCode();
+
+    // Compile and upload
+    VirtualArduino.getInstance()
+      .compileAndUpload(code)
+      .then(([message, link]: string[]) => {
+        ui.vsInfo(message);
+      })
+      .catch((msg) => ui.vsError(msg));
+  } catch (err: any) {
+    ui.vsError(err.message);
+    return;
+  }
+}
+
 function onInput() {
   removeAllAnnotations();
   // check if the code was modified
@@ -178,6 +195,7 @@ export {
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  compileAndUploadRelease,
   decorateEditor,
   removeAnnotationsFromCode,
   registerSideView,

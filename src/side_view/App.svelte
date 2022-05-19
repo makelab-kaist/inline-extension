@@ -59,6 +59,10 @@
     vscode?.postMessage({ message: 'toggleHighlight' });
   }
 
+  function uploadRelease() {
+    vscode?.postMessage({ message: 'uploadRelease' });
+  }
+
   onMount(async () => {
     // Listen to events
     window.addEventListener('message', async (event) => {
@@ -140,6 +144,7 @@
       <span>{tooltipText}</span>
     </div>
 
+    <button on:click={uploadRelease}>Upload Release</button>
     <button on:click={reset}>Reset</button>
     <h3>Serial status</h3>
     <SerialMenu {connected} {portName} />
@@ -163,6 +168,6 @@
   }
 
   span {
-    font-size: larger;
+    font-size: large;
   }
 </style>

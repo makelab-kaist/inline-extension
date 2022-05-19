@@ -6,6 +6,7 @@ import {
   connectSerial,
   disconnectSerial,
   compileAndUpload,
+  compileAndUploadRelease,
   decorateEditor,
   registerSideView,
   removeAnnotationsFromCode,
@@ -66,6 +67,13 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       'double-cheese.compileUpload',
       compileAndUpload
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.compileUploadRelease',
+      compileAndUploadRelease
     )
   );
 

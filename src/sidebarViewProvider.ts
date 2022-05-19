@@ -7,6 +7,7 @@ import {
   decorateEditor,
   removeAnnotationsFromCode,
   toggleHighlight,
+  compileAndUploadRelease,
 } from './extension';
 
 type Message = {
@@ -50,6 +51,9 @@ class SideViewProvider implements vscode.WebviewViewProvider {
             break;
           case 'uploadSketch':
             compileAndUpload();
+            break;
+          case 'uploadRelease':
+            compileAndUploadRelease();
             break;
           case 'refreshAnnotations':
             decorateEditor();
