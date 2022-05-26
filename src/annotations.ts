@@ -124,8 +124,6 @@ function updateAnnotation(
   for (const expr of annotation.expressions) {
     try {
       const substituion = parseExpression(expr, values);
-      console.log(expr, values, substituion);
-
       const evaluation = eval(substituion);
       expressionsResults.push(`${evaluation}`);
     } catch (err) {
@@ -145,6 +143,11 @@ function updateAnnotation(
   );
 }
 
+function stringOrNumber(str: string): string {
+  if (Number(str)) return str;
+  else return `"${str}"`; // return a string with a string
+}
+
 function parseExpression(expression: string, values: string[]): string {
   if (expression === '') {
     return `"${values.toString()}"`;
@@ -157,12 +160,13 @@ function parseExpression(expression: string, values: string[]): string {
     if (type === '$') {
       const res = values[index];
       if (!res) return `"${x} does not exist"`;
-      return `"${res}"`; // return a string with a string
+      // return `"${res}"`; // return a string with a string
+      return stringOrNumber(res);
     } else if (type === '@') {
       const prev = getAnnotationAtLine(index);
       if (!prev) return `"${x} is not a valid line"`;
       if (!prev.evaluatedValue) return `"${x} does not exist"`;
-      return `"${prev.evaluatedValue}"`; // return a string with a string
+      return stringOrNumber(prev.evaluatedValue);
     }
 
     return '';
