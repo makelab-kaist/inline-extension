@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
+import { validateExpressions } from './parser';
 
 type Annotation = {
   expressions: string[];
   line: number;
   decoration: vscode.TextEditorDecorationType;
-  evaluatedValues?: string[];
+  evaluatedValue?: string;
   color: string;
   backgroundColor: string;
 };
@@ -36,7 +37,7 @@ function addAnnotation(
   );
 
   const annotation = {
-    expressions: expressionText.split(','),
+    expressions: validateExpressions(expressionText),
     line,
     decoration,
     color,
@@ -119,19 +120,22 @@ function updateAnnotation(
 
   // Text substitution
   const expressionsResults: string[] = [];
-  for (const expr of annotation.expressions) {
-    const substitution = parseExpression(expr, values);
 
+  for (const expr of annotation.expressions) {
     try {
-      expressionsResults.push(`${eval(substitution)}`);
+      const substituion = parseExpression(expr, values);
+      console.log(expr, values, substituion);
+
+      const evaluation = eval(substituion);
+      expressionsResults.push(`${evaluation}`);
     } catch (err) {
       expressionsResults.push('Invalid expression'); // just put there the string
     }
   }
-  annotation.evaluatedValues = expressionsResults;
+  annotation.evaluatedValue = expressionsResults.toString();
 
   // Update decoration
-  const contentText = annotation.evaluatedValues.toString();
+  const contentText = annotation.evaluatedValue;
 
   annotation.decoration = createDecoration(
     line,
@@ -153,12 +157,12 @@ function parseExpression(expression: string, values: string[]): string {
     if (type === '$') {
       const res = values[index];
       if (!res) return `"${x} does not exist"`;
-      return `"${res}"`;
+      return `"${res}"`; // return a string with a string
     } else if (type === '@') {
       const prev = getAnnotationAtLine(index);
       if (!prev) return `"${x} is not a valid line"`;
-      if (!prev.evaluatedValues) return `"${x} does not exist"`;
-      return `"${prev.evaluatedValues}"`;
+      if (!prev.evaluatedValue) return `"${x} does not exist"`;
+      return `"${prev.evaluatedValue}"`; // return a string with a string
     }
 
     return '';

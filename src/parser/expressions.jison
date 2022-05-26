@@ -1,3 +1,5 @@
+/* description: Parses SwitchBoard commands in cpp filess. */
+
 /* lexical grammar */
 %lex
 %%
@@ -6,7 +8,7 @@
 'HIGH'                                            { return 'HIGH' }
 'LOW'                                             { return 'LOW' }
 'true'|'false'                                    { return 'BOOLEAN' }
-\$[1-9]\d*                                        { return 'VAR' }     
+\$\d+                                             { return 'VAR' }     
 \@[1-9]\d*                                        { return 'LINE' }
 'b'(0|1)+                                         { return 'BINARY_NUM' }     
 0|\d+                                             { return 'INTEGER' }     
@@ -17,13 +19,17 @@
 '+'                                               { return '+'; }     
 '/'                                               { return '/'; }     
 '*'                                               { return '*'; }     
-'!'                                               { return '!'; }     
 '=='                                              { return '=='; }     
+'!='                                              { return '!='; }     
 '<'                                               { return '<'; }     
 '>'                                               { return '>'; }     
 '<='                                              { return '<='; }     
 '>='                                              { return '>='; }     
+'!'                                               { return '!'; }     
+'('                                               { return '('; }     
+')'                                               { return ')'; }     
 .                                                 { /* ignore others */}
+
 
 /lex
 
@@ -53,6 +59,7 @@ expression
   // logic
   | '!' item { $$ = $1 + $2 }
   | item '==' expression { $$ = $1 + $2 + $3}
+  | item '!=' expression { $$ = $1 + $2 + $3}
   | item '>' expression { $$ = $1 + $2 + $3}
   | item '<' expression { $$ = $1 + $2 + $3}
   | item '>=' expression { $$ = $1 + $2 + $3}
@@ -61,23 +68,24 @@ expression
 
 item
   : number { $$= $1 }
-  | HIGH { $$ = 1 }
-  | LOW { $$ = 0 }
+  | HIGH { $$ = '1' }
+  | LOW { $$ = '0' }
   | STRING { $$ =  $1  }
   | VAR { $$ = $1 }
   | LINE { $$ = $1 }
   | BOOLEAN { $$ = !!$1 }
+  | '(' expression ')' { $$ = $1 + $2 + $3 }
   ;
 
 number 
   : float { $$ = $1 }
   | '-' float { $$ = -$2 }
   | '+' float { $$ = $2 }
-  | BINARY_NUM { $$ = parseInt($1.slice(1),2) }
+  | BINARY_NUM { $$ = '"'+$1.slice(1)+'"' }
   ;
 
 float 
-  : INTEGER { $$ = parseFloat($1) }
-  | '.' INTEGER { $$ = parseFloat('.'+$2) }
-  | INTEGER '.' INTEGER { $$ = parseFloat($1+'.'+$3) }
+  : INTEGER { $$ = $1 }
+  | '.' INTEGER { $$ = $1+$2 }
+  | INTEGER '.' INTEGER { $$ = $1+$2+$3 }
   ;

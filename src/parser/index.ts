@@ -1,5 +1,7 @@
 // @ts-ignore
 import * as parser from './grammar';
+// @ts-ignore
+import * as expr_parser from './expressions';
 
 type TextLocation = {
   line: number;
@@ -26,7 +28,11 @@ function getParsedData(code: string): LineData[] {
 }
 
 function validateExpressions(expressionString: string): string[] {
-  return parser.parse(expressionString);
+  if (expressionString === '') return ['']; // empty
+  try {
+    return expr_parser.parse(expressionString);
+  } catch (error) {}
+  return ['Unable to parse'];
 }
 
 export { getParsedData, validateExpressions, TextLocation, Data, LineData };
