@@ -25,4 +25,8 @@ function getParsedData(code: string): LineData[] {
   return parser.parse(code);
 }
 
-export { getParsedData, TextLocation, Data, LineData };
+function validateExpressions(expressionString: string): string[] {
+  return parser.parse(expressionString);
+}
+
+export { getParsedData, validateExpressions, TextLocation, Data, LineData };

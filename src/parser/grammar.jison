@@ -1,5 +1,3 @@
-/* description: Parses SwitchBoard commands in cpp filess. */
-
 /* lexical grammar */
 %lex
 %%
