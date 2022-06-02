@@ -3,6 +3,10 @@
   "displayName": "double-cheese",
   "publisher": "MAKinteract",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/makinteract/double-cheese"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.63.0"
@@ -112,7 +116,8 @@
     "compile_expression_grammar": "npx jison ./src/parser/expressions.jison -o ./src/parser/expressions.js && cp -prf ./src/parser/expressions.js ./out/parser",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear"
+    "start": "sirv public --no-clear",
+    "package": "npx vsce package"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -134,7 +139,8 @@
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "svelte": "^3.37.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "vsce": "^2.9.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
