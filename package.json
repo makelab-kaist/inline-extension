@@ -19,6 +19,7 @@
     "onCommand:double-cheese.compileUploadRelease",
     "onCommand:double-cheese.clearAnnotations",
     "onCommand:double-cheese.toggleHighlight",
+    "onCommand:double-cheese.changeServer",
     "onLanguage:cpp"
   ],
   "main": "./out/main.js",
@@ -62,6 +63,11 @@
         "command": "double-cheese.toggleHighlight",
         "category": "doublecheese",
         "title": "Toggle highlight"
+      },
+      {
+        "command": "double-cheese.changeServer",
+        "category": "doublecheese",
+        "title": "Change server"
       }
     ],
     "languages": [

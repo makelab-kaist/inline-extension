@@ -12,6 +12,7 @@ import {
   removeAnnotationsFromCode,
   toggleHighlight,
   onInput,
+  changeServer,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
 import { removeAllAnnotations } from './annotations';
@@ -89,6 +90,10 @@ export async function activate(context: vscode.ExtensionContext) {
       'double-cheese.toggleHighlight',
       toggleHighlight
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('double-cheese.changeServer', changeServer)
   );
 }
 

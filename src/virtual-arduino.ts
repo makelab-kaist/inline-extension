@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { io, Socket } from 'socket.io-client';
 
-const SERVER = 'http://localhost:3000';
+const PORT = 3000;
+let server = `http://localhost:${PORT}`;
 
 export type ArduinoAck = {
   message: unknown;
@@ -20,7 +21,7 @@ class VirtualArduino {
   }
 
   private constructor() {
-    this._socket = io(SERVER, {
+    this._socket = io(server, {
       reconnection: true,
     });
 
@@ -31,6 +32,11 @@ class VirtualArduino {
     this._socket.once('connect_error', () => {
       console.log('Not connected!');
     });
+  }
+
+  static changeServerIp(ip: string) {
+    server = `${ip}:${PORT}`;
+    this._instance = new VirtualArduino();
   }
 
   connectToServer(timeoutms: number = 200): Promise<string> {

@@ -53,6 +53,15 @@ async function configureConnection() {
     .catch((msg) => ui.vsError(msg));
 }
 
+async function changeServer() {
+  let ip = await ui.showInputBox('', 'http://localhost', () => false);
+  if (!ip) return;
+  if (!ip.startsWith('http://')) {
+    ip = 'http://' + ip;
+  }
+  VirtualArduino.changeServerIp(ip);
+}
+
 function onSerialData(ack: ArduinoAck) {
   if (!ack.success) return;
   const data = ack.message as string;
@@ -201,4 +210,5 @@ export {
   registerSideView,
   toggleHighlight,
   onInput,
+  changeServer,
 };
