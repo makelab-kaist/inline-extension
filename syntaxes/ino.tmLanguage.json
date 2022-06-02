@@ -8,7 +8,7 @@
   "scopeName": "source.ino",
   "patterns": [
     {
-      "match": "\\b(pinMode|digitalWrite|digitalRead|analogRead|analogWrite|millis|micros|pulseIn|random|map|min|max|abs|round|radians|degrees|sq|sqrt|constrain|cos|sin|tan|isAlphaNumeric|isAlpha|isAscii|isWhitespace|isControl|isDigit|isGraph|isLowerCase|isPrintable|isPunct|isSpace|isUpperCase|isHexadecimalDigit|toAscii|toLowerCase|toUpperCase|Serial_print|bit|bitClear|bitRead|bitSet|bitToggle|bitWrite|highByte|lowByte|shiftIn|shiftOut|tone)\\b",
+      "match": "\\b(Serial.print|Serial.println|pinMode|digitalWrite|digitalRead|analogRead|analogWrite|millis|micros|pulseIn|random|map|min|max|abs|round|radians|degrees|sq|sqrt|constrain|cos|sin|tan|isAlphaNumeric|isAlpha|isAscii|isWhitespace|isControl|isDigit|isGraph|isLowerCase|isPrintable|isPunct|isSpace|isUpperCase|isHexadecimalDigit|toAscii|toLowerCase|toUpperCase|Serial_print|bit|bitClear|bitRead|bitSet|bitToggle|bitWrite|highByte|lowByte|shiftIn|shiftOut|tone)\\b",
       "name": "special.functions"
     },
     {
@@ -2096,7 +2096,7 @@
           "include": "#operators"
         },
         {
-          "begin": "(?x)\n(?!(?:while|for|do|if|else|switch|catch|enumerate|return|typeid|alignof|alignas|sizeof|[cr]?iterate)\\s*\\()\n(\n pinMode|digitalWrite|digitalRead|analogRead|analogWrite|millis|micros|pulseIn|random|map|min|max|abs|round|radians|degrees|sq|sqrt|constrain|cos|sin|tan|isAlphaNumeric|isAlpha|isAscii|isWhitespace|isControl|isDigit|isGraph|isLowerCase|isPrintable|isPunct|isSpace|isUpperCase|isHexadecimalDigit|toAscii|toLowerCase|toUpperCase|Serial_print|bit|bitClear|bitRead|bitSet|bitToggle|bitWrite|highByte|lowByte|shiftIn|shiftOut|tone # actual name\n|\n(?:(?<=operator)(?:[-*&<>=+!]+|\\(\\)|\\[\\]))\n)\n\\s*(\\()",
+          "begin": "(?x)\n(?!(?:while|for|do|if|else|switch|catch|enumerate|return|typeid|alignof|alignas|sizeof|[cr]?iterate)\\s*\\()\n(\n Serial.print|Serial.println|pinMode|digitalWrite|digitalRead|analogRead|analogWrite|millis|micros|pulseIn|random|map|min|max|abs|round|radians|degrees|sq|sqrt|constrain|cos|sin|tan|isAlphaNumeric|isAlpha|isAscii|isWhitespace|isControl|isDigit|isGraph|isLowerCase|isPrintable|isPunct|isSpace|isUpperCase|isHexadecimalDigit|toAscii|toLowerCase|toUpperCase|Serial_print|bit|bitClear|bitRead|bitSet|bitToggle|bitWrite|highByte|lowByte|shiftIn|shiftOut|tone # actual name\n|\n(?:(?<=operator)(?:[-*&<>=+!]+|\\(\\)|\\[\\]))\n)\n\\s*(\\()",
           "beginCaptures": {
             "1": {
               "name": "special.functions"

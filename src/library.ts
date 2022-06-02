@@ -522,55 +522,6 @@ int _toUpperCase(int c, PARAMS)
 `
 );
 
-// Serial
-
-library.set(
-  'Serial_print',
-  `
-void _Serial_print(int value, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value), id, line, index, items);
-}
-
-void _Serial_print(long value, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value), id, line, index, items);
-}
-
-void _Serial_print(double value, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value), id, line, index, items);
-}
-
-void _Serial_print(char value, PARAMS)
-{
-  printValueFormatted(SerialWrapper(String(value)), id, line, index, items);
-}
-
-void _Serial_print(const String &value, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value), id, line, index, items);
-}
-
-// print with formatter
-
-void _Serial_print(long value, uint8_t format, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value, format), id, line, index, items);
-}
-
-void _Serial_print(double value, uint8_t format, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value, format), id, line, index, items);
-}
-
-void _Serial_print(char value, uint8_t format, PARAMS)
-{
-  printValueFormatted(SerialWrapper(value, format), id, line, index, items);
-}
-`
-);
-
 // Bits and Bytes
 
 library.set(
@@ -722,6 +673,7 @@ void _tone(uint8_t pin, unsigned int frequency, PARAMS)
 function getCodeParts(functions: string[]) {
   let code = '';
   for (const fun of functions) {
+    if (fun.includes('Serial')) continue; // serial is included
     if (!library.has(fun)) throw new Error(`${fun}: invalid function name`);
     code += library.get(fun);
   }
@@ -806,6 +758,48 @@ void printValueFormatted(const SerialWrapper &value, PARAMS)
   }
   else
     Serial.print(",");
+}
+
+void _Serial_print(int value, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
+
+void _Serial_print(long value, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
+
+void _Serial_print(double value, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
+
+void _Serial_print(char value, PARAMS)
+{
+  printValueFormatted(SerialWrapper(String(value)), id, line, index, items);
+}
+
+void _Serial_print(const String &value, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
+
+// print with formatter
+
+void _Serial_print(long value, uint8_t format, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value, format), id, line, index, items);
+}
+
+void _Serial_print(double value, uint8_t format, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value, format), id, line, index, items);
+}
+
+void _Serial_print(char value, uint8_t format, PARAMS)
+{
+  printValueFormatted(SerialWrapper(value, format), id, line, index, items);
 }
 
 ${getCodeParts(functions)}
