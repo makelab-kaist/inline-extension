@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
-import { generateLibraryCode } from './arduino-library';
-// import { libCode } from './inoCodeTemplate'; // import the whoole library
+import { generateLibraryCode } from './arduino-lib/arduino-library';
+// import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whoole library
 
 class CodeManager {
   private static _instance: CodeManager;
@@ -25,7 +25,7 @@ class CodeManager {
     const code = this.getCurrentCode();
     const lines = code.split('\n');
     const allIds = CodeManager.getInstance()
-      .getFilteredLines('function')
+      .getFunctionCalls()
       .map(({ id }) => id);
 
     return allIds.join('-');
@@ -36,7 +36,7 @@ class CodeManager {
     const code = this.getCurrentCode();
     const lines = code.split('\n');
     const queries: parser.LineData[] =
-      CodeManager.getInstance().getFilteredLines('query');
+      CodeManager.getInstance().getCodeQueries();
 
     // Loop for the lines with //? and remove those
     for (let { id, line, data } of queries) {
@@ -76,7 +76,17 @@ class CodeManager {
     return libCode + newCode;
   }
 
-  getFilteredLines(
+  getFunctionCalls() {
+    return this.getFilteredLines('function');
+  }
+
+  getCodeQueries() {
+    return this.getFilteredLines('query');
+  }
+
+  // ========= PRIVATE METHODS ========
+
+  private getFilteredLines(
     queryType: 'function' | 'query',
     code: string | undefined = undefined
   ): parser.LineData[] {

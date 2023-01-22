@@ -120,7 +120,7 @@ function compileAndUpload() {
 
     // Get all lines with valid code
     const lines: parser.LineData[] =
-      CodeManager.getInstance().getFilteredLines('function');
+      CodeManager.getInstance().getFunctionCalls();
 
     const code = CodeManager.getInstance().generateCode(lines);
 
@@ -168,7 +168,7 @@ function decorateEditor() {
     // removeAllAnnotations();
     // Get all the lines with the '//?' queries
     const queries: parser.LineData[] =
-      CodeManager.getInstance().getFilteredLines('query');
+      CodeManager.getInstance().getCodeQueries();
 
     queries.forEach(({ id, line, data }) => {
       const expression = data[0].expression;
