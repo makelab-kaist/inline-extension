@@ -1,19 +1,25 @@
 import * as vscode from 'vscode';
-import * as ui from './ui';
-import { ArduinoAck, VirtualArduino } from './virtual-arduino';
+import * as ui from './ui/vscode-ui';
+import { ArduinoAck, VirtualArduino } from './utils/virtual-arduino';
 import * as parser from './parser';
 import { CodeManager } from './codeManager';
-import {
-  updateAnnotation,
-  addAnnotation,
-  removeAllAnnotations,
-  removeHighlightLine,
-} from './annotations';
-import { SideViewProvider } from './sidebarViewProvider';
+// import {
+//   updateAnnotation,
+//   addAnnotation,
+//   removeAllAnnotations,
+//   removeHighlightLine,
+// } from './annotations';
+import { SideViewProvider } from './ui/sidebarViewProvider';
+import { Subject } from 'rxjs';
 
 let sideView: SideViewProvider;
 let highlight: boolean = true;
 let codeHash: string = '';
+const data$ = new Subject();
+
+data$.subscribe((e) => {
+  console.log('Here in data ', e);
+});
 
 function registerSideView(_sideView: SideViewProvider) {
   if (_sideView) sideView = _sideView;
@@ -53,6 +59,17 @@ async function configureConnection() {
     .catch((msg) => ui.vsError(msg));
 }
 
+async function startConnectionToServer() {
+  await VirtualArduino.getInstance()
+    .connectToServer()
+    .then((msg: string) => {
+      ui.vsInfo(msg);
+    })
+    .catch((err) => {
+      ui.vsError(err);
+    });
+}
+
 async function changeServer() {
   let ip = await ui.showInputBox('', 'http://localhost', () => false);
   if (!ip) return;
@@ -71,7 +88,10 @@ function onSerialData(ack: ArduinoAck) {
   if (data.charAt(0) !== '$') return;
   const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
 
-  updateAnnotation(id, +line, values, highlight);
+  console.log(id, line, values);
+  data$.next({ id, line, values });
+
+  // updateAnnotation(id, +line, values, highlight);
 }
 
 function connectSerial() {
@@ -137,7 +157,7 @@ function compileAndUploadRelease() {
 }
 
 function onInput() {
-  removeAllAnnotations();
+  // removeAllAnnotations();
   // check if the code was modified
   sideView?.sendMessage({ message: 'codeDirty', value: isCodeDirty() });
 }
@@ -145,14 +165,14 @@ function onInput() {
 function decorateEditor() {
   try {
     // remove all annotations if they exist
-    removeAllAnnotations();
+    // removeAllAnnotations();
     // Get all the lines with the '//?' queries
     const queries: parser.LineData[] =
       CodeManager.getInstance().getFilteredLines('query');
 
     queries.forEach(({ id, line, data }) => {
       const expression = data[0].expression;
-      addAnnotation(id, line, 'NaN', expression, 'DodgerBlue');
+      // addAnnotation(id, line, 'NaN', expression, 'DodgerBlue');
     });
   } catch (err: any) {
     ui.vsError(err.message);
@@ -161,7 +181,7 @@ function decorateEditor() {
 }
 
 function removeAnnotationsFromCode() {
-  removeAllAnnotations();
+  // removeAllAnnotations();
 
   // swap code
   const editor = vscode.window.activeTextEditor;
@@ -187,7 +207,7 @@ function removeAnnotationsFromCode() {
 
 function toggleHighlight() {
   highlight = !highlight;
-  if (!highlight) removeHighlightLine();
+  // if (!highlight) removeHighlightLine();
   sideView?.sendMessage({ message: 'toggleHighlight', highlight });
 }
 
@@ -210,5 +230,6 @@ export {
   registerSideView,
   toggleHighlight,
   onInput,
+  startConnectionToServer,
   changeServer,
 };

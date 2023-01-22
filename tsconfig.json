@@ -20,6 +20,6 @@
 		"node_modules",
 		".vscode-test",
 		"public",
-		"src/side_view"
+		"src/ui/side_view"
 	]
 }

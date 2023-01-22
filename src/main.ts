@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import * as ui from './ui';
+import * as ui from './ui/vscode-ui';
 import {
   configureConnection,
   connectSerial,
@@ -12,21 +12,11 @@ import {
   removeAnnotationsFromCode,
   toggleHighlight,
   onInput,
+  startConnectionToServer,
   changeServer,
 } from './extension';
-import { VirtualArduino } from './virtual-arduino';
-import { SideViewProvider } from './sidebarViewProvider';
-
-async function startConnectionToServer() {
-  await VirtualArduino.getInstance()
-    .connectToServer()
-    .then((msg: string) => {
-      ui.vsInfo(msg);
-    })
-    .catch((err) => {
-      ui.vsError(err);
-    });
-}
+import { VirtualArduino } from './utils/virtual-arduino';
+import { SideViewProvider } from './ui/sidebarViewProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start

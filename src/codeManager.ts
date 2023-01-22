@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
-import { generateLibraryCode } from './library';
+import { generateLibraryCode } from './arduino-library';
 // import { libCode } from './inoCodeTemplate'; // import the whoole library
 
 class CodeManager {
