@@ -15,7 +15,6 @@ import {
   changeServer,
 } from './extension';
 import { VirtualArduino } from './virtual-arduino';
-import { removeAllAnnotations } from './annotations';
 import { SideViewProvider } from './sidebarViewProvider';
 
 async function startConnectionToServer() {
