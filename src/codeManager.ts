@@ -158,4 +158,4 @@ class CodeManager {
   }
 }
 
-export { CodeManager };
+export { CodeManager, CodeQuery };
