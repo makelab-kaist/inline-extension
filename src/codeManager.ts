@@ -3,6 +3,13 @@ import * as parser from './parser';
 import { generateLibraryCode } from './arduino-lib/arduino-library';
 // import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whoole library
 
+type CodeQuery = {
+  id: string;
+  line: number;
+  column: number;
+  expression: string;
+};
+
 class CodeManager {
   private static _instance: CodeManager;
   private codeHash: string = '';
@@ -14,14 +21,6 @@ class CodeManager {
     return this._instance;
   }
 
-  getCurrentCode(): string {
-    const doc = vscode.window.activeTextEditor?.document;
-    if (!doc || doc.isUntitled) {
-      throw new Error('No valid document open');
-    }
-    return doc.getText();
-  }
-
   isCodeDirty(): boolean {
     return this.codeHash !== this.computeCodeHash();
   }
@@ -30,30 +29,19 @@ class CodeManager {
     this.codeHash = this.computeCodeHash();
   }
 
-  // remove all the //? from the current code
-  removeAnnotationsFromCode(): string {
-    const code = this.getCurrentCode();
-    const lines = code.split('\n');
-    const queries: parser.LineData[] =
-      CodeManager.getInstance().getCodeQueries();
-
-    // Loop for the lines with //? and remove those
-    for (let { id, line, data } of queries) {
-      const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
-      const textLine = lines[editorLine];
-      const { location } = data[0];
-      const newText = textLine.slice(0, location.startCol);
-      lines[editorLine] = newText;
+  getCurrentCode(): string {
+    const doc = vscode.window.activeTextEditor?.document;
+    if (!doc || doc.isUntitled) {
+      throw new Error('No valid document open');
     }
-    const newCode = lines.join('\n');
-    return newCode;
+    return doc.getText();
   }
 
-  generateCode(
-    fundata: parser.LineData[],
-    code: string | undefined = undefined
-  ): string {
+  generateInstrumentedCode(code: string | undefined = undefined): string {
     if (!code) code = this.getCurrentCode();
+
+    const fundata: parser.LineData[] = this.getFunctionCalls();
+
     const lines = code.split('\n');
 
     // Loop for the lines of interest
@@ -75,13 +63,32 @@ class CodeManager {
     return libCode + newCode;
   }
 
-  getFunctionCalls() {
-    return this.getFilteredLines('function');
+  getCodeQueries(): CodeQuery[] {
+    const lines = this.getFilteredLines('query');
+    return lines.map(({ id, line, data }) => {
+      const expression = data[0]?.expression || '';
+      const column = data[0].location.startCol;
+      return { id, line, column, expression };
+    });
   }
 
-  getCodeQueries() {
-    return this.getFilteredLines('query');
-  }
+  // remove all the //? from the current code
+  // removeAnnotationsFromCode(): string {
+  //   const code = this.getCurrentCode();
+  //   const lines = code.split('\n');
+  //   const queries = this.getCodeQueries();
+
+  //   // Loop for the lines with //? and remove those
+  //   for (let { id, line, column } of queries) {
+  //     const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
+  //     const textLine = lines[editorLine];
+  //     const { location } = data[0];
+  //     const newText = textLine.slice(0, location.startCol);
+  //     lines[editorLine] = newText;
+  //   }
+  //   const newCode = lines.join('\n');
+  //   return newCode;
+  // }
 
   // ========= PRIVATE METHODS ========
 
@@ -92,6 +99,10 @@ class CodeManager {
       .map(({ id }) => id);
 
     return allIds.join('-');
+  }
+
+  private getFunctionCalls(): parser.LineData[] {
+    return this.getFilteredLines('function');
   }
 
   private getFilteredLines(

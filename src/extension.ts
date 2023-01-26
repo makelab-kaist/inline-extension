@@ -71,16 +71,10 @@ async function changeServer() {
 function onSerialData(ack: ArduinoAck) {
   if (!ack.success) return;
   const data = ack.message as string;
-  // console.log(data);
 
-  // should start with $
   if (data.charAt(0) !== '$') return;
   const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
-
-  console.log(id, line, values);
-  data$.next({ id, line, values });
-
-  // updateAnnotation(id, +line, values, highlight);
+  data$.next({ id, line, values }); // broadcast
 }
 
 function connectSerial() {
@@ -105,13 +99,8 @@ function disconnectSerial() {
 
 function compileAndUpload() {
   try {
-    // const code = CodeManager.getInstance().getCurrentCode();
-
     // Get all lines with valid code
-    const lines: parser.LineData[] =
-      CodeManager.getInstance().getFunctionCalls();
-
-    const code = CodeManager.getInstance().generateCode(lines);
+    const code = CodeManager.getInstance().generateInstrumentedCode();
 
     // Compile and upload
     VirtualArduino.getInstance()
@@ -145,35 +134,8 @@ function compileAndUploadRelease() {
   }
 }
 
-function onInput() {
-  // check if the code was modified
-  sideView?.sendMessage({
-    message: 'codeDirty',
-    value: CodeManager.getInstance().isCodeDirty(),
-  });
-}
-
-function decorateEditor() {
-  try {
-    // remove all annotations if they exist
-    // removeAllAnnotations();
-    // Get all the lines with the '//?' queries
-    const queries: parser.LineData[] =
-      CodeManager.getInstance().getCodeQueries();
-
-    queries.forEach(({ id, line, data }) => {
-      const expression = data[0].expression;
-      // addAnnotation(id, line, 'NaN', expression, 'DodgerBlue');
-    });
-  } catch (err: any) {
-    ui.vsError(err.message);
-    return;
-  }
-}
-
+/*
 function removeAnnotationsFromCode() {
-  // removeAllAnnotations();
-
   // swap code
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
@@ -195,6 +157,35 @@ function removeAnnotationsFromCode() {
     ui.vsInfo('All annotations //? removed');
   });
 }
+*/
+
+///// Modify below
+
+function onInput() {
+  // check if the code was modified
+  sideView?.sendMessage({
+    message: 'codeDirty',
+    value: CodeManager.getInstance().isCodeDirty(),
+  });
+}
+
+function decorateEditor() {
+  /*try {
+    // remove all annotations if they exist
+    // removeAllAnnotations();
+    // Get all the lines with the '//?' queries
+    const queries: parser.LineData[] =
+      CodeManager.getInstance().getCodeQueries();
+
+    queries.forEach(({ id, line, data }) => {
+      const expression = data[0].expression;
+      // addAnnotation(id, line, 'NaN', expression, 'DodgerBlue');
+    });
+  } catch (err: any) {
+    ui.vsError(err.message);
+    return;
+  }*/
+}
 
 function toggleHighlight() {
   highlight = !highlight;
@@ -210,7 +201,6 @@ export {
   compileAndUpload,
   compileAndUploadRelease,
   decorateEditor,
-  removeAnnotationsFromCode,
   registerSideView,
   toggleHighlight,
   startConnectionToServer,

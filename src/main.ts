@@ -9,14 +9,12 @@ import {
   compileAndUploadRelease,
   decorateEditor,
   registerSideView,
-  removeAnnotationsFromCode,
   toggleHighlight,
-  onInput,
   startConnectionToServer,
   changeServer,
 } from './extension';
-import { VirtualArduino } from './utils/virtual-arduino';
 import { SideViewProvider } from './ui/sidebarViewProvider';
+import { annotate } from './annotations';
 
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
@@ -70,7 +68,8 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.clearAnnotations',
-      removeAnnotationsFromCode
+      // removeAnnotationsFromCode
+      () => {}
     )
   );
 
@@ -99,7 +98,7 @@ vscode.workspace.onDidCloseTextDocument(() => {
   console.log('text close');
 });
 
-vscode.workspace.onDidSaveTextDocument(decorateEditor);
+vscode.workspace.onDidSaveTextDocument(annotate);
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
