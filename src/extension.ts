@@ -3,23 +3,12 @@ import * as ui from './ui/vscode-ui';
 import { ArduinoAck, VirtualArduino } from './utils/virtual-arduino';
 import * as parser from './parser';
 import { CodeManager } from './codeManager';
-// import {
-//   updateAnnotation,
-//   addAnnotation,
-//   removeAllAnnotations,
-//   removeHighlightLine,
-// } from './annotations';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
 
 let sideView: SideViewProvider;
 let highlight: boolean = true;
-let codeHash: string = '';
 const data$ = new Subject();
-
-data$.subscribe((e) => {
-  console.log('Here in data ', e);
-});
 
 function registerSideView(_sideView: SideViewProvider) {
   if (_sideView) sideView = _sideView;
@@ -129,7 +118,7 @@ function compileAndUpload() {
       .compileAndUpload(code)
       .then(([message, link]: string[]) => {
         ui.vsInfoWithLink(message, link);
-        updateCodeHash(); // new code hash
+        CodeManager.getInstance().invalidateCode();
         sideView?.sendMessage({ message: 'codeDirty', value: false });
       })
       .catch((msg) => ui.vsError(msg));
@@ -157,9 +146,11 @@ function compileAndUploadRelease() {
 }
 
 function onInput() {
-  // removeAllAnnotations();
   // check if the code was modified
-  sideView?.sendMessage({ message: 'codeDirty', value: isCodeDirty() });
+  sideView?.sendMessage({
+    message: 'codeDirty',
+    value: CodeManager.getInstance().isCodeDirty(),
+  });
 }
 
 function decorateEditor() {
@@ -189,7 +180,7 @@ function removeAnnotationsFromCode() {
     ui.vsError('Not a valid file');
     return;
   }
-  const newCode = CodeManager.getInstance().removeQueriesFromCode();
+  const newCode = CodeManager.getInstance().removeAnnotationsFromCode();
 
   // replace old code with new one
   const doc = editor.document;
@@ -211,15 +202,8 @@ function toggleHighlight() {
   sideView?.sendMessage({ message: 'toggleHighlight', highlight });
 }
 
-function isCodeDirty() {
-  return codeHash !== CodeManager.getInstance().computeCodeHash();
-}
-
-function updateCodeHash() {
-  codeHash = CodeManager.getInstance().computeCodeHash();
-}
-
 export {
+  data$,
   configureConnection,
   connectSerial,
   disconnectSerial,
@@ -229,7 +213,6 @@ export {
   removeAnnotationsFromCode,
   registerSideView,
   toggleHighlight,
-  onInput,
   startConnectionToServer,
   changeServer,
 };

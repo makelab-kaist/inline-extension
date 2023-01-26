@@ -89,7 +89,7 @@ export async function activate(context: vscode.ExtensionContext) {
 /**
  * @param {vscode.TextDocumentChangeEvent} event
  */
-vscode.workspace.onDidChangeTextDocument(onInput);
+vscode.workspace.onDidChangeTextDocument(() => {});
 
 vscode.window.onDidChangeActiveTextEditor(() => {
   console.log('editor change');

@@ -2,7 +2,7 @@
 import { io, Socket } from 'socket.io-client';
 
 const PORT = 3000;
-let server = `http://localhost:${PORT}`;
+let server = `http://localhost:${PORT}`; // default local server
 
 export type ArduinoAck = {
   message: unknown;

@@ -5,6 +5,7 @@ import { generateLibraryCode } from './arduino-lib/arduino-library';
 
 class CodeManager {
   private static _instance: CodeManager;
+  private codeHash: string = '';
 
   private constructor() {}
 
@@ -21,18 +22,16 @@ class CodeManager {
     return doc.getText();
   }
 
-  computeCodeHash(): string {
-    const code = this.getCurrentCode();
-    const lines = code.split('\n');
-    const allIds = CodeManager.getInstance()
-      .getFunctionCalls()
-      .map(({ id }) => id);
+  isCodeDirty(): boolean {
+    return this.codeHash !== this.computeCodeHash();
+  }
 
-    return allIds.join('-');
+  invalidateCode() {
+    this.codeHash = this.computeCodeHash();
   }
 
   // remove all the //? from the current code
-  removeQueriesFromCode(): string {
+  removeAnnotationsFromCode(): string {
     const code = this.getCurrentCode();
     const lines = code.split('\n');
     const queries: parser.LineData[] =
@@ -85,6 +84,15 @@ class CodeManager {
   }
 
   // ========= PRIVATE METHODS ========
+
+  private computeCodeHash(): string {
+    const code = this.getCurrentCode();
+    const allIds = CodeManager.getInstance()
+      .getFunctionCalls()
+      .map(({ id }) => id);
+
+    return allIds.join('-');
+  }
 
   private getFilteredLines(
     queryType: 'function' | 'query',
