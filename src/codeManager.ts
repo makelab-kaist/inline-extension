@@ -72,25 +72,7 @@ class CodeManager {
     });
   }
 
-  // remove all the //? from the current code
-  // removeAnnotationsFromCode(): string {
-  //   const code = this.getCurrentCode();
-  //   const lines = code.split('\n');
-  //   const queries = this.getCodeQueries();
-
-  //   // Loop for the lines with //? and remove those
-  //   for (let { id, line, column } of queries) {
-  //     const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
-  //     const textLine = lines[editorLine];
-  //     const { location } = data[0];
-  //     const newText = textLine.slice(0, location.startCol);
-  //     lines[editorLine] = newText;
-  //   }
-  //   const newCode = lines.join('\n');
-  //   return newCode;
-  // }
-
-  // ========= PRIVATE METHODS ========
+  // ======= PRIVATE METHODS ========
 
   private computeCodeHash(): string {
     const code = this.getCurrentCode();
