@@ -11,14 +11,14 @@ type CodeQuery = {
 };
 
 class CodeManager {
-  private static _instance: CodeManager;
+  private static instance: CodeManager;
   private codeHash: string = '';
 
   private constructor() {}
 
   static getInstance() {
-    if (!CodeManager._instance) this._instance = new CodeManager();
-    return this._instance;
+    if (!CodeManager.instance) this.instance = new CodeManager();
+    return this.instance;
   }
 
   isCodeDirty(): boolean {

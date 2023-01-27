@@ -2,6 +2,44 @@ import { data$, LineData } from './extension';
 import { CodeManager, CodeQuery } from './codeManager';
 import { filter, Subject, Subscription, tap } from 'rxjs';
 import { Decoration, HighlightDecoration, TextDecoration } from './decoration';
+import { OneEuroFilter } from './1euro';
+
+class ExpressionEngine {
+  private static instance: ExpressionEngine;
+  private context = {
+    assert(exp: boolean) {
+      return exp ? '🟢' : '🔴';
+    },
+    above(v: number, threshold: number) {
+      return v > threshold ? v : undefined;
+    },
+    below(v: number, threshold: number) {
+      return v < threshold ? v : undefined;
+    },
+    between(v: number, low: number, high: number) {
+      return v >= low && v <= high ? v : undefined;
+    },
+  };
+
+  static getInstance() {
+    if (!ExpressionEngine.instance) this.instance = new ExpressionEngine();
+    return this.instance;
+  }
+
+  evalInContext(expr: string) {
+    const src = expr.replaceAll('$', 'this.');
+    try {
+      return new Function(`return eval("${src}")`).call(this.context);
+    } catch (err) {
+      return `Invalid Expression: ${err}`;
+    }
+    // return new Function(`return ${src}`).call(this.context);
+  }
+
+  clear() {
+    // this.context = {};
+  }
+}
 
 class Annotation {
   private sub: Subscription;
@@ -11,6 +49,7 @@ class Annotation {
   constructor(
     private id: string,
     private line: number,
+    private expression: string,
     data$: Subject<LineData>
   ) {
     // Create decorators for line and for text
@@ -20,14 +59,22 @@ class Annotation {
       contentText: 'None',
     });
 
+    // Filted and subscribe
     this.sub = data$
       .pipe(filter((d) => id === d.id))
-      .subscribe(({ id, line, values }: LineData) => {
+      .subscribe(({ values }: LineData) => {
+        // Compute the result
+        // const result = this.evalInContext(expression, expressionContext);
+        // console.log(`"${expression}"`, expressionContext, result);
+        let expr = expression.replaceAll('$$', values[0]);
+
+        const res = ExpressionEngine.getInstance().evalInContext(expr);
+
         // Update decorations
         this.highlightDec.decorate(500);
         this.textDec.decorate({
-          contentText: values.join(','),
-          color: 'DodgerBlue',
+          contentText: `${res}`,
+          color: res ? 'DodgerBlue' : 'red',
         });
       });
   }
@@ -37,12 +84,15 @@ class Annotation {
     this.textDec.dispose();
     this.sub?.unsubscribe();
   }
+
+  private evalInContext(src: string, ctx: any) {
+    return eval(new Function(...Object.keys(ctx), src)(...Object.values(ctx)));
+  }
 }
 
 ///////
 
 let annotations: Annotation[] = [];
-let expressionContext = {};
 
 // id, line, values_on_line, expression, decoration
 function updateAnnotations() {
@@ -53,14 +103,14 @@ function updateAnnotations() {
 
   annotations = queries.map(
     ({ id, line, expression }: CodeQuery) =>
-      new Annotation(id, line, data$ as Subject<LineData>)
+      new Annotation(id, line, expression, data$ as Subject<LineData>)
   );
 }
 
 function clearAnnotations() {
   annotations.forEach((a) => a.dispose());
   annotations = [];
-  expressionContext = {};
+  // expressionContext = {};
 }
 
 // import { CodeManager, CodeQuery } from './codeManager';
