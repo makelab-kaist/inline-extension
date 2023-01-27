@@ -1,8 +1,10 @@
+import * as vscode from 'vscode';
 import { data$, LineData } from './extension';
 import { CodeManager, CodeQuery } from './codeManager';
 import { filter, Subject, Subscription, tap } from 'rxjs';
 import { Decoration, HighlightDecoration, TextDecoration } from './decoration';
-import { OneEuroFilter } from './1euro';
+// import { OneEuroFilter } from './1euro';
+import { appendFile } from 'fs';
 
 class ExpressionEngine {
   private static instance: ExpressionEngine;
@@ -19,6 +21,27 @@ class ExpressionEngine {
     between(v: number, low: number, high: number) {
       return v >= low && v <= high ? v : undefined;
     },
+    log(v: number, filename: string = 'logs.txt', tag: string = '') {
+      const document = vscode.window.activeTextEditor?.document;
+
+      if (!document) return undefined;
+      const ws = vscode.workspace.getWorkspaceFolder(document?.uri);
+      if (!ws) return undefined;
+      const now = new Date().toLocaleTimeString(); // e.g., 11:18:48 AM
+      if (tag) tag += ','; // add a comma
+      const data = v ? v : '';
+      const toLog = `${tag}${data},${now}`;
+
+      appendFile(
+        vscode.Uri.joinPath(ws.uri, `${filename}`).fsPath,
+        `${toLog}\n`,
+        function (err) {
+          if (err) console.log(err);
+        }
+      );
+      return toLog;
+    },
+    // filter
   };
 
   static getInstance() {
@@ -29,7 +52,7 @@ class ExpressionEngine {
   evalInContext(expr: string) {
     const src = expr.replaceAll('$', 'this.');
     try {
-      return new Function(`return eval("${src}")`).call(this.context);
+      return new Function(`return eval('${src}')`).call(this.context);
     } catch (err) {
       return `Invalid Expression: ${err}`;
     }
@@ -69,6 +92,7 @@ class Annotation {
         let expr = expression.replaceAll('$$', values[0]);
 
         const res = ExpressionEngine.getInstance().evalInContext(expr);
+        console.log('asdf');
 
         // Update decorations
         this.highlightDec.decorate(500);

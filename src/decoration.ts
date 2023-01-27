@@ -14,6 +14,13 @@ abstract class Decoration {
     );
     return range;
   }
+
+  protected getActiveEditor() {
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor?.document.fileName.endsWith('ino')) return activeEditor;
+    //else
+    return undefined;
+  }
 }
 
 class HighlightDecoration extends Decoration {
@@ -39,14 +46,14 @@ class HighlightDecoration extends Decoration {
   }
 
   private highlightLine(line: number) {
-    const activeEditor = vscode.window.activeTextEditor;
+    const activeEditor = this.getActiveEditor();
     activeEditor?.setDecorations(this.highlight, [
       { range: this.lineToRange(line) },
     ]);
   }
 
   private removeHighlightLine() {
-    const activeEditor = vscode.window.activeTextEditor;
+    const activeEditor = this.getActiveEditor();
     activeEditor?.setDecorations(this.highlight, []);
   }
 }
@@ -70,7 +77,7 @@ class TextDecoration extends Decoration {
     color: string;
     backgroundColor: string;
   }) {
-    const activeEditor = vscode.window.activeTextEditor;
+    const activeEditor = this.getActiveEditor();
     if (!activeEditor) return;
 
     if (this.textView) this.dispose();
