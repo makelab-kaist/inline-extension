@@ -14,7 +14,7 @@ import {
   changeServer,
 } from './extension';
 import { SideViewProvider } from './ui/sidebarViewProvider';
-import { updateAnnotations } from './annotations';
+import { createAnnotations } from './annotations';
 
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
@@ -98,7 +98,7 @@ vscode.workspace.onDidCloseTextDocument(() => {
   console.log('text close');
 });
 
-vscode.workspace.onDidSaveTextDocument(updateAnnotations);
+vscode.workspace.onDidSaveTextDocument(createAnnotations);
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

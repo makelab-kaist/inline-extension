@@ -6,6 +6,12 @@ import { CodeManager } from './codeManager';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
 
+type LineData = {
+  id: string;
+  line: number;
+  values: string[];
+};
+
 let sideView: SideViewProvider;
 let highlight: boolean = true;
 const data$ = new Subject();
@@ -74,7 +80,7 @@ function onSerialData(ack: ArduinoAck) {
 
   if (data.charAt(0) !== '$') return;
   const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
-  data$.next({ id, line, values }); // broadcast
+  data$.next({ id, line: +line, values }); // broadcast
 }
 
 function connectSerial() {
@@ -195,6 +201,7 @@ function toggleHighlight() {
 
 export {
   data$,
+  LineData,
   configureConnection,
   connectSerial,
   disconnectSerial,
