@@ -3,46 +3,67 @@ import { data$, LineData } from './extension';
 import { CodeManager, CodeQuery } from './codeManager';
 import { filter, Subject, Subscription, tap } from 'rxjs';
 import { Decoration, HighlightDecoration, TextDecoration } from './decoration';
-// import { OneEuroFilter } from './1euro';
 import { appendFile } from 'fs';
+import { LowPassFilter } from './vendor/OneEuroFilter';
+
+class Context {
+  private fil!: LowPassFilter;
+  private lastTime: number = 0;
+
+  constructor() {
+    this.fil = new LowPassFilter(1);
+  }
+
+  assert(exp: boolean) {
+    return exp ? '🟢' : '🔴';
+  }
+
+  print(...params: any) {
+    return params.join(' ');
+  }
+
+  above(v: number, threshold: number) {
+    return v > threshold ? v : undefined;
+  }
+
+  below(v: number, threshold: number) {
+    return v < threshold ? v : undefined;
+  }
+
+  between(v: number, low: number, high: number) {
+    return v >= low && v <= high ? v : undefined;
+  }
+
+  log(v: number, filename: string = 'logs.txt', tag: string = '') {
+    const document = vscode.window.activeTextEditor?.document;
+
+    if (!document) return undefined;
+    const ws = vscode.workspace.getWorkspaceFolder(document?.uri);
+    if (!ws) return undefined;
+    const now = new Date().toLocaleTimeString(); // e.g., 11:18:48 AM
+    if (tag) tag += ','; // add a comma
+    const data = v ? v : '';
+    const toLog = `${tag}${data},${now}`;
+
+    appendFile(
+      vscode.Uri.joinPath(ws.uri, `${filename}`).fsPath,
+      `${toLog}\n`,
+      function (err) {
+        if (err) console.log(err);
+      }
+    );
+    return toLog;
+  }
+
+  filter(input: number, alpha: number = 1) {
+    const res = this.fil.filterWithAlpha(input, alpha);
+    return res.toFixed(1);
+  }
+}
 
 class ExpressionEngine {
   private static instance: ExpressionEngine;
-  private context = {
-    assert(exp: boolean) {
-      return exp ? '🟢' : '🔴';
-    },
-    above(v: number, threshold: number) {
-      return v > threshold ? v : undefined;
-    },
-    below(v: number, threshold: number) {
-      return v < threshold ? v : undefined;
-    },
-    between(v: number, low: number, high: number) {
-      return v >= low && v <= high ? v : undefined;
-    },
-    log(v: number, filename: string = 'logs.txt', tag: string = '') {
-      const document = vscode.window.activeTextEditor?.document;
-
-      if (!document) return undefined;
-      const ws = vscode.workspace.getWorkspaceFolder(document?.uri);
-      if (!ws) return undefined;
-      const now = new Date().toLocaleTimeString(); // e.g., 11:18:48 AM
-      if (tag) tag += ','; // add a comma
-      const data = v ? v : '';
-      const toLog = `${tag}${data},${now}`;
-
-      appendFile(
-        vscode.Uri.joinPath(ws.uri, `${filename}`).fsPath,
-        `${toLog}\n`,
-        function (err) {
-          if (err) console.log(err);
-        }
-      );
-      return toLog;
-    },
-    // filter
-  };
+  private context = new Context();
 
   static getInstance() {
     if (!ExpressionEngine.instance) this.instance = new ExpressionEngine();
@@ -53,14 +74,14 @@ class ExpressionEngine {
     const src = expr.replaceAll('$', 'this.');
     try {
       return new Function(`return eval('${src}')`).call(this.context);
+      // return new Function(`return ${src}`).call(this.context);
     } catch (err) {
-      return `Invalid Expression: ${err}`;
+      throw new Error(`Invalid Expression: ${err}`);
     }
-    // return new Function(`return ${src}`).call(this.context);
   }
 
   clear() {
-    // this.context = {};
+    this.context = new Context();
   }
 }
 
@@ -90,15 +111,25 @@ class Annotation {
         // const result = this.evalInContext(expression, expressionContext);
         // console.log(`"${expression}"`, expressionContext, result);
         let expr = expression.replaceAll('$$', values[0]);
+        let res: string = '';
+        let color: string = 'DodgerBlue';
 
-        const res = ExpressionEngine.getInstance().evalInContext(expr);
-        console.log('asdf');
+        try {
+          res = ExpressionEngine.getInstance().evalInContext(expr);
+          if (!res) {
+            color = 'grey';
+            res = 'None';
+          }
+        } catch (err: any) {
+          color = 'red';
+          res = err as string;
+        }
 
         // Update decorations
         this.highlightDec.decorate(500);
         this.textDec.decorate({
           contentText: `${res}`,
-          color: res ? 'DodgerBlue' : 'red',
+          color,
         });
       });
   }
