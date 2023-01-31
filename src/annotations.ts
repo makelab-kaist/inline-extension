@@ -8,10 +8,11 @@ import { LowPassFilter } from './vendor/OneEuroFilter';
 
 class Context {
   private fil!: LowPassFilter;
-  private lastTime: number = 0;
+  private filterAlpha: number = 0;
 
   constructor() {
-    this.fil = new LowPassFilter(1);
+    this.filterAlpha = 1;
+    this.fil = new LowPassFilter(this.filterAlpha);
   }
 
   assert(exp: boolean) {
@@ -56,10 +57,21 @@ class Context {
   }
 
   filter(input: number, alpha: number = 1) {
+    if (alpha !== this.filterAlpha) {
+      this.filterAlpha = alpha;
+      this.fil = new LowPassFilter(this.filterAlpha);
+    }
     const res = this.fil.filterWithAlpha(input, alpha);
+    console.log(res);
+
     return res.toFixed(1);
   }
 }
+
+type EvaluationResult = {
+  success: boolean;
+  value: string;
+};
 
 class ExpressionEngine {
   private static instance: ExpressionEngine;
@@ -70,14 +82,19 @@ class ExpressionEngine {
     return this.instance;
   }
 
-  evalInContext(expr: string) {
+  evalInContext(expr: string): EvaluationResult {
     const src = expr.replaceAll('$', 'this.');
+    let result: EvaluationResult = { value: '', success: false };
+
     try {
-      return new Function(`return eval('${src}')`).call(this.context);
+      result.value = new Function(`return eval('${src}')`).call(this.context);
+      result.success = true;
       // return new Function(`return ${src}`).call(this.context);
     } catch (err) {
-      throw new Error(`Invalid Expression: ${err}`);
+      result.value = `Invalid Expression: ${err}`;
+      result.success = false;
     }
+    return result;
   }
 
   clear() {
@@ -111,24 +128,14 @@ class Annotation {
         // const result = this.evalInContext(expression, expressionContext);
         // console.log(`"${expression}"`, expressionContext, result);
         let expr = expression.replaceAll('$$', values[0]);
-        let res: string = '';
+        const { value, success } =
+          ExpressionEngine.getInstance().evalInContext(expr);
         let color: string = 'DodgerBlue';
-
-        try {
-          res = ExpressionEngine.getInstance().evalInContext(expr);
-          if (!res) {
-            color = 'grey';
-            res = 'None';
-          }
-        } catch (err: any) {
-          color = 'red';
-          res = err as string;
-        }
 
         // Update decorations
         this.highlightDec.decorate(500);
         this.textDec.decorate({
-          contentText: `${res}`,
+          contentText: `${value}`,
           color,
         });
       });
@@ -139,10 +146,6 @@ class Annotation {
     this.textDec.dispose();
     this.sub?.unsubscribe();
   }
-
-  private evalInContext(src: string, ctx: any) {
-    return eval(new Function(...Object.keys(ctx), src)(...Object.values(ctx)));
-  }
 }
 
 ///////
@@ -150,7 +153,7 @@ class Annotation {
 let annotations: Annotation[] = [];
 
 // id, line, values_on_line, expression, decoration
-function updateAnnotations() {
+function createAnnotations() {
   const queries = CodeManager.getInstance().getCodeQueries();
 
   // if they exist, remove them
@@ -165,53 +168,6 @@ function updateAnnotations() {
 function clearAnnotations() {
   annotations.forEach((a) => a.dispose());
   annotations = [];
-  // expressionContext = {};
 }
 
-// import { CodeManager, CodeQuery } from './codeManager';
-// import { Decoration } from './decoration';
-
-// type Annotation = {
-//   expression: string;
-//   decoration: Decoration;
-// };
-
-// let annotations: Map<String, Annotation> = new Map();
-
-// function updateAnnotations() {
-//   clearAnnotations();
-//   createAnnotations();
-// }
-
-// function createAnnotations() {
-//   const queries = CodeManager.getInstance().getCodeQueries();
-//   annotations = new Map(
-//     queries.map((q) => [
-//       q.id,
-//       <Annotation>{
-//         expression: q.expression,
-//         decoration: new Decoration(q.line),
-//       },
-//     ])
-//   );
-
-//   data$.subscribe((incomingData: any) => {
-//     const { id, line, values } = incomingData;
-//     const expression = annotations.get(id)?.expression || '';
-//     globalContext.val = line;
-//     const res = function (this: any) {
-//       if (!expression) return;
-//       return eval(expression);
-//     }.call(globalContext);
-
-//     annotations
-//       .get(id)
-//       ?.decoration.decorate(
-//         '' + expression + ', ' + values + ', ' + res,
-//         'DodgerBlue',
-//         'none'
-//       );
-//   });
-// }
-
-export { updateAnnotations as createAnnotations, clearAnnotations };
+export { createAnnotations, clearAnnotations };
