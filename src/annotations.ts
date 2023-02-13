@@ -155,6 +155,7 @@ class Annotation {
     this.highlightDec.dispose();
     this.textDec.dispose();
     this.sub?.unsubscribe();
+    this.wv.dispose();
   }
 }
 

@@ -1,3 +1,13 @@
+const socket = io('http://localhost:3300');
+
+socket.on('connect', () => {
+  console.log('Connected here we go');
+});
+
+socket.on('data', (data) => {
+  console.log(data);
+});
+
 function setup() {
   createCanvas(windowWidth - 100, 100);
 }
@@ -7,6 +17,3 @@ function draw() {
   fill(255, 0, 0);
   ellipse(mouseX, mouseY, SIZE, SIZE);
 }
-
-window.setup = setup;
-window.draw = draw;

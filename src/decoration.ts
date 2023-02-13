@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { getExtensionUri } from './extension';
 import { join } from 'path';
+import { Server, Socket } from 'socket.io';
 
 abstract class Decoration {
   constructor(protected line: number) {}
@@ -138,10 +139,21 @@ class WebViewDecoration extends Decoration {
 class P5ViewDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
   private root: vscode.Uri;
+  private io: Server;
 
   constructor(line: number) {
     super(line);
     this.root = getExtensionUri();
+
+    const PORT = 3300;
+    this.io = new Server(PORT, { cors: { origin: '*' } });
+
+    this.io.on('connection', function (socket) {
+      setInterval(() => {
+        console.log('100');
+        socket.emit('data', 100);
+      }, 1000);
+    });
   }
 
   decorate(): void {
@@ -165,18 +177,21 @@ class P5ViewDecoration extends Decoration {
     if (this.inset)
       this.inset.webview.html = `
         <head>
+        <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+        <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
         <script src="${p5lib}"></script>
         </head>
         <body>  
         <script>
         let SIZE = 10;
         </script>
-        <script defer type="module" src="${code}"></script>
+        <script defer  src="${code}"></script>
         </body>
         `;
   }
 
   dispose(): void {
+    this.io.close();
     this.inset.dispose();
   }
 }
