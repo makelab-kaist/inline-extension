@@ -1,20 +1,18 @@
 import * as vscode from 'vscode';
 
-import * as ui from './ui/vscode-ui';
 import {
   configureConnection,
   connectSerial,
   disconnectSerial,
   compileAndUpload,
   compileAndUploadRelease,
-  decorateEditor,
   registerSideView,
   toggleHighlight,
   startConnectionToServer,
   changeServer,
 } from './extension';
 import { SideViewProvider } from './ui/sidebarViewProvider';
-import { createAnnotations } from './annotations';
+import { createAnnotations, clearAnnotations } from './annotations';
 
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
@@ -51,6 +49,12 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // Pick a different server
+  context.subscriptions.push(
+    vscode.commands.registerCommand('double-cheese.changeServer', changeServer)
+  );
+
+  // Compile and Upload the Arduino sketch with instrumented code
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.compileUpload',
@@ -58,6 +62,7 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // Compile and Upload the Arduino sketch with clean code
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.compileUploadRelease',
@@ -65,11 +70,11 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // Clear all annotations
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.clearAnnotations',
-      // removeAnnotationsFromCode
-      () => {}
+      clearAnnotations
     )
   );
 
@@ -79,23 +84,18 @@ export async function activate(context: vscode.ExtensionContext) {
       toggleHighlight
     )
   );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('double-cheese.changeServer', changeServer)
-  );
 }
 
-/**
- * @param {vscode.TextDocumentChangeEvent} event
- */
-vscode.workspace.onDidChangeTextDocument(() => {});
+vscode.workspace.onDidChangeTextDocument(() => {
+  // console.log('text changed doc');
+});
 
 vscode.window.onDidChangeActiveTextEditor(() => {
-  console.log('editor change');
+  // console.log('editor changed');
 });
 
 vscode.workspace.onDidCloseTextDocument(() => {
-  console.log('text close');
+  // console.log('text close');
 });
 
 vscode.workspace.onDidSaveTextDocument(createAnnotations);

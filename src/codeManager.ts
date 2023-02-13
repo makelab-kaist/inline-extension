@@ -16,19 +16,23 @@ class CodeManager {
 
   private constructor() {}
 
+  // Singleton
   static getInstance() {
     if (!CodeManager.instance) this.instance = new CodeManager();
     return this.instance;
   }
 
+  // Has code changed by checking signature
   isCodeDirty(): boolean {
     return this.codeHash !== this.computeCodeHash();
   }
 
+  // Update code signature
   invalidateCode() {
     this.codeHash = this.computeCodeHash();
   }
 
+  // Get code
   getCurrentCode(): string {
     const doc = vscode.window.activeTextEditor?.document;
     if (!doc || doc.isUntitled) {
@@ -37,8 +41,9 @@ class CodeManager {
     return doc.getText();
   }
 
-  generateInstrumentedCode(code: string | undefined = undefined): string {
-    if (!code) code = this.getCurrentCode();
+  // Generated instrumented code
+  generateInstrumentedCode(): string {
+    const code = this.getCurrentCode();
 
     const fundata: parser.LineData[] = this.getFunctionCalls();
 
@@ -63,6 +68,7 @@ class CodeManager {
     return libCode + newCode;
   }
 
+  // TODO
   getCodeQueries(): CodeQuery[] {
     const lines = this.getFilteredLines('query');
     return lines.map(({ id, line, data }) => {
@@ -74,6 +80,7 @@ class CodeManager {
 
   // ======= PRIVATE METHODS ========
 
+  // Compute code signature
   private computeCodeHash(): string {
     const code = this.getCurrentCode();
     const allIds = CodeManager.getInstance()
@@ -83,10 +90,12 @@ class CodeManager {
     return allIds.join('-');
   }
 
+  // Get list of calls with valid functions to be instrumented
   private getFunctionCalls(): parser.LineData[] {
     return this.getFilteredLines('function');
   }
 
+  // Get lines of code parsed as functions or query expressions
   private getFilteredLines(
     queryType: 'function' | 'query',
     code: string | undefined = undefined
@@ -109,6 +118,7 @@ class CodeManager {
     );
   }
 
+  // Generate the instrumented code
   private generateCodeForLine(
     id: string,
     line: number,

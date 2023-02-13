@@ -20,6 +20,18 @@ function registerSideView(_sideView: SideViewProvider) {
   if (_sideView) sideView = _sideView;
 }
 
+function getExtension(): vscode.Extension<any> {
+  return vscode.extensions.getExtension(`${publisher}.${name}`)!; // I know I exist
+}
+
+function getExtensionPath(): string {
+  return getExtension()?.extensionPath;
+}
+
+function getExtensionUri(): vscode.Uri {
+  return vscode.Uri.file(getExtensionPath());
+}
+
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
 
@@ -138,18 +150,6 @@ function compileAndUploadRelease() {
     ui.vsError(err.message);
     return;
   }
-}
-
-function getExtension(): vscode.Extension<any> {
-  return vscode.extensions.getExtension(`${publisher}.${name}`)!; // I know I exist
-}
-
-function getExtensionPath(): string {
-  return getExtension()?.extensionPath;
-}
-
-function getExtensionUri(): vscode.Uri {
-  return vscode.Uri.file(getExtensionPath());
 }
 
 /*

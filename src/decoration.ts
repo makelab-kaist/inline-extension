@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { getExtensionUri } from './extension';
-import { join } from 'path';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 
 abstract class Decoration {
   constructor(protected line: number) {}
@@ -136,24 +135,20 @@ class WebViewDecoration extends Decoration {
   }
 }
 
+const PORT = 3300;
+const webio = new Server(PORT, { cors: { origin: '*' } });
+
+webio.on('connection', function (socket) {
+  console.log('connected');
+});
+
 class P5ViewDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
   private root: vscode.Uri;
-  private io: Server;
 
   constructor(line: number) {
     super(line);
     this.root = getExtensionUri();
-
-    const PORT = 3300;
-    this.io = new Server(PORT, { cors: { origin: '*' } });
-
-    this.io.on('connection', function (socket) {
-      setInterval(() => {
-        console.log('100');
-        socket.emit('data', 100);
-      }, 1000);
-    });
   }
 
   decorate(): void {
@@ -190,8 +185,13 @@ class P5ViewDecoration extends Decoration {
         `;
   }
 
+  update(val: string) {
+    console.log(val);
+
+    webio?.emit('data', val);
+  }
+
   dispose(): void {
-    this.io.close();
     this.inset.dispose();
   }
 }
