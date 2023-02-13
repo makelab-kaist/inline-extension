@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { getExtensionUri } from './extension';
+import { join } from 'path';
 
 abstract class Decoration {
   constructor(protected line: number) {}
@@ -100,4 +102,89 @@ class TextDecoration extends Decoration {
   }
 }
 
-export { Decoration, HighlightDecoration, TextDecoration };
+class WebViewDecoration extends Decoration {
+  private inset!: vscode.WebviewEditorInset;
+
+  constructor(line: number) {
+    super(line);
+  }
+
+  decorate(htmlBody: string): void {
+    const activeEditor = this.getActiveEditor();
+    if (!activeEditor) return;
+    // const rootUrl = vscode.Uri.file(context.extensionPath);
+
+    this.inset = vscode.window.createWebviewTextEditorInset(
+      activeEditor,
+      this.line + 1,
+      10,
+      { localResourceRoots: [], enableScripts: true }
+    );
+    if (this.inset)
+      this.inset.webview.html = `
+		<style>
+		h1{
+			background: red;
+		}
+		</style>
+		${htmlBody}`;
+  }
+
+  dispose(): void {
+    this.inset.dispose();
+  }
+}
+
+class P5ViewDecoration extends Decoration {
+  private inset!: vscode.WebviewEditorInset;
+  private root: vscode.Uri;
+
+  constructor(line: number) {
+    super(line);
+    this.root = getExtensionUri();
+  }
+
+  decorate(): void {
+    const activeEditor = this.getActiveEditor();
+    if (!activeEditor) return;
+
+    this.inset = vscode.window.createWebviewTextEditorInset(
+      activeEditor,
+      this.line - 1, // just below the marker
+      4,
+      { localResourceRoots: [this.root], enableScripts: true }
+    );
+
+    const p5lib = this.inset.webview.asWebviewUri(
+      vscode.Uri.joinPath(this.root, 'src/p5view/p5.js')
+    );
+    const code = this.inset.webview.asWebviewUri(
+      vscode.Uri.joinPath(this.root, 'src/p5view/sketch.js')
+    );
+
+    if (this.inset)
+      this.inset.webview.html = `
+        <head>
+        <script src="${p5lib}"></script>
+        </head>
+        <body>  
+        <script>
+        let SIZE = 10;
+        </script>
+        <script defer type="module" src="${code}"></script>
+        </body>
+        `;
+  }
+
+  dispose(): void {
+    this.inset.dispose();
+  }
+}
+
+export {
+  Decoration,
+  HighlightDecoration,
+  TextDecoration,
+  WebViewDecoration,
+  P5ViewDecoration,
+};

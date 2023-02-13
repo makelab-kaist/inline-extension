@@ -2,7 +2,13 @@ import * as vscode from 'vscode';
 import { data$, LineData } from './extension';
 import { CodeManager, CodeQuery } from './codeManager';
 import { filter, Subject, Subscription, tap } from 'rxjs';
-import { Decoration, HighlightDecoration, TextDecoration } from './decoration';
+import {
+  Decoration,
+  HighlightDecoration,
+  TextDecoration,
+  WebViewDecoration,
+  P5ViewDecoration,
+} from './decoration';
 import { appendFile } from 'fs';
 import { LowPassFilter } from './vendor/OneEuroFilter';
 
@@ -106,6 +112,7 @@ class Annotation {
   private sub: Subscription;
   private highlightDec: Decoration;
   private textDec: Decoration;
+  private wv: P5ViewDecoration;
 
   constructor(
     private id: string,
@@ -119,6 +126,9 @@ class Annotation {
     this.textDec.decorate({
       contentText: 'None',
     });
+    this.wv = new P5ViewDecoration(line);
+    // this.wv.decorate('<h1>Hi</h1><p>asdf</p>');
+    this.wv.decorate();
 
     // Filted and subscribe
     this.sub = data$

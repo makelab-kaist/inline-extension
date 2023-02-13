@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as ui from './ui/vscode-ui';
 import { ArduinoAck, VirtualArduino } from './utils/virtual-arduino';
-import * as parser from './parser';
 import { CodeManager } from './codeManager';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
+const { name, publisher } = require('../package.json');
 
 type LineData = {
   id: string;
@@ -140,6 +140,18 @@ function compileAndUploadRelease() {
   }
 }
 
+function getExtension(): vscode.Extension<any> {
+  return vscode.extensions.getExtension(`${publisher}.${name}`)!; // I know I exist
+}
+
+function getExtensionPath(): string {
+  return getExtension()?.extensionPath;
+}
+
+function getExtensionUri(): vscode.Uri {
+  return vscode.Uri.file(getExtensionPath());
+}
+
 /*
 function removeAnnotationsFromCode() {
   // swap code
@@ -212,4 +224,7 @@ export {
   toggleHighlight,
   startConnectionToServer,
   changeServer,
+  getExtension,
+  getExtensionPath,
+  getExtensionUri,
 };
