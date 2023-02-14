@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
+// Library with code generated depending on which functions are called
 import { generateLibraryCode } from './arduino-utils/arduino-library';
+// Library with all the instrumented code, regardless of the usage
 // import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whoole library
 
-type CodeQuery = {
+export type CodeQuery = {
   id: string;
   line: number;
   column: number;
@@ -68,7 +70,7 @@ export class CodeManager {
     return libCode + newCode;
   }
 
-  // TODO
+  // Get a list of Code queries of the form: // [expression] ?
   getCodeQueries(): CodeQuery[] {
     const lines = this.getFilteredLines('query');
     return lines.map(({ id, line, data }) => {
@@ -149,5 +151,3 @@ export class CodeManager {
     return result;
   }
 }
-
-export { CodeQuery };

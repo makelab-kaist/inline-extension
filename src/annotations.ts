@@ -1,4 +1,4 @@
-import { data$, LineData } from './extension';
+import { data$, LiveData } from './extension';
 import { CodeManager, CodeQuery } from './codeManager';
 import { filter, Subject, Subscription, tap } from 'rxjs';
 import {
@@ -20,7 +20,7 @@ class Annotation {
     private id: string,
     private line: number,
     private expression: string,
-    data$: Subject<LineData>
+    data$: Subject<LiveData>
   ) {
     // Create decorators for line and for text
     this.highlightDec = new HighlightDecoration(line);
@@ -35,7 +35,7 @@ class Annotation {
     // Filted and subscribe
     this.sub = data$
       .pipe(filter((d) => id === d.id))
-      .subscribe(({ values }: LineData) => {
+      .subscribe(({ values }: LiveData) => {
         // Compute the result
         // const result = this.evalInContext(expression, expressionContext);
         // console.log(`"${expression}"`, expressionContext, result);
@@ -76,7 +76,7 @@ export function createAnnotations() {
 
   annotations = queries.map(
     ({ id, line, expression }: CodeQuery) =>
-      new Annotation(id, line, expression, data$ as Subject<LineData>)
+      new Annotation(id, line, expression, data$)
   );
 }
 
