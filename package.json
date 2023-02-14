@@ -18,15 +18,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:double-cheese.view",
-    "onCommand:double-cheese.configureConnection",
-    "onCommand:double-cheese.connect",
-    "onCommand:double-cheese.disconnect",
-    "onCommand:double-cheese.compileUpload",
-    "onCommand:double-cheese.compileUploadRelease",
-    "onCommand:double-cheese.clearAnnotations",
-    "onCommand:double-cheese.toggleHighlight",
-    "onCommand:double-cheese.changeServer",
     "onLanguage:cpp"
   ],
   "main": "./out/main.js",
@@ -94,7 +85,6 @@
       }
     ],
     "configurationDefaults": {
-      "C_Cpp.errorSquiggles": "Disabled",
       "editor.formatOnSave": false,
       "editor.tokenColorCustomizations": {
         "textMateRules": [

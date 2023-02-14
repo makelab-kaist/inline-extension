@@ -6,15 +6,17 @@ import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
 const { name, publisher } = require('../package.json');
 
-type LineData = {
+export type LiveData = {
   id: string;
   line: number;
   values: string[];
 };
 
+// The data broadcaster
+export const data$ = new Subject<LiveData>();
+
+// The side view
 let sideView: SideViewProvider;
-let highlight: boolean = true;
-const data$ = new Subject();
 
 // Register side view so we can speak to it
 function registerSideView(_sideView: SideViewProvider) {
@@ -179,8 +181,6 @@ function isCodeValid() {
 // }
 
 export {
-  data$,
-  LineData,
   changeServer,
   compileAndUpload,
   compileAndUploadRelease,

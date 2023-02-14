@@ -7,6 +7,7 @@ import {
   compileAndUploadRelease,
 } from '../extension';
 
+// Internal type
 type Message = {
   message: string;
   [key: string]: string | boolean;
