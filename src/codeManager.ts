@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as parser from './parser';
-import { generateLibraryCode } from './arduino-lib/arduino-library';
+import { generateLibraryCode } from './arduino-utils/arduino-library';
 // import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whoole library
 
 type CodeQuery = {
@@ -28,7 +28,7 @@ export class CodeManager {
   }
 
   // Update code signature
-  invalidateCode() {
+  updateCodeHash() {
     this.codeHash = this.computeCodeHash();
   }
 

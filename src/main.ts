@@ -7,9 +7,9 @@ import {
   compileAndUpload,
   compileAndUploadRelease,
   registerSideView,
-  toggleHighlight,
   startConnectionToServer,
   changeServer,
+  isCodeValid,
 } from './extension';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { createAnnotations, clearAnnotations } from './annotations';
@@ -26,6 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
       sideview
     )
   );
+  // register it so we can speak to it
   registerSideView(sideview);
 
   // First time config
@@ -78,17 +79,18 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  // Toggle highlight
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'double-cheese.toggleHighlight',
-      toggleHighlight
+      // toggleHighlight
+      () => {}
     )
   );
 }
 
-vscode.workspace.onDidChangeTextDocument(() => {
-  // console.log('text changed doc');
-});
+// If code is modified we need to check if it is still valid
+vscode.workspace.onDidChangeTextDocument(isCodeValid);
 
 vscode.window.onDidChangeActiveTextEditor(() => {
   // console.log('editor changed');

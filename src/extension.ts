@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as ui from './ui/vscode-ui';
-import { VirtualArduino } from './utils/virtual-arduino';
+import { VirtualArduino } from './arduino-utils/virtual-arduino';
 import { CodeManager } from './codeManager';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
@@ -16,10 +16,19 @@ let sideView: SideViewProvider;
 let highlight: boolean = true;
 const data$ = new Subject();
 
+// Register side view so we can speak to it
 function registerSideView(_sideView: SideViewProvider) {
   if (_sideView) sideView = _sideView;
 }
 
+// Handle data that comes from the Arduino
+function onSerialData(data: string) {
+  if (data.charAt(0) !== '$') return; // Data from Arduino should starts with '$'
+  const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
+  data$.next({ id, line: +line, values }); // broadcast to subscribers with rxjs
+}
+
+// Get extension, path and URI
 function getExtension(): vscode.Extension<any> {
   return vscode.extensions.getExtension(`${publisher}.${name}`)!; // I know I exist
 }
@@ -32,6 +41,7 @@ function getExtensionUri(): vscode.Uri {
   return vscode.Uri.file(getExtensionPath());
 }
 
+// Configure step-by-step the connection to the Virtual Arduino
 async function configureConnection() {
   const ports = await VirtualArduino.getInstance().getAvailablePorts();
 
@@ -66,6 +76,7 @@ async function configureConnection() {
     .catch((msg) => ui.vsError(msg));
 }
 
+// Connect to the server
 async function startConnectionToServer() {
   await VirtualArduino.getInstance()
     .connectToServer()
@@ -77,6 +88,7 @@ async function startConnectionToServer() {
     });
 }
 
+// Change the server
 async function changeServer() {
   let ip = await ui.showInputBox('', 'http://localhost', () => false);
   if (!ip) return;
@@ -86,12 +98,7 @@ async function changeServer() {
   VirtualArduino.changeServerIp(ip);
 }
 
-function onSerialData(data: string) {
-  if (data.charAt(0) !== '$') return;
-  const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
-  data$.next({ id, line: +line, values }); // broadcast
-}
-
+// Connect to the serial
 function connectSerial() {
   VirtualArduino.getInstance()
     .connectSerial()
@@ -102,6 +109,7 @@ function connectSerial() {
     .catch((msg) => ui.vsError(msg));
 }
 
+// Disconnect from serial
 function disconnectSerial() {
   VirtualArduino.getInstance()
     .disconnectSerial()
@@ -112,6 +120,7 @@ function disconnectSerial() {
     .catch((msg) => ui.vsError(msg));
 }
 
+// Compile and upload instrumeted code to Arduino
 function compileAndUpload() {
   try {
     // Get all lines with valid code
@@ -122,7 +131,7 @@ function compileAndUpload() {
       .compileAndUpload(code)
       .then(([message, link]: string[]) => {
         ui.vsInfoWithLink(message, link);
-        CodeManager.getInstance().invalidateCode();
+        CodeManager.getInstance().updateCodeHash();
         sideView?.sendMessage({ message: 'codeDirty', value: false });
       })
       .catch((msg) => ui.vsError(msg));
@@ -132,6 +141,7 @@ function compileAndUpload() {
   }
 }
 
+// Compile and upload pure code to Arduino
 function compileAndUploadRelease() {
   try {
     const code = CodeManager.getInstance().getCurrentCode();
@@ -149,79 +159,38 @@ function compileAndUploadRelease() {
   }
 }
 
-/*
-function removeAnnotationsFromCode() {
-  // swap code
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    ui.vsError('Not a valid file');
-    return;
-  }
-  const newCode = CodeManager.getInstance().removeAnnotationsFromCode();
-
-  // replace old code with new one
-  const doc = editor.document;
-  const lines = doc.lineCount;
-  const lastCol = doc.lineAt(lines - 1).range.end.character;
-
-  editor.edit((editBuilder) => {
-    const start = new vscode.Position(0, 0);
-    const end = new vscode.Position(doc.lineCount, lastCol);
-    const range = new vscode.Range(start, end);
-    editBuilder.replace(range, newCode);
-    ui.vsInfo('All annotations //? removed');
-  });
-}
-*/
-
-///// Modify below
-
-function onInput() {
-  // check if the code was modified
+// Check whether the code has been changed after an upload (valid code)
+function isCodeValid() {
+  // check if the code was modified after upload
+  console.log(CodeManager.getInstance().isCodeDirty());
   sideView?.sendMessage({
     message: 'codeDirty',
     value: CodeManager.getInstance().isCodeDirty(),
   });
 }
 
-function decorateEditor() {
-  /*try {
-    // remove all annotations if they exist
-    // removeAllAnnotations();
-    // Get all the lines with the '//?' queries
-    const queries: parser.LineData[] =
-      CodeManager.getInstance().getCodeQueries();
+//////////
 
-    queries.forEach(({ id, line, data }) => {
-      const expression = data[0].expression;
-      // addAnnotation(id, line, 'NaN', expression, 'DodgerBlue');
-    });
-  } catch (err: any) {
-    ui.vsError(err.message);
-    return;
-  }*/
-}
-
-function toggleHighlight() {
-  highlight = !highlight;
-  // if (!highlight) removeHighlightLine();
-  sideView?.sendMessage({ message: 'toggleHighlight', highlight });
-}
+// CHANGE BELOW
+// function toggleHighlight() {
+//   highlight = !highlight;
+//   // if (!highlight) removeHighlightLine();
+//   sideView?.sendMessage({ message: 'toggleHighlight', highlight });
+// }
 
 export {
   data$,
   LineData,
+  changeServer,
+  compileAndUpload,
+  compileAndUploadRelease,
   configureConnection,
   connectSerial,
   disconnectSerial,
-  compileAndUpload,
-  compileAndUploadRelease,
-  decorateEditor,
-  registerSideView,
-  toggleHighlight,
-  startConnectionToServer,
-  changeServer,
   getExtension,
   getExtensionPath,
   getExtensionUri,
+  isCodeValid,
+  registerSideView,
+  startConnectionToServer,
 };

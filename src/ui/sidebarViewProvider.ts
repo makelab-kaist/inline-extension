@@ -4,8 +4,6 @@ import {
   connectSerial,
   disconnectSerial,
   compileAndUpload,
-  decorateEditor,
-  toggleHighlight,
   compileAndUploadRelease,
 } from '../extension';
 
@@ -55,13 +53,12 @@ class SideViewProvider implements vscode.WebviewViewProvider {
             compileAndUploadRelease();
             break;
           case 'refreshAnnotations':
-            decorateEditor();
             break;
           case 'clearAnnotations':
             // removeAnnotationsFromCode();
             break;
           case 'toggleHighlight':
-            toggleHighlight();
+            // toggleHighlight();
             break;
 
           default: /* none */

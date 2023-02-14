@@ -30,7 +30,7 @@ class Annotation {
     });
     this.wv = new P5ViewDecoration(line);
     // this.wv.decorate('<h1>Hi</h1><p>asdf</p>');
-    this.wv.decorate();
+    // this.wv.decorate();
 
     // Filted and subscribe
     this.sub = data$
@@ -40,19 +40,18 @@ class Annotation {
         // const result = this.evalInContext(expression, expressionContext);
         // console.log(`"${expression}"`, expressionContext, result);
 
-        this.wv.update(values[0]);
-
         let expr = expression.replaceAll('$$', values[0]);
         const { value, success } =
           ExpressionEngine.getInstance().evalInContext(expr);
         let color: string = 'DodgerBlue';
 
         // Update decorations
-        this.highlightDec.decorate(500);
-        this.textDec.decorate({
-          contentText: `${value}`,
-          color,
-        });
+        // this.highlightDec.decorate(500);
+        // this.textDec.decorate({
+        //   contentText: `${value}`,
+        //   color,
+        // });
+        // this.wv.update(values[0]);
       });
   }
 
