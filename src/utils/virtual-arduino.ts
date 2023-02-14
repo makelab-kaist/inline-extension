@@ -4,71 +4,79 @@ import { io, Socket } from 'socket.io-client';
 const PORT = 3000;
 let server = `http://localhost:${PORT}`; // default local server
 
-export type ArduinoAck = {
+// Internal data structure to get messages from the Arduino
+type ArduinoAck = {
   message: unknown;
   success: boolean;
 };
 
-class VirtualArduino {
-  private static _instance: VirtualArduino;
-  private _connected: boolean = false;
-  private _socket: Socket;
-  private _ready: boolean = false;
+export class VirtualArduino {
+  private static instance: VirtualArduino;
+  private connected: boolean = false;
+  private socket: Socket;
+  private ready: boolean = false;
 
+  // A singleton
   static getInstance() {
-    if (!VirtualArduino._instance) this._instance = new VirtualArduino();
-    return this._instance;
+    if (!VirtualArduino.instance) this.instance = new VirtualArduino();
+    return this.instance;
   }
 
+  // Private construttor to start socket with server
   private constructor() {
-    this._socket = io(server, {
+    this.socket = io(server, {
       reconnection: true,
     });
 
-    this._socket.on('connect', function () {
+    this.socket.on('connect', function () {
       console.log('Connected!');
     });
 
-    this._socket.once('connect_error', () => {
+    this.socket.once('connect_error', () => {
       console.log('Not connected!');
     });
   }
 
+  // Changer server (ip and port)
   static changeServerIp(ip: string) {
     server = `${ip}:${PORT}`;
-    this._instance = new VirtualArduino();
+    this.instance = new VirtualArduino();
   }
 
+  // Connect to server
   connectToServer(timeoutms: number = 200): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (this._socket.connected) return resolve('Connected to server'); //done
-      this._socket.connect();
+      if (this.socket.connected) return resolve('Connected to server'); //done
+      this.socket.connect();
 
       // are we connected after timeout
       setTimeout(() => {
-        if (this._socket.disconnected) reject('Cannot connet to server');
+        if (this.socket.disconnected) reject('Cannot connet to server');
         else resolve('Client connected to server');
       }, timeoutms);
     });
   }
 
+  // Get available baud rates
   getAvailableBuadRate(): string[] {
     const baudRates = ['9600', '38400', '57600', '115200'];
     return baudRates;
   }
 
+  // Get available ports
   getAvailablePorts(): Promise<string[]> {
     return new Promise((resolve, reject) => {
-      if (!this._socket) reject([]); // no ports available
+      if (!this.socket) reject([]); // no ports available
 
-      this._socket.emit('listSerials');
-      this._socket.on('listSerialsData', ({ message, success }: ArduinoAck) => {
+      this.socket.emit('listSerials');
+      this.socket.on('listSerialsData', ({ message, success }: ArduinoAck) => {
         if (success) resolve(message as string[]);
         else reject('No port found');
       });
     });
   }
 
+  // Start the serial
   beginSerial(
     {
       portName,
@@ -79,57 +87,66 @@ class VirtualArduino {
       baud: number;
       autoConnect: boolean;
     },
-    onDataCallback: (data: ArduinoAck) => void
+    onDataCallback: (data: string) => void
   ): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (!this._socket) reject('Connection unavailable');
+      if (!this.socket) reject('Connection unavailable');
 
-      this._socket.removeAllListeners();
-      this._socket.on('serialData', onDataCallback);
+      this.socket.removeAllListeners();
+      this.socket.on('serialData', (ack: ArduinoAck) => {
+        if (!ack.success) return;
+        const data = ack.message as string;
+        onDataCallback(data);
+      });
+
       this.sendToServer('beginSerial', { portName, baud, autoConnect })
         .then(({ message }) => {
-          this._ready = true;
+          this.ready = true;
           resolve(message as string);
         })
         .catch(reject);
     });
   }
 
+  // Connect to serial
   connectSerial(): Promise<string> {
-    if (!this._ready)
+    if (!this.ready)
       return Promise.reject('Need to initialize connection first');
     return this.sendToServer('connectSerial').then(
       ({ message }) => message as string
     );
   }
 
+  // Disconnect to serial
   disconnectSerial(): Promise<string> {
-    if (!this._ready)
+    if (!this.ready)
       return Promise.reject('Need to initialize connection first');
     return this.sendToServer('disconnectSerial').then(
       ({ message }) => message as string
     );
   }
 
+  // Compile code and upload it to the Arduino
   compileAndUpload(sketchCode: string): Promise<string[]> {
-    if (!this._ready)
+    if (!this.ready)
       return Promise.reject('Need to initialize connection first');
     return this.sendToServer('compileAndUploadCode', {
       code: sketchCode,
     }).then(({ message }) => message as string[]);
   }
 
+  // PRIVATE
+
+  // Utility to send messages (emit) to server and receive back an info or error
   private sendToServer(command: string, params: {} = {}): Promise<ArduinoAck> {
     return new Promise((resolve, reject) => {
-      this._socket.on('info', (ack: ArduinoAck) => {
+      this.socket.on('info', (ack: ArduinoAck) => {
         resolve(ack);
       });
-      this._socket.on('error', ({ message }: ArduinoAck) => {
+      this.socket.on('error', ({ message }: ArduinoAck) => {
         reject(message);
       });
-      this._socket.emit(command, params);
+      this.socket.emit(command, params);
     });
   }
 }
-
-export { VirtualArduino };

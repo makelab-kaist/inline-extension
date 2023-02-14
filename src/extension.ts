@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as ui from './ui/vscode-ui';
-import { ArduinoAck, VirtualArduino } from './utils/virtual-arduino';
+import { VirtualArduino } from './utils/virtual-arduino';
 import { CodeManager } from './codeManager';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
@@ -86,10 +86,7 @@ async function changeServer() {
   VirtualArduino.changeServerIp(ip);
 }
 
-function onSerialData(ack: ArduinoAck) {
-  if (!ack.success) return;
-  const data = ack.message as string;
-
+function onSerialData(data: string) {
   if (data.charAt(0) !== '$') return;
   const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
   data$.next({ id, line: +line, values }); // broadcast

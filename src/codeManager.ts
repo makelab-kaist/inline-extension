@@ -10,7 +10,7 @@ type CodeQuery = {
   expression: string;
 };
 
-class CodeManager {
+export class CodeManager {
   private static instance: CodeManager;
   private codeHash: string = '';
 
@@ -150,4 +150,4 @@ class CodeManager {
   }
 }
 
-export { CodeManager, CodeQuery };
+export { CodeQuery };
