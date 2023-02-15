@@ -108,10 +108,7 @@ class Context {
   }
 
   // Logging value
-  log(
-    filename: string = 'logs.csv',
-    tag: string = ''
-  ): (filename: string, tag: string) => any {
+  log(filename: string = 'logs.txt'): (dataLog: any) => any {
     return function (dataToLog: any) {
       const document = vscode.window.activeTextEditor?.document;
 
@@ -119,9 +116,13 @@ class Context {
       const ws = vscode.workspace.getWorkspaceFolder(document?.uri);
       if (!ws) return undefined;
       const now = new Date().toLocaleTimeString(); // e.g., 11:18:48 AM
-      if (tag) tag += ','; // add a comma
       const data = dataToLog ? dataToLog : '';
-      const toLog = `${tag}${data},${now}`;
+      const toLog = `${data},${now}`;
+
+      if (filename.split('.').length === 1) {
+        // no extension? add it
+        filename += '.txt';
+      }
 
       appendFile(
         vscode.Uri.joinPath(ws.uri, `${filename}`).fsPath,
@@ -130,7 +131,14 @@ class Context {
           if (err) console.log(err);
         }
       );
-      return toLog;
+      return dataToLog;
+    };
+  }
+
+  // one function to support plugging a function
+  lambda(fn: (inputParam: any) => any): (input: any) => any {
+    return (input: any) => {
+      return fn(input);
     };
   }
 }

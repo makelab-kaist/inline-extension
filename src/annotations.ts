@@ -50,15 +50,15 @@ class Annotation {
           // parse the expression and run it
           let expr = transpileExpression(expression);
           expr = this.variableSubstituions(expr, lineValue);
-          // console.log('Expression to evaluate: ' + expr);
+          console.log('Expression to evaluate: ' + expr);
           resultToShow = ExpressionEngine.getInstance().evalExpression(expr);
-          console.log(resultToShow);
+          // console.log(resultToShow);
 
           // Update decorations
           // this.highlightDec.decorate(500);
           if (resultToShow.outputFormat === 'inline') {
             this.textDec.decorate({
-              contentText: `${resultToShow.stringValue}`,
+              contentText: `${resultToShow.stringValue}` || 'None',
               color: 'DodgerBlue',
             });
           }

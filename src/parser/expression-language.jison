@@ -16,6 +16,7 @@
 'graph'                                           { return 'GRAPH' }
 'hist'                                            { return 'HIST' }
 'log'                                             { return 'LOG' }
+'lambda'                                          { return 'LAMBDA' }
 [^|]+                                             { return 'EXP' }
 '|'                                               { return 'THEN' }
 
@@ -30,12 +31,13 @@
 
 
 result
-  : NONE { return '\$\$' } // Nothing passed => pass the default. $$ has to be escaped in jison
+  : NONE { return `this.pipe(this.output(\\'inline\\')())(\$\$)`} // Nothing passed => pass the default. $$ has to be escaped in jison
   | primary_expression NONE { return $1.replaceAll(' ','').trim() }
   ;
 
 primary_expression
-  : list { $$ = $1 }
+  : list { $$ = `this.pipe(this.output(\\'inline\\')())(${$1})` }
+  | list THEN output_functions { $$ = `this.pipe(${$3})(${$1})` }
   | list THEN function_sequence { $$ = `this.pipe(${$3},this.output(\\'inline\\')())(${$1})` }
   | list THEN function_sequence THEN output_functions { $$ = `this.pipe(${$3},${$5})(${$1})` }
   | function_sequence { $$ = `this.pipe(${$1},this.output(\\'inline\\')())(\$\$)` } // $$ has to be escaped in jison
@@ -55,6 +57,7 @@ function_call
   | filter_function { $$ = $1 }
   | save_function { $$ = $1 }
   | log_function { $$ = $1 }
+  | lambda_function { $$ = $1 }
   ;
 
 
@@ -82,6 +85,10 @@ save_function
 log_function
   : LOG { $$ = `this.log()` }
   | LOG EXP { $$ = `this.log(\\'${$2}\\')` }
+  ;
+
+lambda_function
+  : LAMBDA EXP { $$= `this.lambda(${$2})`}
   ;
 
 // must be at the end. Default is print
