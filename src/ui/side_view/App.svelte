@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import IconButton from './ui/IconButton.svelte';
+  import IconButton from './components/IconButton.svelte';
   import SerialMenu from './SerialMenu.svelte';
 
   // Do not need to acquire the API here, as it is in the html of the provider
