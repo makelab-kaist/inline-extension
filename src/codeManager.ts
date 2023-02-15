@@ -1,3 +1,7 @@
+/**
+ * Manger used to generate code or extract ExpressionQueries
+ */
+
 import * as vscode from 'vscode';
 import * as parser from './parser';
 // Library with code generated depending on which functions are called
@@ -5,7 +9,8 @@ import { generateLibraryCode } from './arduino-utils/arduino-library';
 // Library with all the instrumented code, regardless of the usage
 // import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whoole library
 
-export type CodeQuery = {
+// This the data with a query of the form: // [Expression] ?
+export type ExpressionQuery = {
   id: string;
   line: number;
   column: number;
@@ -24,14 +29,14 @@ export class CodeManager {
     return this.instance;
   }
 
-  // Has code changed by checking signature
-  isCodeDirty(): boolean {
-    return this.codeHash !== this.computeCodeHash();
-  }
-
-  // Update code signature
-  updateCodeHash() {
-    this.codeHash = this.computeCodeHash();
+  // Get a list of Code queries of the form: // [expression] ?
+  getExpressionQueries(): ExpressionQuery[] {
+    const lines = this.getFilteredLines('query');
+    return lines.map(({ id, line, data }) => {
+      const expression = data[0]?.expression || '';
+      const column = data[0].location.startCol;
+      return { id, line, column, expression };
+    });
   }
 
   // Get code
@@ -70,14 +75,14 @@ export class CodeManager {
     return libCode + newCode;
   }
 
-  // Get a list of Code queries of the form: // [expression] ?
-  getCodeQueries(): CodeQuery[] {
-    const lines = this.getFilteredLines('query');
-    return lines.map(({ id, line, data }) => {
-      const expression = data[0]?.expression || '';
-      const column = data[0].location.startCol;
-      return { id, line, column, expression };
-    });
+  // Has code changed by checking signature
+  isCodeDirty(): boolean {
+    return this.codeHash !== this.computeCodeHash();
+  }
+
+  // Update code signature
+  updateCodeHash() {
+    this.codeHash = this.computeCodeHash();
   }
 
   // ======= PRIVATE METHODS ========
@@ -125,7 +130,7 @@ export class CodeManager {
     id: string,
     line: number,
     text: string,
-    data: parser.Data[]
+    data: parser.FunctionOrQueryData[]
   ): string {
     let result = text;
 

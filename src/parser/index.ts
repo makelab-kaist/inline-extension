@@ -9,7 +9,7 @@ type TextLocation = {
   endCol: number;
 };
 
-type Data = {
+type FunctionOrQueryData = {
   type: 'function' | 'query';
   function?: string;
   args?: string;
@@ -20,19 +20,11 @@ type Data = {
 type LineData = {
   id: string;
   line: number;
-  data: Data[];
+  data: FunctionOrQueryData[];
 };
 
 function getParsedData(code: string): LineData[] {
   return parser.parse(code);
 }
 
-// function validateExpressions(expressionString: string): string[] {
-//   if (expressionString === '') return ['']; // empty
-//   try {
-//     return expr_parser.parse(expressionString);
-//   } catch (error) {}
-//   return ['Unable to parse'];
-// }
-
-export { getParsedData, Data, LineData };
+export { getParsedData, FunctionOrQueryData, LineData };

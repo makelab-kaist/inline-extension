@@ -2,12 +2,21 @@ import * as vscode from 'vscode';
 import { getExtensionUri } from './extension';
 import { Server } from 'socket.io';
 
+const PORT = 3300;
+const webviewServer = new Server(PORT, { cors: { origin: '*' } });
+
+webviewServer.on('connection', function (socket) {
+  // console.log('connected');
+});
+
 abstract class Decoration {
   constructor(protected line: number) {}
 
   abstract decorate(params: any): void;
   abstract dispose(): void;
 
+  // Internals:
+  // Convert line number to suitable vscode range
   protected lineToRange(line: number): vscode.Range {
     const end = 10000; // a large number
     const range = new vscode.Range(
@@ -17,6 +26,7 @@ abstract class Decoration {
     return range;
   }
 
+  // Get current active editor (should be a .ino file)
   protected getActiveEditor() {
     const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor?.document.fileName.endsWith('ino')) return activeEditor;
@@ -135,13 +145,6 @@ class WebViewDecoration extends Decoration {
   }
 }
 
-const PORT = 3300;
-const webio = new Server(PORT, { cors: { origin: '*' } });
-
-webio.on('connection', function (socket) {
-  console.log('connected');
-});
-
 class P5ViewDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
   private root: vscode.Uri;
@@ -186,9 +189,7 @@ class P5ViewDecoration extends Decoration {
   }
 
   update(val: string) {
-    console.log(val);
-
-    webio?.emit('data', val);
+    webviewServer?.emit('data', val);
   }
 
   dispose(): void {

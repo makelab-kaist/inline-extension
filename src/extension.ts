@@ -1,3 +1,7 @@
+/**
+ * Major expression functionalities exposed to main
+ */
+
 import * as vscode from 'vscode';
 import * as ui from './ui/vscode-ui';
 import { VirtualArduino } from './arduino-utils/virtual-arduino';
@@ -164,7 +168,6 @@ function compileAndUploadRelease() {
 // Check whether the code has been changed after an upload (valid code)
 function isCodeValid() {
   // check if the code was modified after upload
-  console.log(CodeManager.getInstance().isCodeDirty());
   sideView?.sendMessage({
     message: 'codeDirty',
     value: CodeManager.getInstance().isCodeDirty(),
