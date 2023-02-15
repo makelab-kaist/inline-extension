@@ -43,17 +43,18 @@ class Annotation {
         map(({ values }) => values[0]) // get only the first element from arduino
       )
       .subscribe((lineValue: string) => {
-        // Compute the result
-        let resultToShow;
-
         try {
-          // parse the expression and run it
-          let expr = transpileExpression(expression);
-          expr = this.variableSubstituions(expr, lineValue);
-          console.log('Expression to evaluate: ' + expr);
-          resultToShow = ExpressionEngine.getInstance().evalExpression(expr);
-          // console.log(resultToShow);
+          // parsing
+          let expressionToEvaluate = this.parseExpression(
+            expression,
+            lineValue
+          );
 
+          // executing
+          let resultToShow =
+            ExpressionEngine.getInstance().evalExpression(expressionToEvaluate);
+
+          // displaying
           // Update decorations
           // this.highlightDec.decorate(500);
           if (resultToShow.outputFormat === 'inline') {
@@ -64,19 +65,14 @@ class Annotation {
           }
         } catch (err: any) {
           this.textDec.decorate({
-            contentText: `${err.message}`,
+            contentText: err.message,
             color: 'red',
           });
+          return; // nothing to evaluate
         }
-      });
-  }
 
-  variableSubstituions(expression: string, current: string): string {
-    // $$ means the value we get from the arduino (current)
-    let expr = expression.replaceAll('$$', current);
-    // all user variables ($) are translated in `this.`
-    // $a => this.a
-    return expr.replaceAll('$', 'this.');
+        // Evaluate the expression and compute the result
+      });
   }
 
   dispose() {
@@ -84,6 +80,31 @@ class Annotation {
     this.textDec.dispose();
     // this.wv.dispose();
     this.sub?.unsubscribe();
+  }
+
+  // Private helpers
+
+  private parseExpression(
+    expression: string,
+    lineValue: string
+  ): string | never {
+    let result = '';
+    try {
+      // parse the expression and run it
+      result = transpileExpression(expression);
+      result = this.variableSubstituions(result, lineValue);
+    } catch (err: any) {
+      throw new Error('Invalid expression: unable to parse');
+    }
+    return result;
+  }
+
+  private variableSubstituions(expression: string, current: string): string {
+    // $$ means the value we get from the arduino (current)
+    let expr = expression.replaceAll('$$', current);
+    // all user variables ($) are translated in `this.`
+    // $a => this.a
+    return expr.replaceAll('$', 'this.');
   }
 }
 
