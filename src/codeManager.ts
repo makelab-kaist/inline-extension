@@ -1,9 +1,8 @@
 /**
  * Manger used to generate code or extract ExpressionQueries
  */
-
 import * as vscode from 'vscode';
-import * as parser from './parser';
+import * as parser from './parser/index';
 // Library with code generated depending on which functions are called
 import { generateLibraryCode } from './arduino-utils/arduino-library';
 // Library with all the instrumented code, regardless of the usage

@@ -2,11 +2,6 @@ import * as vscode from 'vscode';
 import { appendFile } from 'fs';
 import { LowPassFilter } from './vendor/OneEuroFilter';
 
-type EvaluationResult = {
-  success: boolean;
-  value: string;
-};
-
 // Evaluate an expression within a context
 export class ExpressionEngine {
   private static instance: ExpressionEngine;
@@ -17,18 +12,10 @@ export class ExpressionEngine {
     return this.instance;
   }
 
-  evalInContext(expr: string): EvaluationResult {
-    let result: EvaluationResult = { value: '', success: false };
-
-    try {
-      result.value = new Function(`return eval('${expr}')`).call(this.context);
-      result.success = true;
-      // return new Function(`return ${src}`).call(this.context);
-    } catch (err: any) {
-      result.value = `Invalid Expression: ${err.message}`;
-      result.success = false;
-    }
-    return result;
+  // Eval in context: might throw an error
+  evalExpression(expr: string): any | never {
+    return new Function(`return eval('${expr}')`).call(this.context);
+    // return new Function(`return ${src}`).call(this.context);
   }
 
   clear() {
@@ -45,61 +32,101 @@ class Context {
     this.fil = new LowPassFilter(this.filterAlpha);
   }
 
+  // pipe
+  pipe(...fns: Array<(v: any) => any>) {
+    return (x: any) => fns.reduce((v, f) => f(v), x);
+  }
+
   // Assert and print
   assert(exp: boolean): string {
     return exp ? '✅' : '❌';
   }
 
-  print(...params: string[]): string {
-    return params.join(' ');
-  }
-
   // Numeric comparisons
-  above(v: number, threshold: number): number | undefined | never {
-    if (typeof v !== 'number') throw new Error(`"${v}" is not a number`);
-    return v > threshold ? v : undefined;
+  above(threshold: number): (input: number) => any {
+    return function (input: number) {
+      if (typeof input !== 'number')
+        throw new Error(`"${input}" is not a number`);
+      return input > threshold ? input : undefined;
+    };
   }
 
-  below(v: number, threshold: number) {
-    if (typeof v !== 'number') throw new Error(`"${v}" is not a number`);
-    return v < threshold ? v : undefined;
+  below(threshold: number): (input: number) => any {
+    return function (input: number) {
+      if (typeof input !== 'number')
+        throw new Error(`"${input}" is not a number`);
+      return input < threshold ? input : undefined;
+    };
   }
 
-  between(v: number, low: number, high: number) {
-    if (typeof v !== 'number') throw new Error(`"${v}" is not a number`);
-    return v >= low && v <= high ? v : undefined;
+  between(low: number, high: number): (input: number) => any {
+    return function (input: number) {
+      if (typeof input !== 'number')
+        throw new Error(`"${input}" is not a number`);
+      return input >= low && input <= high ? input : undefined;
+    };
+  }
+
+  // Filter value
+  filter(alpha: number = 1): (input: number) => any {
+    return (input: number) => {
+      if (alpha !== this.filterAlpha) {
+        this.filterAlpha = alpha;
+        this.fil = new LowPassFilter(this.filterAlpha);
+      }
+      const res = this.fil.filterWithAlpha(input, alpha);
+      console.log(res);
+
+      return res.toFixed(1);
+    };
+  }
+
+  // save to context
+  save(variableName: string): (input: any) => any {
+    return (input: any) => {
+      (this as any)[`${variableName}`] = input;
+      return input;
+    };
+  }
+
+  // Output functions. Options are: [inline, histogram, linegraph]
+  output(type: 'inline' | 'histogram' | 'linegraph'): (list: [any]) => any {
+    return function (...list: any[]) {
+      return function (input: any) {
+        const result = [input, ...list];
+        return {
+          value: result,
+          stringValue: result.join(', '),
+          outputFormat: type,
+        };
+      };
+    };
   }
 
   // Logging value
-  log(v: number, filename: string = 'logs.txt', tag: string = '') {
-    const document = vscode.window.activeTextEditor?.document;
+  log(
+    filename: string = 'logs.csv',
+    tag: string = ''
+  ): (filename: string, tag: string) => any {
+    return function (dataToLog: any) {
+      const document = vscode.window.activeTextEditor?.document;
 
-    if (!document) return undefined;
-    const ws = vscode.workspace.getWorkspaceFolder(document?.uri);
-    if (!ws) return undefined;
-    const now = new Date().toLocaleTimeString(); // e.g., 11:18:48 AM
-    if (tag) tag += ','; // add a comma
-    const data = v ? v : '';
-    const toLog = `${tag}${data},${now}`;
+      if (!document) return undefined;
+      const ws = vscode.workspace.getWorkspaceFolder(document?.uri);
+      if (!ws) return undefined;
+      const now = new Date().toLocaleTimeString(); // e.g., 11:18:48 AM
+      if (tag) tag += ','; // add a comma
+      const data = dataToLog ? dataToLog : '';
+      const toLog = `${tag}${data},${now}`;
 
-    appendFile(
-      vscode.Uri.joinPath(ws.uri, `${filename}`).fsPath,
-      `${toLog}\n`,
-      function (err) {
-        if (err) console.log(err);
-      }
-    );
-    return toLog;
-  }
-
-  filter(input: number, alpha: number = 1) {
-    if (alpha !== this.filterAlpha) {
-      this.filterAlpha = alpha;
-      this.fil = new LowPassFilter(this.filterAlpha);
-    }
-    const res = this.fil.filterWithAlpha(input, alpha);
-    console.log(res);
-
-    return res.toFixed(1);
+      appendFile(
+        vscode.Uri.joinPath(ws.uri, `${filename}`).fsPath,
+        `${toLog}\n`,
+        function (err) {
+          if (err) console.log(err);
+        }
+      );
+      return toLog;
+    };
   }
 }

@@ -36,10 +36,15 @@ class Annotation {
     // console.log(id, line, expression);
     let expr = expression.replaceAll('$$', '123');
     expr = expr.replaceAll('$', 'this.');
-    console.log('Expression to evaluate: ' + expr);
+    // console.log('Expression to evaluate: ' + expr);
 
-    const result = ExpressionEngine.getInstance().evalInContext(expr);
-    console.log('Result: ', result.value, result.success);
+    let result = '';
+    try {
+      result = ExpressionEngine.getInstance().evalExpression(expr);
+    } catch (err: any) {
+      result = err.message;
+    }
+    console.log('Result: ', result);
 
     // livedata contains => id line values
 
