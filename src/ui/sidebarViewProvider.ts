@@ -6,6 +6,7 @@ import {
   compileAndUpload,
   compileAndUploadRelease,
 } from '../extension';
+import { toggleHighlight } from '../annotations';
 
 // Internal type
 type Message = {
@@ -59,7 +60,7 @@ class SideViewProvider implements vscode.WebviewViewProvider {
             // removeAnnotationsFromCode();
             break;
           case 'toggleHighlight':
-            // toggleHighlight();
+            toggleHighlight();
             break;
 
           default: /* none */

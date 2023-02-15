@@ -8,7 +8,7 @@ import {
   WebViewDecoration,
   P5ViewDecoration,
 } from './decorations';
-import { ExpressionEngine } from './expressions';
+import { ExpressionEngine, ExpressionResult } from './expressions';
 import { loadavg } from 'os';
 import { transpileExpression } from './parser';
 
@@ -17,6 +17,7 @@ class Annotation {
   private highlightDec: Decoration;
   private textDec: Decoration;
   // private wv: P5ViewDecoration;
+  private highlightOn: boolean = true;
 
   constructor(
     private id: string,
@@ -33,8 +34,6 @@ class Annotation {
     // this.wv = new P5ViewDecoration(line);
     // this.wv.decorate('<h1>Hi</h1><p>asdf</p>');
     // this.wv.decorate();
-
-    // console.log(id, line, expression);
 
     // Filted and subscribe
     this.sub = data$
@@ -54,15 +53,8 @@ class Annotation {
           let resultToShow =
             ExpressionEngine.getInstance().evalExpression(expressionToEvaluate);
 
-          // displaying
           // Update decorations
-          // this.highlightDec.decorate(500);
-          if (resultToShow.outputFormat === 'inline') {
-            this.textDec.decorate({
-              contentText: `${resultToShow.stringValue}` || 'None',
-              color: 'DodgerBlue',
-            });
-          }
+          this.updateDecorations(resultToShow);
         } catch (err: any) {
           this.textDec.decorate({
             contentText: err.message,
@@ -76,10 +68,19 @@ class Annotation {
   }
 
   dispose() {
-    // this.highlightDec.dispose();
+    this.highlightDec.dispose();
     this.textDec.dispose();
     // this.wv.dispose();
     this.sub?.unsubscribe();
+  }
+
+  // highlight
+  setHighlight(state: boolean) {
+    this.highlightOn = state;
+  }
+
+  toggleHighlight() {
+    this.setHighlight(!this.highlightOn);
   }
 
   // Private helpers
@@ -106,9 +107,19 @@ class Annotation {
     // $a => this.a
     return expr.replaceAll('$', 'this.');
   }
+
+  private updateDecorations(resultToShow: ExpressionResult) {
+    if (resultToShow.outputFormat === 'inline') {
+      this.textDec.decorate({
+        contentText: `${resultToShow.stringValue}` || 'None',
+        color: 'DodgerBlue',
+      });
+    }
+    if (this.highlightOn) this.highlightDec.decorate(500);
+  }
 }
 
-///////
+// Annotations main control
 
 let annotations: Annotation[] = [];
 
@@ -132,4 +143,8 @@ function isAnyAnnotation() {
 export function clearAnnotations() {
   annotations.forEach((a) => a.dispose());
   annotations = [];
+}
+
+export function toggleHighlight() {
+  annotations.forEach((a) => a.toggleHighlight());
 }

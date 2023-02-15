@@ -2,6 +2,12 @@ import * as vscode from 'vscode';
 import { appendFile } from 'fs';
 import { LowPassFilter } from './vendor/OneEuroFilter';
 
+export type ExpressionResult = {
+  value: any[];
+  stringValue: string;
+  outputFormat: 'inline' | 'histogram' | 'linegraph';
+};
+
 // Evaluate an expression within a context
 export class ExpressionEngine {
   private static instance: ExpressionEngine;
