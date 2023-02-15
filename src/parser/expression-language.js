@@ -71,72 +71,79 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var expressions = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,16],$V1=[1,15],$V2=[1,5],$V3=[1,7],$V4=[1,8],$V5=[1,9],$V6=[1,10],$V7=[1,11],$V8=[1,12],$V9=[1,13],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,6],$Ve=[1,6,27],$Vf=[1,6,8,9,10,11,13,14,15,16,17,18,27];
+var expressionLanguage = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,8],$V2=[1,9],$V3=[1,10],$V4=[1,11],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,19],$Vc=[1,20],$Vd=[1,6,11],$Ve=[1,6],$Vf=[1,6,10];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"primary_expression":3,"expression_list":4,"expression":5,"DELIM":6,"item":7,"+":8,"-":9,"/":10,"*":11,"!":12,"==":13,"!=":14,">":15,"<":16,">=":17,"<=":18,"number":19,"HIGH":20,"LOW":21,"STRING":22,"VAR":23,"LINE":24,"BOOLEAN":25,"(":26,")":27,"float":28,"BINARY_NUM":29,"INTEGER":30,".":31,"$accept":0,"$end":1},
-terminals_: {2:"error",6:"DELIM",8:"+",9:"-",10:"/",11:"*",12:"!",13:"==",14:"!=",15:">",16:"<",17:">=",18:"<=",20:"HIGH",21:"LOW",22:"STRING",23:"VAR",24:"LINE",25:"BOOLEAN",26:"(",27:")",29:"BINARY_NUM",30:"INTEGER",31:"."},
-productions_: [0,[3,1],[4,1],[4,3],[5,1],[5,3],[5,3],[5,3],[5,3],[5,2],[5,3],[5,3],[5,3],[5,3],[5,3],[5,3],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,3],[19,1],[19,2],[19,2],[19,1],[28,1],[28,2],[28,3]],
+symbols_: {"error":2,"result":3,"primary_expression":4,"list":5,"THEN":6,"function_sequence":7,"function_call":8,"builtin_function":9,"EXP":10,",":11,"ASSERT":12,"ABOVE":13,"BELOW":14,"BETWEEN":15,"FILTER":16,"SAVE":17,"PRINT":18,"GRAPH":19,"HIST":20,"LOG":21,"$accept":0,"$end":1},
+terminals_: {2:"error",6:"THEN",10:"EXP",11:",",12:"ASSERT",13:"ABOVE",14:"BELOW",15:"BETWEEN",16:"FILTER",17:"SAVE",18:"PRINT",19:"GRAPH",20:"HIST",21:"LOG"},
+productions_: [0,[3,1],[4,1],[4,3],[4,1],[7,1],[7,3],[8,1],[8,2],[5,1],[5,3],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- return $$[$0] 
+ return $$[$0].replaceAll(' ','').trim() 
 break;
-case 2:
- this.$ = [$$[$0]] 
-break;
-case 3:
-
-       this.$= [...$$[$0-2], $$[$0]]
-    
-break;
-case 4: case 20: case 21: case 24: case 26: case 28:
+case 2: case 9:
  this.$ = $$[$0] 
 break;
-case 5: case 6: case 7: case 8: case 10: case 11: case 12: case 13: case 14: case 15:
- this.$ = $$[$0-2] + $$[$0-1] + $$[$0]
+case 3:
+ this.$ = `this.pipe(${$$[$0]})(${$$[$0-2]})` 
 break;
-case 9:
- this.$ = $$[$0-1] + $$[$0] 
+case 4:
+ this.$ = `this.pipe(${$$[$0]})(\$\$)` 
+break;
+case 5:
+this.$ = $$[$0] 
+break;
+case 6:
+ this.$ = $$[$0-2] + ',' + $$[$0] 
+break;
+case 7:
+ this.$= $$[$0] + '()' 
+break;
+case 8:
+ this.$ = $$[$0-1] + '(' + $$[$0] + ')' 
+break;
+case 10:
+ this.$ = $$[$0-2] + ',' + $$[$0-1] 
+break;
+case 11:
+ this.$ = 'this.assert' 
+break;
+case 12:
+ this.$ = 'this.above' 
+break;
+case 13:
+ this.$ = 'this.below' 
+break;
+case 14:
+ this.$ = 'this.between' 
+break;
+case 15:
+ this.$ = 'this.filter' 
 break;
 case 16:
- this.$= $$[$0] 
+ this.$ = 'this.abosaveve' 
 break;
 case 17:
- this.$ = '1' 
+ this.$ = `this.output('inline')` 
 break;
 case 18:
- this.$ = '0' 
+ this.$ = `this.output('linegraph')` 
 break;
 case 19:
- this.$ =  $$[$0]  
+ this.$ = `this.output('histogram')` 
 break;
-case 22:
- this.$ = !!$$[$0] 
-break;
-case 23:
- this.$ = $$[$0-2] + $$[$0-1] + $$[$0] 
-break;
-case 25:
- this.$ = -$$[$0] 
-break;
-case 27:
- this.$ = '"'+$$[$0].slice(1)+'"' 
-break;
-case 29:
- this.$ = $$[$0-1]+$$[$0] 
-break;
-case 30:
- this.$ = $$[$0-2]+$$[$0-1]+$$[$0] 
+case 20:
+ this.$ = 'this.log' 
 break;
 }
 },
-table: [{3:1,4:2,5:3,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{1:[3]},{1:[2,1],6:[1,20]},o($Vd,[2,2]),o($Ve,[2,4],{8:[1,21],9:[1,22],10:[1,23],11:[1,24],13:[1,25],14:[1,26],15:[1,27],16:[1,28],17:[1,29],18:[1,30]}),{7:31,8:$V0,9:$V1,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},o($Vf,[2,16]),o($Vf,[2,17]),o($Vf,[2,18]),o($Vf,[2,19]),o($Vf,[2,20]),o($Vf,[2,21]),o($Vf,[2,22]),{5:32,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},o($Vf,[2,24]),{28:33,30:$Vb,31:$Vc},{28:34,30:$Vb,31:$Vc},o($Vf,[2,27]),o($Vf,[2,28],{31:[1,35]}),{30:[1,36]},{5:37,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:38,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:39,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:40,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:41,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:42,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:43,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:44,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:45,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:46,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},{5:47,7:4,8:$V0,9:$V1,12:$V2,19:6,20:$V3,21:$V4,22:$V5,23:$V6,24:$V7,25:$V8,26:$V9,28:14,29:$Va,30:$Vb,31:$Vc},o($Ve,[2,9]),{27:[1,48]},o($Vf,[2,25]),o($Vf,[2,26]),{30:[1,49]},o($Vf,[2,29]),o($Vd,[2,3]),o($Ve,[2,5]),o($Ve,[2,6]),o($Ve,[2,7]),o($Ve,[2,8]),o($Ve,[2,10]),o($Ve,[2,11]),o($Ve,[2,12]),o($Ve,[2,13]),o($Ve,[2,14]),o($Ve,[2,15]),o($Vf,[2,23]),o($Vf,[2,30])],
-defaultActions: {},
+table: [{3:1,4:2,5:3,7:4,8:6,9:7,10:$V0,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va},{1:[3]},{1:[2,1]},{1:[2,2],6:[1,18],11:$Vb},{1:[2,4],6:$Vc},o($Vd,[2,9]),o($Ve,[2,5]),o($Ve,[2,7],{5:21,10:$V0}),o($Vf,[2,11]),o($Vf,[2,12]),o($Vf,[2,13]),o($Vf,[2,14]),o($Vf,[2,15]),o($Vf,[2,16]),o($Vf,[2,17]),o($Vf,[2,18]),o($Vf,[2,19]),o($Vf,[2,20]),{7:22,8:6,9:7,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va},{10:[1,23]},{8:24,9:7,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va},o($Ve,[2,8],{11:$Vb}),{1:[2,3],6:$Vc},o($Vd,[2,10]),o($Ve,[2,6])],
+defaultActions: {2:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -613,58 +620,34 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: /* ignore spaces */ 
 break;
-case 1: return 20 
+case 1: return 12 
 break;
-case 2: return 21 
+case 2: return 13 
 break;
-case 3: return 25 
+case 3: return 14 
 break;
-case 4: return 23 
+case 4: return 15 
 break;
-case 5: return 24 
+case 5: return 16 
 break;
-case 6: return 29 
+case 6: return 17 
 break;
-case 7: return 30 
+case 7: return 18 
 break;
-case 8: return 22 
+case 8: return 19 
 break;
-case 9: return 6; 
+case 9: return 20 
 break;
-case 10: return 31; 
+case 10: return 21 
 break;
-case 11: return 9; 
+case 11: return 10 
 break;
-case 12: return 8; 
-break;
-case 13: return 10; 
-break;
-case 14: return 11; 
-break;
-case 15: return 13; 
-break;
-case 16: return 14; 
-break;
-case 17: return 16; 
-break;
-case 18: return 15; 
-break;
-case 19: return 18; 
-break;
-case 20: return 17; 
-break;
-case 21: return 12; 
-break;
-case 22: return 26; 
-break;
-case 23: return 27; 
-break;
-case 24: /* ignore others */
+case 12: return 6 
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:HIGH\b)/,/^(?:LOW\b)/,/^(?:true|false\b)/,/^(?:\$\d+)/,/^(?:@[1-9]\d*)/,/^(?:b(0|1)+)/,/^(?:0|\d+)/,/^(?:".*")/,/^(?:[;,])/,/^(?:\.)/,/^(?:-)/,/^(?:\+)/,/^(?:\/)/,/^(?:\*)/,/^(?:==)/,/^(?:!=)/,/^(?:<)/,/^(?:>)/,/^(?:<=)/,/^(?:>=)/,/^(?:!)/,/^(?:\()/,/^(?:\))/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:assert\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:filter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:[^|]+)/,/^(?:\|)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12],"inclusive":true}}
 });
 return lexer;
 })();
@@ -678,9 +661,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = expressions;
-exports.Parser = expressions.Parser;
-exports.parse = function () { return expressions.parse.apply(expressions, arguments); };
+exports.parser = expressionLanguage;
+exports.Parser = expressionLanguage.Parser;
+exports.parse = function () { return expressionLanguage.parse.apply(expressionLanguage, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

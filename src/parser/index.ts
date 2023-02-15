@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as parser from './grammar';
 // @ts-ignore
-import * as expr_parser from './expressions';
+import * as expr_parser from './expression-language';
 
 type TextLocation = {
   line: number;

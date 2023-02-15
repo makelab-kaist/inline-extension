@@ -34,9 +34,8 @@ class Annotation {
     // this.wv.decorate();
 
     // console.log(id, line, expression);
-    let expr = expression.replaceAll('$$', '123');
-    expr = expr.replaceAll('$', 'this.');
-    // console.log('Expression to evaluate: ' + expr);
+    let expr = expression.replaceAll('$$', '60');
+    console.log('Expression to evaluate: ' + expr);
 
     let result = '';
     try {

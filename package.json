@@ -106,7 +106,7 @@
     "test": "jest --watchAll --verbose",
     "check_license": "npx license-checker --summary",
     "compile_grammar": "npx jison ./src/parser/grammar.jison -o ./src/parser/grammar.js && cp -prf ./src/parser/grammar.js ./out/parser",
-    "compile_expression_grammar": "npx jison ./src/parser/expressions.jison -o ./src/parser/expressions.js && cp -prf ./src/parser/expressions.js ./out/parser",
+    "compile_expression_grammar": "npx jison ./src/parser/expression-language.jison -o ./src/parser/expression-language.js && cp -prf ./src/parser/expression-language.js ./out/parser",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
