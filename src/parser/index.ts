@@ -27,4 +27,8 @@ function getParsedData(code: string): LineData[] {
   return parser.parse(code);
 }
 
-export { getParsedData, FunctionOrQueryData, LineData };
+function transpileExpression(expression: string): string {
+  return expr_parser.parse(expression);
+}
+
+export { getParsedData, transpileExpression, FunctionOrQueryData, LineData };

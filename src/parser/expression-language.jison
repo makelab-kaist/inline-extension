@@ -4,6 +4,7 @@
 %lex
 %%
 
+<<EOF>>                                           { return 'NONE' }
 \s+                                               { /* ignore spaces */ }
 'assert'                                          { return 'ASSERT' }
 'above'                                           { return 'ABOVE' }
@@ -29,7 +30,8 @@
 
 
 result
-  : primary_expression { return $1.replaceAll(' ','').trim() }
+  : NONE { return '\$\$' } // Nothing passed => pass the default. $$ has to be escaped in jison
+  | primary_expression NONE { return $1.replaceAll(' ','').trim() }
   ;
 
 primary_expression
@@ -44,25 +46,53 @@ function_sequence
   ;
 
 function_call
-  : builtin_function { $$= $1 + '()' }
-  | builtin_function list { $$ = $1 + '(' + $2 + ')' }
+  : simple_functions { $$= $1 }
+  | simple_functions list { $$ = $1 + '(' + $2 + ')' }
+  | assert_function { $$ = $1 }
+  | threshold_functions { $$ = $1 }
+  | filter_function { $$ = $1 }
+  | save_function { $$ = $1 }
+  | log_function { $$ = $1 }
+  | output_functions { $$= $1 }
+  ;
+
+
+// Builtin functions
+
+assert_function
+  : ASSERT { $$ = 'this.assert' }
+  ;
+
+threshold_functions
+  : ABOVE EXP { $$ = `this.above(${$2})` }
+  | BELOW EXP { $$ = `this.below(${$2})` }
+  | BETWEEN list { $$ = `this.between(${$2})` }
+  ;
+
+filter_function
+  : FILTER { $$ = 'this.filter()' }
+  | FILTER EXP { $$ = `this.filter(${$2})` } 
+  ;
+
+save_function
+  : SAVE EXP { $$ = `this.save(\\'${$2}\\')` }
+  ;
+
+log_function
+  : LOG { $$ = `this.log()` }
+  | LOG EXP { $$ = `this.log(\\'${$2}\\')` }
+  ;
+
+output_functions
+  : PRINT { $$ = `this.output(\\'inline\\')()` }
+  | PRINT list { $$ = `this.output(\\'inline\\')(${$2})` }
+  | GRAPH { $$ = `this.output(\\'linegraph\\')()` }
+  | GRAPH list { $$ = `this.output(\\'linegraph\\')(${$2})` }
+  | HIST { $$ = `this.output(\\'histogram\\')()` }
+  | HIST list{ $$ = `this.output(\\'histogram\\')(${$2})` }
   ;
 
 list
   : EXP  { $$ = $1 }
   | list ',' EXP { $$ = $1 + ',' + $2 }
   ;
-
-builtin_function
-  : ASSERT { $$ = 'this.assert' }
-  | ABOVE { $$ = 'this.above' }
-  | BELOW { $$ = 'this.below' }
-  | BETWEEN { $$ = 'this.between' }
-  | FILTER { $$ = 'this.filter' }
-  | SAVE { $$ = 'this.abosaveve' }
-  | PRINT { $$ = `this.output('inline')` }
-  | GRAPH { $$ = `this.output('linegraph')` }
-  | HIST { $$ = `this.output('histogram')` }
-  | LOG { $$ = 'this.log' }
-  ;
-  

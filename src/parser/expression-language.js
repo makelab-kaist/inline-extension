@@ -72,78 +72,96 @@
   }
 */
 var expressionLanguage = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,8],$V2=[1,9],$V3=[1,10],$V4=[1,11],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,19],$Vc=[1,20],$Vd=[1,6,11],$Ve=[1,6],$Vf=[1,6,10];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,15],$V2=[1,16],$V3=[1,6],$V4=[1,17],$V5=[1,18],$V6=[1,19],$V7=[1,20],$V8=[1,21],$V9=[1,22],$Va=[1,23],$Vb=[1,24],$Vc=[1,27],$Vd=[1,28],$Ve=[4,7,28],$Vf=[4,7];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"result":3,"primary_expression":4,"list":5,"THEN":6,"function_sequence":7,"function_call":8,"builtin_function":9,"EXP":10,",":11,"ASSERT":12,"ABOVE":13,"BELOW":14,"BETWEEN":15,"FILTER":16,"SAVE":17,"PRINT":18,"GRAPH":19,"HIST":20,"LOG":21,"$accept":0,"$end":1},
-terminals_: {2:"error",6:"THEN",10:"EXP",11:",",12:"ASSERT",13:"ABOVE",14:"BELOW",15:"BETWEEN",16:"FILTER",17:"SAVE",18:"PRINT",19:"GRAPH",20:"HIST",21:"LOG"},
-productions_: [0,[3,1],[4,1],[4,3],[4,1],[7,1],[7,3],[8,1],[8,2],[5,1],[5,3],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1]],
+symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"list":6,"THEN":7,"function_sequence":8,"function_call":9,"simple_functions":10,"assert_function":11,"threshold_functions":12,"filter_function":13,"save_function":14,"log_function":15,"output_functions":16,"ASSERT":17,"ABOVE":18,"EXP":19,"BELOW":20,"BETWEEN":21,"FILTER":22,"SAVE":23,"LOG":24,"PRINT":25,"GRAPH":26,"HIST":27,",":28,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"NONE",7:"THEN",10:"simple_functions",17:"ASSERT",18:"ABOVE",19:"EXP",20:"BELOW",21:"BETWEEN",22:"FILTER",23:"SAVE",24:"LOG",25:"PRINT",26:"GRAPH",27:"HIST",28:","},
+productions_: [0,[3,1],[3,2],[5,1],[5,3],[5,1],[8,1],[8,3],[9,1],[9,2],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[11,1],[12,2],[12,2],[12,2],[13,1],[13,2],[14,2],[15,1],[15,2],[16,1],[16,2],[16,1],[16,2],[16,1],[16,2],[6,1],[6,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- return $$[$0].replaceAll(' ','').trim() 
+ return '\$\$' 
 break;
-case 2: case 9:
+case 2:
+ return $$[$0-1].replaceAll(' ','').trim() 
+break;
+case 3: case 10: case 11: case 12: case 13: case 14: case 31:
  this.$ = $$[$0] 
 break;
-case 3:
+case 4:
  this.$ = `this.pipe(${$$[$0]})(${$$[$0-2]})` 
 break;
-case 4:
+case 5:
  this.$ = `this.pipe(${$$[$0]})(\$\$)` 
 break;
-case 5:
+case 6:
 this.$ = $$[$0] 
 break;
-case 6:
+case 7:
  this.$ = $$[$0-2] + ',' + $$[$0] 
 break;
-case 7:
- this.$= $$[$0] + '()' 
+case 8: case 15:
+ this.$= $$[$0] 
 break;
-case 8:
+case 9:
  this.$ = $$[$0-1] + '(' + $$[$0] + ')' 
 break;
-case 10:
- this.$ = $$[$0-2] + ',' + $$[$0-1] 
-break;
-case 11:
+case 16:
  this.$ = 'this.assert' 
 break;
-case 12:
- this.$ = 'this.above' 
-break;
-case 13:
- this.$ = 'this.below' 
-break;
-case 14:
- this.$ = 'this.between' 
-break;
-case 15:
- this.$ = 'this.filter' 
-break;
-case 16:
- this.$ = 'this.abosaveve' 
-break;
 case 17:
- this.$ = `this.output('inline')` 
+ this.$ = `this.above(${$$[$0]})` 
 break;
 case 18:
- this.$ = `this.output('linegraph')` 
+ this.$ = `this.below(${$$[$0]})` 
 break;
 case 19:
- this.$ = `this.output('histogram')` 
+ this.$ = `this.between(${$$[$0]})` 
 break;
 case 20:
- this.$ = 'this.log' 
+ this.$ = 'this.filter()' 
+break;
+case 21:
+ this.$ = `this.filter(${$$[$0]})` 
+break;
+case 22:
+ this.$ = `this.save(\\'${$$[$0]}\\')` 
+break;
+case 23:
+ this.$ = `this.log()` 
+break;
+case 24:
+ this.$ = `this.log(\\'${$$[$0]}\\')` 
+break;
+case 25:
+ this.$ = `this.output(\\'inline\\')()` 
+break;
+case 26:
+ this.$ = `this.output(\\'inline\\')(${$$[$0]})` 
+break;
+case 27:
+ this.$ = `this.output(\\'linegraph\\')()` 
+break;
+case 28:
+ this.$ = `this.output(\\'linegraph\\')(${$$[$0]})` 
+break;
+case 29:
+ this.$ = `this.output(\\'histogram\\')()` 
+break;
+case 30:
+ this.$ = `this.output(\\'histogram\\')(${$$[$0]})` 
+break;
+case 32:
+ this.$ = $$[$0-2] + ',' + $$[$0-1] 
 break;
 }
 },
-table: [{3:1,4:2,5:3,7:4,8:6,9:7,10:$V0,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va},{1:[3]},{1:[2,1]},{1:[2,2],6:[1,18],11:$Vb},{1:[2,4],6:$Vc},o($Vd,[2,9]),o($Ve,[2,5]),o($Ve,[2,7],{5:21,10:$V0}),o($Vf,[2,11]),o($Vf,[2,12]),o($Vf,[2,13]),o($Vf,[2,14]),o($Vf,[2,15]),o($Vf,[2,16]),o($Vf,[2,17]),o($Vf,[2,18]),o($Vf,[2,19]),o($Vf,[2,20]),{7:22,8:6,9:7,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va},{10:[1,23]},{8:24,9:7,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va},o($Ve,[2,8],{11:$Vb}),{1:[2,3],6:$Vc},o($Vd,[2,10]),o($Ve,[2,6])],
-defaultActions: {2:[2,1]},
+table: [{3:1,4:[1,2],5:3,6:4,8:5,9:7,10:$V0,11:9,12:10,13:11,14:12,15:13,16:14,17:$V1,18:$V2,19:$V3,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$V9,26:$Va,27:$Vb},{1:[3]},{1:[2,1]},{4:[1,25]},{4:[2,3],7:[1,26],28:$Vc},{4:[2,5],7:$Vd},o($Ve,[2,31]),o($Vf,[2,6]),o($Vf,[2,8],{6:29,19:$V3}),o($Vf,[2,10]),o($Vf,[2,11]),o($Vf,[2,12]),o($Vf,[2,13]),o($Vf,[2,14]),o($Vf,[2,15]),o($Vf,[2,16]),{19:[1,30]},{19:[1,31]},{6:32,19:$V3},o($Vf,[2,20],{19:[1,33]}),{19:[1,34]},o($Vf,[2,23],{19:[1,35]}),o($Vf,[2,25],{6:36,19:$V3}),o($Vf,[2,27],{6:37,19:$V3}),o($Vf,[2,29],{6:38,19:$V3}),{1:[2,2]},{8:39,9:7,10:$V0,11:9,12:10,13:11,14:12,15:13,16:14,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$V9,26:$Va,27:$Vb},{19:[1,40]},{9:41,10:$V0,11:9,12:10,13:11,14:12,15:13,16:14,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$V9,26:$Va,27:$Vb},o($Vf,[2,9],{28:$Vc}),o($Vf,[2,17]),o($Vf,[2,18]),o($Vf,[2,19],{28:$Vc}),o($Vf,[2,21]),o($Vf,[2,22]),o($Vf,[2,24]),o($Vf,[2,26],{28:$Vc}),o($Vf,[2,28],{28:$Vc}),o($Vf,[2,30],{28:$Vc}),{4:[2,4],7:$Vd},o($Ve,[2,32]),o($Vf,[2,7])],
+defaultActions: {2:[2,1],25:[2,2]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -618,36 +636,38 @@ options: {},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0: /* ignore spaces */ 
+case 0: return 4 
 break;
-case 1: return 12 
+case 1: /* ignore spaces */ 
 break;
-case 2: return 13 
+case 2: return 17 
 break;
-case 3: return 14 
+case 3: return 18 
 break;
-case 4: return 15 
+case 4: return 20 
 break;
-case 5: return 16 
+case 5: return 21 
 break;
-case 6: return 17 
+case 6: return 22 
 break;
-case 7: return 18 
+case 7: return 23 
 break;
-case 8: return 19 
+case 8: return 25 
 break;
-case 9: return 20 
+case 9: return 26 
 break;
-case 10: return 21 
+case 10: return 27 
 break;
-case 11: return 10 
+case 11: return 24 
 break;
-case 12: return 6 
+case 12: return 19 
+break;
+case 13: return 7 
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:assert\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:filter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:[^|]+)/,/^(?:\|)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:filter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:[^|]+)/,/^(?:\|)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13],"inclusive":true}}
 });
 return lexer;
 })();

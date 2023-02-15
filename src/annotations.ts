@@ -10,6 +10,7 @@ import {
 } from './decorations';
 import { ExpressionEngine } from './expressions';
 import { loadavg } from 'os';
+import { transpileExpression } from './parser';
 
 class Annotation {
   // private sub: Subscription;
@@ -34,16 +35,18 @@ class Annotation {
     // this.wv.decorate();
 
     // console.log(id, line, expression);
-    let expr = expression.replaceAll('$$', '60');
-    console.log('Expression to evaluate: ' + expr);
-
-    let result = '';
     try {
-      result = ExpressionEngine.getInstance().evalExpression(expr);
+      let expr = transpileExpression(expression);
+      expr = expr.replaceAll('$$', '60');
+      expr = expr.replaceAll('$', 'this.');
+      console.log(expr);
+
+      console.log('Expression to evaluate: ' + expr);
+      let result = ExpressionEngine.getInstance().evalExpression(expr);
+      console.log('Result: ', result);
     } catch (err: any) {
-      result = err.message;
+      console.log('error ', err.message);
     }
-    console.log('Result: ', result);
 
     // livedata contains => id line values
 

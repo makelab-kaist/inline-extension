@@ -90,14 +90,16 @@ class Context {
   }
 
   // Output functions. Options are: [inline, histogram, linegraph]
-  output(type: 'inline' | 'histogram' | 'linegraph'): (list: [any]) => any {
+  output(
+    outputType: 'inline' | 'histogram' | 'linegraph'
+  ): (list: [any]) => any {
     return function (...list: any[]) {
       return function (input: any) {
         const result = [input, ...list];
         return {
           value: result,
           stringValue: result.join(', '),
-          outputFormat: type,
+          outputFormat: outputType,
         };
       };
     };
