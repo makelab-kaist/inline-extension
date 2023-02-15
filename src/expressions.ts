@@ -86,7 +86,7 @@ class Context {
   // save to context
   save(variableName: string): (input: any) => any {
     return (input: any) => {
-      (this as any)[`${variableName}`] = input;
+      (this as any)[`${variableName.trim()}`] = input;
       return input;
     };
   }

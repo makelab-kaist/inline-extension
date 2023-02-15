@@ -32,14 +32,15 @@
 
 result
   : NONE { return `this.pipe(this.output(\\'inline\\')())(\$\$)`} // Nothing passed => pass the default. $$ has to be escaped in jison
-  | primary_expression NONE { return $1.replaceAll(' ','').trim() }
+  | primary_expression NONE { return $1.trim() }
   ;
 
 primary_expression
-  : list { $$ = `this.pipe(this.output(\\'inline\\')())(${$1})` }
-  | list THEN output_functions { $$ = `this.pipe(${$3})(${$1})` }
-  | list THEN function_sequence { $$ = `this.pipe(${$3},this.output(\\'inline\\')())(${$1})` }
-  | list THEN function_sequence THEN output_functions { $$ = `this.pipe(${$3},${$5})(${$1})` }
+  : EXP { $$ = `this.pipe(this.output(\\'inline\\')())(${$1})` }
+  | output_functions { $$ = `this.pipe(${$1})(\$\$)` }
+  | EXP THEN output_functions { $$ = `this.pipe(${$3})(${$1})` }
+  | EXP THEN function_sequence { $$ = `this.pipe(${$3},this.output(\\'inline\\')())(${$1})` }
+  | EXP THEN function_sequence THEN output_functions { $$ = `this.pipe(${$3},${$5})(${$1})` }
   | function_sequence { $$ = `this.pipe(${$1},this.output(\\'inline\\')())(\$\$)` } // $$ has to be escaped in jison
   | function_sequence THEN output_functions{ $$ = `this.pipe(${$1},${$3})(\$\$)` } // $$ has to be escaped in jison
   ;
@@ -50,9 +51,7 @@ function_sequence
   ;
 
 function_call
-  : simple_functions { $$= $1 }
-  | simple_functions list { $$ = $1 + '(' + $2 + ')' }
-  | assert_function { $$ = $1 }
+  : assert_function { $$ = $1 }
   | threshold_functions { $$ = $1 }
   | filter_function { $$ = $1 }
   | save_function { $$ = $1 }
