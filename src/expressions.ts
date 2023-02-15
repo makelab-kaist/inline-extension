@@ -14,6 +14,8 @@ export class ExpressionEngine {
 
   // Eval in context: might throw an error
   evalExpression(expr: string): any | never {
+    try {
+    } catch (error) {}
     return new Function(`return eval('${expr}')`).call(this.context);
     // return new Function(`return ${src}`).call(this.context);
   }

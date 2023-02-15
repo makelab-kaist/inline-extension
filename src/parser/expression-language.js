@@ -72,12 +72,12 @@
   }
 */
 var expressionLanguage = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,15],$V2=[1,16],$V3=[1,6],$V4=[1,17],$V5=[1,18],$V6=[1,19],$V7=[1,20],$V8=[1,21],$V9=[1,22],$Va=[1,23],$Vb=[1,24],$Vc=[1,27],$Vd=[1,28],$Ve=[4,7,28],$Vf=[4,7];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,14],$V2=[1,15],$V3=[1,6],$V4=[1,16],$V5=[1,17],$V6=[1,18],$V7=[1,19],$V8=[1,20],$V9=[1,23],$Va=[4,7,28],$Vb=[4,7],$Vc=[1,36],$Vd=[1,37],$Ve=[1,38];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"list":6,"THEN":7,"function_sequence":8,"function_call":9,"simple_functions":10,"assert_function":11,"threshold_functions":12,"filter_function":13,"save_function":14,"log_function":15,"output_functions":16,"ASSERT":17,"ABOVE":18,"EXP":19,"BELOW":20,"BETWEEN":21,"FILTER":22,"SAVE":23,"LOG":24,"PRINT":25,"GRAPH":26,"HIST":27,",":28,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"NONE",7:"THEN",10:"simple_functions",17:"ASSERT",18:"ABOVE",19:"EXP",20:"BELOW",21:"BETWEEN",22:"FILTER",23:"SAVE",24:"LOG",25:"PRINT",26:"GRAPH",27:"HIST",28:","},
-productions_: [0,[3,1],[3,2],[5,1],[5,3],[5,1],[8,1],[8,3],[9,1],[9,2],[9,1],[9,1],[9,1],[9,1],[9,1],[9,1],[11,1],[12,2],[12,2],[12,2],[13,1],[13,2],[14,2],[15,1],[15,2],[16,1],[16,2],[16,1],[16,2],[16,1],[16,2],[6,1],[6,3]],
+symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"list":6,"THEN":7,"function_sequence":8,"output_functions":9,"function_call":10,"simple_functions":11,"assert_function":12,"threshold_functions":13,"filter_function":14,"save_function":15,"log_function":16,"ASSERT":17,"ABOVE":18,"EXP":19,"BELOW":20,"BETWEEN":21,"FILTER":22,"SAVE":23,"LOG":24,"PRINT":25,"GRAPH":26,"HIST":27,",":28,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"NONE",7:"THEN",11:"simple_functions",17:"ASSERT",18:"ABOVE",19:"EXP",20:"BELOW",21:"BETWEEN",22:"FILTER",23:"SAVE",24:"LOG",25:"PRINT",26:"GRAPH",27:"HIST",28:","},
+productions_: [0,[3,1],[3,2],[5,1],[5,3],[5,5],[5,1],[5,3],[8,1],[8,3],[10,1],[10,2],[10,1],[10,1],[10,1],[10,1],[10,1],[12,1],[13,2],[13,2],[13,2],[14,1],[14,2],[15,2],[16,1],[16,2],[9,1],[9,2],[9,1],[9,2],[9,1],[9,2],[6,1],[6,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -89,79 +89,85 @@ break;
 case 2:
  return $$[$0-1].replaceAll(' ','').trim() 
 break;
-case 3: case 10: case 11: case 12: case 13: case 14: case 31:
+case 3: case 12: case 13: case 14: case 15: case 16: case 32:
  this.$ = $$[$0] 
 break;
 case 4:
- this.$ = `this.pipe(${$$[$0]})(${$$[$0-2]})` 
+ this.$ = `this.pipe(${$$[$0]},this.output(\\'inline\\')())(${$$[$0-2]})` 
 break;
 case 5:
- this.$ = `this.pipe(${$$[$0]})(\$\$)` 
+ this.$ = `this.pipe(${$$[$0-2]},${$$[$0]})(${$$[$0-4]})` 
 break;
 case 6:
-this.$ = $$[$0] 
+ this.$ = `this.pipe(${$$[$0]},this.output(\\'inline\\')())(\$\$)` 
 break;
 case 7:
- this.$ = $$[$0-2] + ',' + $$[$0] 
+ this.$ = `this.pipe(${$$[$0-2]},${$$[$0]})(\$\$)` 
 break;
-case 8: case 15:
- this.$= $$[$0] 
+case 8:
+this.$ = $$[$0] 
 break;
 case 9:
+ this.$ = $$[$0-2] + ',' + $$[$0] 
+break;
+case 10:
+ this.$= $$[$0] 
+break;
+case 11:
  this.$ = $$[$0-1] + '(' + $$[$0] + ')' 
 break;
-case 16:
+case 17:
  this.$ = 'this.assert' 
 break;
-case 17:
+case 18:
  this.$ = `this.above(${$$[$0]})` 
 break;
-case 18:
+case 19:
  this.$ = `this.below(${$$[$0]})` 
 break;
-case 19:
+case 20:
  this.$ = `this.between(${$$[$0]})` 
 break;
-case 20:
+case 21:
  this.$ = 'this.filter()' 
 break;
-case 21:
+case 22:
  this.$ = `this.filter(${$$[$0]})` 
 break;
-case 22:
+case 23:
  this.$ = `this.save(\\'${$$[$0]}\\')` 
 break;
-case 23:
+case 24:
  this.$ = `this.log()` 
 break;
-case 24:
+case 25:
  this.$ = `this.log(\\'${$$[$0]}\\')` 
 break;
-case 25:
+case 26:
  this.$ = `this.output(\\'inline\\')()` 
 break;
-case 26:
+case 27:
  this.$ = `this.output(\\'inline\\')(${$$[$0]})` 
 break;
-case 27:
+case 28:
  this.$ = `this.output(\\'linegraph\\')()` 
 break;
-case 28:
+case 29:
  this.$ = `this.output(\\'linegraph\\')(${$$[$0]})` 
 break;
-case 29:
+case 30:
  this.$ = `this.output(\\'histogram\\')()` 
 break;
-case 30:
+case 31:
  this.$ = `this.output(\\'histogram\\')(${$$[$0]})` 
 break;
-case 32:
+case 33:
  this.$ = $$[$0-2] + ',' + $$[$0-1] 
 break;
 }
 },
-table: [{3:1,4:[1,2],5:3,6:4,8:5,9:7,10:$V0,11:9,12:10,13:11,14:12,15:13,16:14,17:$V1,18:$V2,19:$V3,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$V9,26:$Va,27:$Vb},{1:[3]},{1:[2,1]},{4:[1,25]},{4:[2,3],7:[1,26],28:$Vc},{4:[2,5],7:$Vd},o($Ve,[2,31]),o($Vf,[2,6]),o($Vf,[2,8],{6:29,19:$V3}),o($Vf,[2,10]),o($Vf,[2,11]),o($Vf,[2,12]),o($Vf,[2,13]),o($Vf,[2,14]),o($Vf,[2,15]),o($Vf,[2,16]),{19:[1,30]},{19:[1,31]},{6:32,19:$V3},o($Vf,[2,20],{19:[1,33]}),{19:[1,34]},o($Vf,[2,23],{19:[1,35]}),o($Vf,[2,25],{6:36,19:$V3}),o($Vf,[2,27],{6:37,19:$V3}),o($Vf,[2,29],{6:38,19:$V3}),{1:[2,2]},{8:39,9:7,10:$V0,11:9,12:10,13:11,14:12,15:13,16:14,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$V9,26:$Va,27:$Vb},{19:[1,40]},{9:41,10:$V0,11:9,12:10,13:11,14:12,15:13,16:14,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$V9,26:$Va,27:$Vb},o($Vf,[2,9],{28:$Vc}),o($Vf,[2,17]),o($Vf,[2,18]),o($Vf,[2,19],{28:$Vc}),o($Vf,[2,21]),o($Vf,[2,22]),o($Vf,[2,24]),o($Vf,[2,26],{28:$Vc}),o($Vf,[2,28],{28:$Vc}),o($Vf,[2,30],{28:$Vc}),{4:[2,4],7:$Vd},o($Ve,[2,32]),o($Vf,[2,7])],
-defaultActions: {2:[2,1],25:[2,2]},
+table: [{3:1,4:[1,2],5:3,6:4,8:5,10:7,11:$V0,12:9,13:10,14:11,15:12,16:13,17:$V1,18:$V2,19:$V3,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8},{1:[3]},{1:[2,1]},{4:[1,21]},{4:[2,3],7:[1,22],28:$V9},{4:[2,6],7:[1,24]},o($Va,[2,32]),o($Vb,[2,8]),o($Vb,[2,10],{6:25,19:$V3}),o($Vb,[2,12]),o($Vb,[2,13]),o($Vb,[2,14]),o($Vb,[2,15]),o($Vb,[2,16]),o($Vb,[2,17]),{19:[1,26]},{19:[1,27]},{6:28,19:$V3},o($Vb,[2,21],{19:[1,29]}),{19:[1,30]},o($Vb,[2,24],{19:[1,31]}),{1:[2,2]},{8:32,10:7,11:$V0,12:9,13:10,14:11,15:12,16:13,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8},{19:[1,33]},{9:34,10:35,11:$V0,12:9,13:10,14:11,15:12,16:13,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$Vc,26:$Vd,27:$Ve},o($Vb,[2,11],{28:$V9}),o($Vb,[2,18]),o($Vb,[2,19]),o($Vb,[2,20],{28:$V9}),o($Vb,[2,22]),o($Vb,[2,23]),o($Vb,[2,25]),{4:[2,4],7:[1,39]},o($Va,[2,33]),{4:[2,7]},o($Vb,[2,9]),{4:[2,26],6:40,19:$V3},{4:[2,28],6:41,19:$V3},{4:[2,30],6:42,19:$V3},{9:43,10:35,11:$V0,12:9,13:10,14:11,15:12,16:13,17:$V1,18:$V2,20:$V4,21:$V5,22:$V6,23:$V7,24:$V8,25:$Vc,26:$Vd,27:$Ve},{4:[2,27],28:$V9},{4:[2,29],28:$V9},{4:[2,31],28:$V9},{4:[2,5]}],
+defaultActions: {2:[2,1],21:[2,2],34:[2,7],43:[2,5]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);

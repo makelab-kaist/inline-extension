@@ -36,8 +36,10 @@ result
 
 primary_expression
   : list { $$ = $1 }
-  | list THEN function_sequence { $$ = `this.pipe(${$3})(${$1})` }
-  | function_sequence { $$ = `this.pipe(${$1})(\$\$)` } // $$ has to be escaped in jison
+  | list THEN function_sequence { $$ = `this.pipe(${$3},this.output(\\'inline\\')())(${$1})` }
+  | list THEN function_sequence THEN output_functions { $$ = `this.pipe(${$3},${$5})(${$1})` }
+  | function_sequence { $$ = `this.pipe(${$1},this.output(\\'inline\\')())(\$\$)` } // $$ has to be escaped in jison
+  | function_sequence THEN output_functions{ $$ = `this.pipe(${$1},${$3})(\$\$)` } // $$ has to be escaped in jison
   ;
 
 function_sequence 
@@ -53,7 +55,6 @@ function_call
   | filter_function { $$ = $1 }
   | save_function { $$ = $1 }
   | log_function { $$ = $1 }
-  | output_functions { $$= $1 }
   ;
 
 
@@ -83,6 +84,7 @@ log_function
   | LOG EXP { $$ = `this.log(\\'${$2}\\')` }
   ;
 
+// must be at the end. Default is print
 output_functions
   : PRINT { $$ = `this.output(\\'inline\\')()` }
   | PRINT list { $$ = `this.output(\\'inline\\')(${$2})` }
