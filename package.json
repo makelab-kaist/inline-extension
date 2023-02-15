@@ -101,13 +101,11 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./ && npm run compile_grammar",
-    "watch": "tsc -watch -p ./",
-    "test": "jest --watchAll --verbose",
+    "build": "tsc -p ./ && npm run build_svelte && npm run compile_grammar && npm run compile_expression_grammar",
     "check_license": "npx license-checker --summary",
     "compile_grammar": "npx jison ./src/parser/grammar.jison -o ./src/parser/grammar.js && cp -prf ./src/parser/grammar.js ./out/parser",
     "compile_expression_grammar": "npx jison ./src/parser/expression-language.jison -o ./src/parser/expression-language.js && cp -prf ./src/parser/expression-language.js ./out/parser",
-    "build": "rollup -c",
+    "build_svelte": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "package": "npx vsce package"
