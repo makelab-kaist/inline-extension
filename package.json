@@ -38,6 +38,11 @@
         "title": "Configure and connect to serial"
       },
       {
+        "command": "double-cheese.configureBoard",
+        "category": "doublecheese",
+        "title": "Select an Arduino board"
+      },
+      {
         "command": "double-cheese.connect",
         "category": "doublecheese",
         "title": "Connect to serial"
@@ -102,6 +107,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "build": "tsc -p ./ && npm run build_svelte && npm run compile_grammar && npm run compile_expression_grammar",
+    "watch": "tsc -watch -p ./",
     "check_license": "npx license-checker --summary",
     "compile_grammar": "npx jison ./src/parser/grammar.jison -o ./src/parser/grammar.js && cp -prf ./src/parser/grammar.js ./out/parser",
     "compile_expression_grammar": "npx jison ./src/parser/expression-language.jison -o ./src/parser/expression-language.js && cp -prf ./src/parser/expression-language.js ./out/parser",

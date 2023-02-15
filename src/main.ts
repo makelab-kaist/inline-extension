@@ -14,6 +14,7 @@ import {
   startConnectionToServer,
   changeServer,
   isCodeValid,
+  configureBoard,
 } from './extension';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import {
@@ -42,6 +43,14 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       'double-cheese.configureConnection',
       configureConnection
+    )
+  );
+
+  // Choose a board
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'double-cheese.configureBoard',
+      configureBoard
     )
   );
 

@@ -76,6 +76,19 @@ export class VirtualArduino {
     });
   }
 
+  // Get available boards
+  getAvailableBoards(): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) reject([]); // no boards available
+
+      this.socket.emit('listBoards');
+      this.socket.on('listBoardsData', ({ message, success }: ArduinoAck) => {
+        if (success) resolve(message as string[]);
+        else reject('No port found');
+      });
+    });
+  }
+
   // Start the serial
   beginSerial(
     {
@@ -108,8 +121,16 @@ export class VirtualArduino {
     });
   }
 
+  // Select board
   // Connect to serial
-  connectSerial(): Promise<string> {
+  async selectBoard(board: string): Promise<string> {
+    return this.sendToServer('selectBoard', { board }).then(
+      ({ message }) => message as string
+    );
+  }
+
+  // Connect to serial
+  async connectSerial(): Promise<string> {
     if (!this.ready)
       return Promise.reject('Need to initialize connection first');
     return this.sendToServer('connectSerial').then(
@@ -118,7 +139,7 @@ export class VirtualArduino {
   }
 
   // Disconnect to serial
-  disconnectSerial(): Promise<string> {
+  async disconnectSerial(): Promise<string> {
     if (!this.ready)
       return Promise.reject('Need to initialize connection first');
     return this.sendToServer('disconnectSerial').then(
@@ -127,7 +148,7 @@ export class VirtualArduino {
   }
 
   // Compile code and upload it to the Arduino
-  compileAndUpload(sketchCode: string): Promise<string[]> {
+  async compileAndUpload(sketchCode: string): Promise<string[]> {
     if (!this.ready)
       return Promise.reject('Need to initialize connection first');
     return this.sendToServer('compileAndUploadCode', {

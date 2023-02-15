@@ -82,6 +82,14 @@ async function configureConnection() {
     .catch((msg) => ui.vsError(msg));
 }
 
+// Configure board
+async function configureBoard() {
+  const boards = await VirtualArduino.getInstance().getAvailableBoards();
+  const pick = await ui.showQuickPick(boards, 'Pick your buad rate');
+  if (!pick) return;
+  VirtualArduino.getInstance().selectBoard(pick);
+}
+
 // Connect to the server
 async function startConnectionToServer() {
   await VirtualArduino.getInstance()
@@ -188,6 +196,7 @@ export {
   compileAndUpload,
   compileAndUploadRelease,
   configureConnection,
+  configureBoard,
   connectSerial,
   disconnectSerial,
   getExtension,
