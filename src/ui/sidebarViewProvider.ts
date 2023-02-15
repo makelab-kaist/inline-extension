@@ -5,8 +5,8 @@ import {
   disconnectSerial,
   compileAndUpload,
   compileAndUploadRelease,
+  toggleHighlight,
 } from '../extension';
-import { toggleHighlight } from '../annotations';
 
 // Internal type
 type Message = {

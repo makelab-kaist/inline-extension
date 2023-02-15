@@ -15,13 +15,10 @@ import {
   changeServer,
   isCodeValid,
   configureBoard,
+  toggleHighlight,
 } from './extension';
 import { SideViewProvider } from './ui/sidebarViewProvider';
-import {
-  createAnnotations,
-  clearAnnotations,
-  toggleHighlight,
-} from './annotations';
+import { createAnnotations, clearAnnotations } from './annotations';
 
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
@@ -98,9 +95,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Toggle highlight
   context.subscriptions.push(
-    vscode.commands.registerCommand('double-cheese.toggleHighlight', () => {
-      toggleHighlight();
-    })
+    vscode.commands.registerCommand(
+      'double-cheese.toggleHighlight',
+      toggleHighlight
+    )
   );
 }
 

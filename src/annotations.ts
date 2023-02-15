@@ -79,12 +79,7 @@ class Annotation {
     this.highlightOn = state;
   }
 
-  toggleHighlight() {
-    this.setHighlight(!this.highlightOn);
-  }
-
   // Private helpers
-
   private parseExpression(
     expression: string,
     lineValue: string
@@ -145,6 +140,6 @@ export function clearAnnotations() {
   annotations = [];
 }
 
-export function toggleHighlight() {
-  annotations.forEach((a) => a.toggleHighlight());
+export function setAnnotationHighlights(visible: boolean) {
+  annotations.forEach((a) => a.setHighlight(visible));
 }

@@ -8,6 +8,7 @@ import { VirtualArduino } from './arduino-utils/virtual-arduino';
 import { CodeManager } from './codeManager';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
+import { setAnnotationHighlights } from './annotations';
 const { name, publisher } = require('../package.json');
 
 export type LiveData = {
@@ -21,6 +22,7 @@ export const data$ = new Subject<LiveData>();
 
 // The side view
 let sideView: SideViewProvider;
+let highlight: boolean = true;
 
 // Register side view so we can speak to it
 function registerSideView(_sideView: SideViewProvider) {
@@ -182,14 +184,12 @@ function isCodeValid() {
   });
 }
 
-//////////
-
-// CHANGE BELOW
-// function toggleHighlight() {
-//   highlight = !highlight;
-//   // if (!highlight) removeHighlightLine();
-//   sideView?.sendMessage({ message: 'toggleHighlight', highlight });
-// }
+// Toggle annotation highlight
+function toggleHighlight() {
+  highlight = !highlight;
+  sideView?.sendMessage({ message: 'toggleHighlight', highlight });
+  setAnnotationHighlights(highlight);
+}
 
 export {
   changeServer,
@@ -205,4 +205,5 @@ export {
   isCodeValid,
   registerSideView,
   startConnectionToServer,
+  toggleHighlight,
 };
