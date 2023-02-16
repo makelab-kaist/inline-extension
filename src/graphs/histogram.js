@@ -1,11 +1,11 @@
 // Constants
 const WINDOW_HEIGHT = 150;
-const MIN_BIN_COUNTER = 10;
 const MIN_INPUT_RANGE = 20;
+const MIN_BIN_VALUE = 10;
 const BINS = 20;
 
 // Globals
-let bins = [];
+let allData = [];
 let binLength = 1;
 let range = 500;
 
@@ -22,24 +22,32 @@ socket.on('data', (data) => {
   } = data;
 
   let incomingData = toNumberArray(value);
-  addValuesToBins(incomingData);
+  allData = [...allData, ...incomingData];
 });
 
 // P5.js sketch here
 function setup() {
   createCanvas(windowWidth - 100, WINDOW_HEIGHT);
-  createBins();
+  binLength = width / BINS;
   textAlign(CENTER);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth - 100, WINDOW_HEIGHT);
+  binLength = width / BINS;
 }
 
 function draw() {
   clear();
   // background(0);
+  // Compute bins
+  const bins = computeBins(allData);
+
   // Draw the bins
   stroke(200);
   strokeWeight(0.3);
 
-  const yMax = max([...bins, MIN_BIN_COUNTER]);
+  const yMax = max([...bins, MIN_BIN_VALUE]);
   let binsize = (range / BINS) | 0;
 
   for (let i = 0; i < bins.length; i++) {
@@ -62,34 +70,31 @@ function draw() {
   }
 }
 
-function mouseWheel(event) {
-  range += event.delta >= 0 ? 10 : -10;
-  if (range <= MIN_INPUT_RANGE) range = MIN_INPUT_RANGE;
-  createBins();
+function keyPressed() {
+  if (key == 'C' || key == 'c') {
+    allData = [];
+  }
 }
 
-function createBins() {
-  bins = Array(BINS).fill(0);
-  binLength = width / BINS;
+function mouseWheel(event) {
+  range += event.delta >= 0 ? MIN_INPUT_RANGE : -MIN_INPUT_RANGE;
+  if (range <= MIN_INPUT_RANGE) range = MIN_INPUT_RANGE;
 }
 
 function toNumberArray(arr) {
-  return arr.map((e) => {
-    // attempt conversion
-    try {
-      return Number.parseFloat(e);
-    } catch (error) {
-      return 0;
-    }
-  });
+  return arr.map((e) => Number.parseFloat(e));
 }
 
-function addValuesToBins(values) {
+function computeBins(values) {
+  const bins = Array(BINS).fill(0);
   let binsize = range / BINS;
   values.forEach((e) => {
-    let bin = (e / binsize) | 0;
-    if (bin >= 0 && bin < bins.length) {
-      bins[bin] += 1;
+    if (!isNaN(e)) {
+      let bin = (e / binsize) | 0;
+      if (bin >= 0 && bin < bins.length) {
+        bins[bin] += 1;
+      }
     }
   });
+  return bins;
 }
