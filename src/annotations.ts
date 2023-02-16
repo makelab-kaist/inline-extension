@@ -12,12 +12,17 @@ import { ExpressionEngine, ExpressionResult } from './expressions';
 import { loadavg } from 'os';
 import { transpileExpression } from './parser';
 
+// Globals
+let annotations: Annotation[] = [];
+let highlightOn: boolean = true;
+
+// Annotation class
+
 class Annotation {
   private sub: Subscription;
   private highlightDec: Decoration;
   private textDec: Decoration;
   // private wv: P5ViewDecoration;
-  private highlightOn: boolean = true;
 
   constructor(
     private id: string,
@@ -74,11 +79,6 @@ class Annotation {
     this.sub?.unsubscribe();
   }
 
-  // highlight
-  setHighlight(state: boolean) {
-    this.highlightOn = state;
-  }
-
   // Private helpers
   private parseExpression(
     expression: string,
@@ -110,13 +110,11 @@ class Annotation {
         color: 'DodgerBlue',
       });
     }
-    if (this.highlightOn) this.highlightDec.decorate(500);
+    if (highlightOn) this.highlightDec.decorate(500);
   }
 }
 
 // Annotations main control
-
-let annotations: Annotation[] = [];
 
 // id, line, values_on_line, expression, decoration
 export function createAnnotations() {
@@ -140,6 +138,7 @@ export function clearAnnotations() {
   annotations = [];
 }
 
-export function setAnnotationHighlights(visible: boolean) {
-  annotations.forEach((a) => a.setHighlight(visible));
+export function toggleAnnotationsHighlight(): boolean {
+  highlightOn = !highlightOn;
+  return highlightOn;
 }

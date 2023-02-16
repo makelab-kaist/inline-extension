@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
+import { createAnnotations } from '../annotations';
 import {
   configureConnection,
   connectSerial,
   disconnectSerial,
   compileAndUpload,
   compileAndUploadRelease,
+  removeAnnotationsFromCode,
   toggleHighlight,
 } from '../extension';
 
@@ -55,9 +57,10 @@ class SideViewProvider implements vscode.WebviewViewProvider {
             compileAndUploadRelease();
             break;
           case 'refreshAnnotations':
+            createAnnotations();
             break;
           case 'clearAnnotations':
-            // removeAnnotationsFromCode();
+            removeAnnotationsFromCode();
             break;
           case 'toggleHighlight':
             toggleHighlight();

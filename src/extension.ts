@@ -8,7 +8,7 @@ import { VirtualArduino } from './arduino-utils/virtual-arduino';
 import { CodeManager } from './codeManager';
 import { SideViewProvider } from './ui/sidebarViewProvider';
 import { Subject } from 'rxjs';
-import { setAnnotationHighlights } from './annotations';
+import { clearAnnotations, toggleAnnotationsHighlight } from './annotations';
 const { name, publisher } = require('../package.json');
 
 export type LiveData = {
@@ -184,11 +184,37 @@ function isCodeValid() {
   });
 }
 
-// Toggle annotation highlight
+// Clear the annotations and remove all the // [expression] ? markings
+function removeAnnotationsFromCode() {
+  // Clear
+  clearAnnotations();
+
+  // swap code
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    ui.vsError('Not a valid file');
+    return;
+  }
+  const newCode = CodeManager.getInstance().generateCodeNoAnnotations();
+
+  // replace old code with new one
+  const doc = editor.document;
+  const lines = doc.lineCount;
+  const lastCol = doc.lineAt(lines - 1).range.end.character;
+
+  editor.edit((editBuilder) => {
+    const start = new vscode.Position(0, 0);
+    const end = new vscode.Position(doc.lineCount, lastCol);
+    const range = new vscode.Range(start, end);
+    editBuilder.replace(range, newCode);
+    ui.vsInfo('All annotations //? removed');
+  });
+}
+
+// Wrapper for toggle highlight
 function toggleHighlight() {
-  highlight = !highlight;
-  sideView?.sendMessage({ message: 'toggleHighlight', highlight });
-  setAnnotationHighlights(highlight);
+  const hl = toggleAnnotationsHighlight();
+  sideView.sendMessage({ message: 'toggleHighlight', hl });
 }
 
 export {
@@ -205,5 +231,6 @@ export {
   isCodeValid,
   registerSideView,
   startConnectionToServer,
+  removeAnnotationsFromCode,
   toggleHighlight,
 };

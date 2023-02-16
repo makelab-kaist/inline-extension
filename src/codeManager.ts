@@ -84,6 +84,25 @@ export class CodeManager {
     this.codeHash = this.computeCodeHash();
   }
 
+  // generate code wihtout the annotations of form: // [expression] ?
+  generateCodeNoAnnotations(): string {
+    const code = this.getCurrentCode();
+    const lines = code.split('\n');
+    const queries: parser.LineData[] =
+      CodeManager.getInstance().getFilteredLines('query');
+
+    // Loop for the lines with //? and remove those
+    for (let { id, line, data } of queries) {
+      const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
+      const textLine = lines[editorLine];
+      const { location } = data[0];
+      const newText = textLine.slice(0, location.startCol);
+      lines[editorLine] = newText;
+    }
+    const newCode = lines.join('\n');
+    return newCode;
+  }
+
   // ======= PRIVATE METHODS ========
 
   // Compute code signature
