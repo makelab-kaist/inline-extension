@@ -9,6 +9,13 @@ webviewServer.on('connection', function (socket) {
   // console.log('connected');
 });
 
+export function update(id: string, value: any[]) {
+  webviewServer?.emit('data', {
+    id,
+    value,
+  });
+}
+
 abstract class Decoration {
   constructor(protected line: number) {}
 
@@ -141,59 +148,63 @@ class WebViewDecoration extends Decoration {
   }
 
   dispose(): void {
-    this.inset.dispose();
+    this.inset?.dispose();
   }
 }
 
-class P5ViewDecoration extends Decoration {
+class GraphDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
   private root: vscode.Uri;
+  private ready: boolean = false;
 
-  constructor(line: number) {
+  constructor(line: number, type: 'histogram' | 'linegraph') {
     super(line);
     this.root = getExtensionUri();
   }
 
   decorate(): void {
+    if (this.ready) return;
+    this.ready = true;
+
     const activeEditor = this.getActiveEditor();
     if (!activeEditor) return;
 
     this.inset = vscode.window.createWebviewTextEditorInset(
       activeEditor,
       this.line - 1, // just below the marker
-      4,
+      6,
       { localResourceRoots: [this.root], enableScripts: true }
     );
 
     const p5lib = this.inset.webview.asWebviewUri(
-      vscode.Uri.joinPath(this.root, 'src/p5view/p5.js')
+      vscode.Uri.joinPath(this.root, 'src/graphs/p5.js')
+    );
+    const iolib = this.inset.webview.asWebviewUri(
+      vscode.Uri.joinPath(this.root, 'src/graphs/socket.io.min.js')
     );
     const code = this.inset.webview.asWebviewUri(
-      vscode.Uri.joinPath(this.root, 'src/p5view/sketch.js')
+      vscode.Uri.joinPath(this.root, 'src/graphs/histogram.js')
     );
 
     if (this.inset)
       this.inset.webview.html = `
         <head>
-        <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
-        <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
         <script src="${p5lib}"></script>
+        <script src="${iolib}"></script>
+        <style>
+        body {
+          margin-top: 1%;
+        }
+        </style>
         </head>
         <body>  
-        <script>
-        let SIZE = 10;
-        </script>
         <script defer  src="${code}"></script>
         </body>
         `;
   }
 
-  update(val: string) {
-    webviewServer?.emit('data', val);
-  }
-
   dispose(): void {
-    this.inset.dispose();
+    this.inset?.dispose();
   }
 }
 
@@ -202,5 +213,5 @@ export {
   HighlightDecoration,
   TextDecoration,
   WebViewDecoration,
-  P5ViewDecoration,
+  GraphDecoration,
 };

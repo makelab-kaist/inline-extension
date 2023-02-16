@@ -5,11 +5,10 @@ import {
   Decoration,
   HighlightDecoration,
   TextDecoration,
-  WebViewDecoration,
-  P5ViewDecoration,
+  update,
+  GraphDecoration,
 } from './decorations';
 import { ExpressionEngine, ExpressionResult } from './expressions';
-import { loadavg } from 'os';
 import { transpileExpression } from './parser';
 
 // Globals
@@ -17,12 +16,11 @@ let annotations: Annotation[] = [];
 let highlightOn: boolean = true;
 
 // Annotation class
-
 class Annotation {
   private sub: Subscription;
   private highlightDec: Decoration;
   private textDec: Decoration;
-  // private wv: P5ViewDecoration;
+  private wv: GraphDecoration;
 
   constructor(
     private id: string,
@@ -36,9 +34,7 @@ class Annotation {
     this.textDec.decorate({
       contentText: 'None',
     });
-    // this.wv = new P5ViewDecoration(line);
-    // this.wv.decorate('<h1>Hi</h1><p>asdf</p>');
-    // this.wv.decorate();
+    this.wv = new GraphDecoration(line, 'histogram');
 
     // Filted and subscribe
     this.sub = data$
@@ -60,6 +56,10 @@ class Annotation {
 
           // Update decorations
           this.updateDecorations(resultToShow);
+
+          // MODIFY HERE
+          update(id, resultToShow);
+          // END MODIFY HERE
         } catch (err: any) {
           this.textDec.decorate({
             contentText: err.message,
@@ -67,15 +67,13 @@ class Annotation {
           });
           return; // nothing to evaluate
         }
-
-        // Evaluate the expression and compute the result
       });
   }
 
   dispose() {
-    this.highlightDec.dispose();
     this.textDec.dispose();
-    // this.wv.dispose();
+    this.highlightDec?.dispose();
+    this.wv?.dispose();
     this.sub?.unsubscribe();
   }
 
@@ -104,12 +102,17 @@ class Annotation {
   }
 
   private updateDecorations(resultToShow: ExpressionResult) {
-    if (resultToShow.outputFormat === 'inline') {
-      this.textDec.decorate({
-        contentText: `${resultToShow.stringValue}` || 'None',
-        color: 'DodgerBlue',
-      });
+    // inline : if (resultToShow.outputFormat === 'inline')
+    // we update the line anywa
+    this.textDec.decorate({
+      contentText: `${resultToShow.stringValue}` || 'None',
+      color: 'DodgerBlue',
+    });
+    // Plot
+    if (resultToShow.outputFormat === 'histogram') {
+      this.wv.decorate();
     }
+    // highlight
     if (highlightOn) this.highlightDec.decorate(500);
   }
 }
