@@ -1,3 +1,6 @@
+/**
+ * Annotation class and function to create and remote them
+ */
 import { data$, LiveData } from './extension';
 import { CodeManager, ExpressionQuery } from './codeManager';
 import { filter, Subject, Subscription, tap, map } from 'rxjs';
@@ -5,7 +8,7 @@ import {
   Decoration,
   HighlightDecoration,
   TextDecoration,
-  update,
+  broadcastToWebviews,
   GraphDecoration,
 } from './decorations';
 import { ExpressionEngine, ExpressionResult } from './expressions';
@@ -15,7 +18,40 @@ import { transpileExpression } from './parser';
 let annotations: Annotation[] = [];
 let highlightOn: boolean = true;
 
-// Annotation class
+// Annotations main control functions
+
+// Create annotations from the code queries
+export function createAnnotations() {
+  const queries = CodeManager.getInstance().getExpressionQueries();
+
+  // if they exist, remove them
+  if (isAnyAnnotation()) clearAnnotations();
+
+  annotations = queries.map(
+    ({ id, line, expression }: ExpressionQuery) =>
+      new Annotation(id, line, expression, data$)
+  );
+}
+
+// Check whether there is any annotation active
+function isAnyAnnotation() {
+  return annotations.length > 0;
+}
+
+// Clear up all annotations
+export function clearAnnotations() {
+  annotations.forEach((a) => a.dispose());
+  annotations = [];
+}
+
+// Toggle the annotation highlight globally
+export function toggleAnnotationsHighlight(): boolean {
+  highlightOn = !highlightOn;
+  return highlightOn;
+}
+
+// The Annotation class
+
 class Annotation {
   private sub: Subscription;
   private highlightDec: Decoration;
@@ -23,6 +59,7 @@ class Annotation {
   private histogram: GraphDecoration;
   private linegraph: GraphDecoration;
 
+  // Each annotation subscribes to its own Subject
   constructor(
     private id: string,
     private line: number,
@@ -60,7 +97,7 @@ class Annotation {
           this.updateDecorations(resultToShow);
 
           // MODIFY HERE
-          update(id, resultToShow);
+          broadcastToWebviews(id, resultToShow);
           // END MODIFY HERE
         } catch (err: any) {
           this.textDec.decorate({
@@ -72,6 +109,7 @@ class Annotation {
       });
   }
 
+  // Clean up all decorators associated
   dispose() {
     this.textDec.dispose();
     this.highlightDec?.dispose();
@@ -81,6 +119,8 @@ class Annotation {
   }
 
   // Private helpers
+
+  // Parse an expression
   private parseExpression(
     expression: string,
     lineValue: string
@@ -96,6 +136,7 @@ class Annotation {
     return result;
   }
 
+  // Run eval in the context for the expression
   private variableSubstituions(expression: string, current: string): string {
     // $$ means the value we get from the arduino (current)
     let expr = expression.replaceAll('$$', current);
@@ -104,6 +145,7 @@ class Annotation {
     return expr.replaceAll('$', 'this.');
   }
 
+  // Update the decorators
   private updateDecorations(resultToShow: ExpressionResult) {
     // inline : if (resultToShow.outputFormat === 'inline')
     // we update the line anywa
@@ -121,33 +163,4 @@ class Annotation {
     // highlight
     if (highlightOn) this.highlightDec.decorate(500);
   }
-}
-
-// Annotations main control
-
-// id, line, values_on_line, expression, decoration
-export function createAnnotations() {
-  const queries = CodeManager.getInstance().getExpressionQueries();
-
-  // if they exist, remove them
-  if (isAnyAnnotation()) clearAnnotations();
-
-  annotations = queries.map(
-    ({ id, line, expression }: ExpressionQuery) =>
-      new Annotation(id, line, expression, data$)
-  );
-}
-
-function isAnyAnnotation() {
-  return annotations.length > 0;
-}
-
-export function clearAnnotations() {
-  annotations.forEach((a) => a.dispose());
-  annotations = [];
-}
-
-export function toggleAnnotationsHighlight(): boolean {
-  highlightOn = !highlightOn;
-  return highlightOn;
 }

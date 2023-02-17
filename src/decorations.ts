@@ -1,7 +1,11 @@
+/**
+ * Various subclasses for different types of decorators
+ */
 import * as vscode from 'vscode';
 import { getExtensionUri } from './extension';
 import { Server } from 'socket.io';
 
+// The graph decorators (GraphDecoration) communicate with extension via socket.io
 const PORT = 3300;
 const webviewServer = new Server(PORT, { cors: { origin: '*' } });
 
@@ -9,13 +13,14 @@ webviewServer.on('connection', function (socket) {
   // console.log('connected');
 });
 
-export function update(id: string, value: any[]) {
+export function broadcastToWebviews(id: string, value: any[]) {
   webviewServer?.emit('data', {
     id,
     value,
   });
 }
 
+// The base Decoration class
 abstract class Decoration {
   constructor(protected line: number) {}
 
@@ -42,6 +47,7 @@ abstract class Decoration {
   }
 }
 
+// A decoration for the highlight
 class HighlightDecoration extends Decoration {
   private highlight: vscode.TextEditorDecorationType;
 
@@ -77,6 +83,7 @@ class HighlightDecoration extends Decoration {
   }
 }
 
+// A decoration for the inline text
 class TextDecoration extends Decoration {
   private textView!: vscode.TextEditorDecorationType;
 
@@ -119,6 +126,7 @@ class TextDecoration extends Decoration {
   }
 }
 
+// A decoration for a webview with some basic html content
 class WebViewDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
 
@@ -152,6 +160,8 @@ class WebViewDecoration extends Decoration {
   }
 }
 
+// A decoration for a graph
+// The graph code (p5.js) are in the src/graphs folder
 class GraphDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
   private root: vscode.Uri;

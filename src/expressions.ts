@@ -1,18 +1,23 @@
+/**
+ * Expression engine and context
+ */
 import * as vscode from 'vscode';
 import { appendFile } from 'fs';
 import { LowPassFilter } from './vendor/OneEuroFilter';
 
+// The result of an evaluated expression
 export type ExpressionResult = {
   value: any[];
   stringValue: string;
   outputFormat: 'inline' | 'histogram' | 'linegraph';
 };
 
-// Evaluate an expression within a context
+// The Engine evaluates an expression within a context
 export class ExpressionEngine {
   private static instance: ExpressionEngine;
   private context = new Context();
 
+  // Singleton
   static getInstance() {
     if (!ExpressionEngine.instance) this.instance = new ExpressionEngine();
     return this.instance;
@@ -26,21 +31,24 @@ export class ExpressionEngine {
     // return new Function(`return ${src}`).call(this.context);
   }
 
+  // Get a new context
   clear() {
     this.context = new Context();
   }
 }
 
+// The context with some built-in functions
 class Context {
   private fil!: LowPassFilter;
   private filterAlpha: number = 0;
 
+  // Create a new context and initialize it
   constructor() {
     this.filterAlpha = 1;
     this.fil = new LowPassFilter(this.filterAlpha);
   }
 
-  // pipe
+  // pipe utility to run the following functions
   pipe(...fns: Array<(v: any) => any>) {
     return (x: any) => fns.reduce((v, f) => f(v), x);
   }
@@ -48,13 +56,6 @@ class Context {
   // Assert and print
   assert(exp: boolean): string {
     return exp ? '✅' : '❌';
-  }
-
-  // Percentage prettifucation: 0.1 => 10%
-  percentage(input: number): string {
-    if (typeof input !== 'number')
-      throw new Error(`"${input}" is not a number`);
-    return `${(input * 100) | 0}%`;
   }
 
   // Numeric comparisons
@@ -148,7 +149,7 @@ class Context {
     };
   }
 
-  // one function to support plugging a function
+  // One function to support plugging a function
   lambda(fn: (inputParam: any) => any): (input: any) => any {
     return (input: any) => {
       return fn(input);

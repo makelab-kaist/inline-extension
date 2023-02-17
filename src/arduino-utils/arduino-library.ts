@@ -59,7 +59,7 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
     printValueFormatted(SerialWrapper("Invalid input"), id, line, index, items);
     return;
   } else if (value == 255){
-    printValueFormatted(SerialWrapper("100%"), id, line, index, items);
+    printValueFormatted(SerialWrapper("100"), id, line, index, items);
     return;
   }
   unsigned long highTime = pulseIn(pin, HIGH);
