@@ -195,7 +195,7 @@ function removeAnnotationsFromCode() {
     ui.vsError('Not a valid file');
     return;
   }
-  const newCode = CodeManager.getInstance().generateCodeNoAnnotations();
+  const newCode = CodeManager.getInstance().disableAnnotations();
 
   // replace old code with new one
   const doc = editor.document;

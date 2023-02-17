@@ -131,7 +131,7 @@
           icon="fa-arrows-spin" />
         <IconButton
           on:click={clearAnnotations}
-          on:mouseover={() => tooltip('Remove annotations')}
+          on:mouseover={() => tooltip('Disable annotations')}
           on:mouseout={noTooltip}
           icon="fa-eraser" />
         <IconButton

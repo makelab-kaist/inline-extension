@@ -84,8 +84,8 @@ export class CodeManager {
     this.codeHash = this.computeCodeHash();
   }
 
-  // generate code wihtout the annotations of form: // [expression] ?
-  generateCodeNoAnnotations(): string {
+  // Disable annotations by removing the last questionmark: // [expression] ? => // [expression]
+  disableAnnotations(): string {
     const code = this.getCurrentCode();
     const lines = code.split('\n');
     const queries: parser.LineData[] =
@@ -96,7 +96,7 @@ export class CodeManager {
       const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
       const textLine = lines[editorLine];
       const { location } = data[0];
-      const newText = textLine.slice(0, location.startCol);
+      const newText = textLine.slice(0, location.endCol - 1);
       lines[editorLine] = newText;
     }
     const newCode = lines.join('\n');
