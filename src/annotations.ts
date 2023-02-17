@@ -20,7 +20,8 @@ class Annotation {
   private sub: Subscription;
   private highlightDec: Decoration;
   private textDec: Decoration;
-  private wv: GraphDecoration;
+  private histogram: GraphDecoration;
+  private linegraph: GraphDecoration;
 
   constructor(
     private id: string,
@@ -34,7 +35,8 @@ class Annotation {
     this.textDec.decorate({
       contentText: 'None',
     });
-    this.wv = new GraphDecoration(line, 'histogram');
+    this.histogram = new GraphDecoration(line, 'histogram');
+    this.linegraph = new GraphDecoration(line, 'linegraph');
 
     // Filted and subscribe
     this.sub = data$
@@ -73,7 +75,8 @@ class Annotation {
   dispose() {
     this.textDec.dispose();
     this.highlightDec?.dispose();
-    this.wv?.dispose();
+    this.histogram?.dispose();
+    this.linegraph?.dispose();
     this.sub?.unsubscribe();
   }
 
@@ -110,7 +113,10 @@ class Annotation {
     });
     // Plot
     if (resultToShow.outputFormat === 'histogram') {
-      this.wv.decorate();
+      this.histogram.decorate();
+    }
+    if (resultToShow.outputFormat === 'linegraph') {
+      this.linegraph.decorate();
     }
     // highlight
     if (highlightOn) this.highlightDec.decorate(500);

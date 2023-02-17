@@ -100,7 +100,7 @@
   {#if !state.initialized}
     <button on:click={configureConnection}>Initialize Serial</button>
   {:else}
-    <h3>Menu:</h3>
+    <h2>Menu:</h2>
     <div class="container">
       <div class="flex">
         {#if !connected}
@@ -146,8 +146,25 @@
 
     <button on:click={uploadRelease}>Upload Release</button>
     <button on:click={reset}>Reset</button>
-    <h3>Serial status</h3>
+
+    <h2>Serial status</h2>
     <SerialMenu {connected} {portName} />
+  
+    <!-- <h2>Help</h2>
+
+    <ul>
+      <li class="mb">💰 $$</li>
+      <li>✅ assert</li>
+      <li>📊 hist</li>
+      <li>📈 plot</li>
+      <li class="mb">🖨 print</li>
+      <li>⬆️ above</li>
+      <li>⬇️ below</li>
+      <li>↕️ between</li>
+      <li class="mb">🧹 filter</li>
+      <li>💾 save</li>
+      <li>⏰ log</li>
+    </ul> -->
   {/if}
 </main>
 
@@ -170,4 +187,18 @@
   span {
     font-size: large;
   }
+
+  /* ul{
+    padding: 0px;
+  }
+
+  li {
+    font-size: large;
+    list-style: outside none none;
+    cursor: pointer;
+  }
+
+  .mb {
+    margin-bottom: 7%;
+  } */
 </style>

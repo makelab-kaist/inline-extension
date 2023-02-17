@@ -1,7 +1,6 @@
 /**
  * Entry point of the extension
  */
-
 import * as vscode from 'vscode';
 
 import {

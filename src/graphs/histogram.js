@@ -71,7 +71,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key == 'C' || key == 'c') {
+  if (key === 'C' || key === 'c') {
     allData = [];
   }
 }

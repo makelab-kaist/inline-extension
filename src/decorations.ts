@@ -157,7 +157,7 @@ class GraphDecoration extends Decoration {
   private root: vscode.Uri;
   private ready: boolean = false;
 
-  constructor(line: number, type: 'histogram' | 'linegraph') {
+  constructor(line: number, private graphType: 'histogram' | 'linegraph') {
     super(line);
     this.root = getExtensionUri();
   }
@@ -183,7 +183,7 @@ class GraphDecoration extends Decoration {
       vscode.Uri.joinPath(this.root, 'src/graphs/socket.io.min.js')
     );
     const code = this.inset.webview.asWebviewUri(
-      vscode.Uri.joinPath(this.root, 'src/graphs/histogram.js')
+      vscode.Uri.joinPath(this.root, `src/graphs/${this.graphType}.js`)
     );
 
     if (this.inset)

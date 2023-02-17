@@ -6341,7 +6341,7 @@ var app = (function () {
 
     // (102:2) {:else}
     function create_else_block(ctx) {
-    	let h30;
+    	let h20;
     	let t1;
     	let div1;
     	let div0;
@@ -6363,7 +6363,7 @@ var app = (function () {
     	let t10;
     	let button1;
     	let t12;
-    	let h31;
+    	let h21;
     	let t14;
     	let serialmenu;
     	let current;
@@ -6433,8 +6433,8 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			h30 = element("h3");
-    			h30.textContent = "Menu:";
+    			h20 = element("h2");
+    			h20.textContent = "Menu:";
     			t1 = space();
     			div1 = element("div");
     			div0 = element("div");
@@ -6457,25 +6457,25 @@ var app = (function () {
     			button1 = element("button");
     			button1.textContent = "Reset";
     			t12 = space();
-    			h31 = element("h3");
-    			h31.textContent = "Serial status";
+    			h21 = element("h2");
+    			h21.textContent = "Serial status";
     			t14 = space();
     			create_component(serialmenu.$$.fragment);
-    			add_location(h30, file, 102, 4, 2390);
-    			attr_dev(div0, "class", "flex svelte-9mmsyb");
+    			add_location(h20, file, 102, 4, 2390);
+    			attr_dev(div0, "class", "flex svelte-14ykul0");
     			add_location(div0, file, 104, 6, 2439);
-    			attr_dev(span, "class", "svelte-9mmsyb");
+    			attr_dev(span, "class", "svelte-14ykul0");
     			add_location(span, file, 143, 6, 3744);
-    			attr_dev(div1, "class", "container svelte-9mmsyb");
+    			attr_dev(div1, "class", "container svelte-14ykul0");
     			add_location(div1, file, 103, 4, 2409);
-    			attr_dev(button0, "class", "svelte-9mmsyb");
+    			attr_dev(button0, "class", "svelte-14ykul0");
     			add_location(button0, file, 146, 4, 3787);
-    			attr_dev(button1, "class", "svelte-9mmsyb");
+    			attr_dev(button1, "class", "svelte-14ykul0");
     			add_location(button1, file, 147, 4, 3848);
-    			add_location(h31, file, 148, 4, 3892);
+    			add_location(h21, file, 149, 4, 3893);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h30, anchor);
+    			insert_dev(target, h20, anchor);
     			insert_dev(target, t1, anchor);
     			insert_dev(target, div1, anchor);
     			append_dev(div1, div0);
@@ -6496,7 +6496,7 @@ var app = (function () {
     			insert_dev(target, t10, anchor);
     			insert_dev(target, button1, anchor);
     			insert_dev(target, t12, anchor);
-    			insert_dev(target, h31, anchor);
+    			insert_dev(target, h21, anchor);
     			insert_dev(target, t14, anchor);
     			mount_component(serialmenu, target, anchor);
     			current = true;
@@ -6570,7 +6570,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h30);
+    			if (detaching) detach_dev(h20);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(div1);
     			if_blocks[current_block_type_index].d();
@@ -6583,7 +6583,7 @@ var app = (function () {
     			if (detaching) detach_dev(t10);
     			if (detaching) detach_dev(button1);
     			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(h31);
+    			if (detaching) detach_dev(h21);
     			if (detaching) detach_dev(t14);
     			destroy_component(serialmenu, detaching);
     			mounted = false;
@@ -6612,7 +6612,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Initialize Serial";
-    			attr_dev(button, "class", "svelte-9mmsyb");
+    			attr_dev(button, "class", "svelte-14ykul0");
     			add_location(button, file, 100, 4, 2310);
     		},
     		m: function mount(target, anchor) {
