@@ -35,8 +35,8 @@ class Annotation {
     this.textDec.decorate({
       contentText: 'None',
     });
-    this.histogram = new GraphDecoration(line, 'histogram');
-    this.linegraph = new GraphDecoration(line, 'linegraph');
+    this.histogram = new GraphDecoration(line, id, 'histogram');
+    this.linegraph = new GraphDecoration(line, id, 'linegraph');
 
     // Filted and subscribe
     this.sub = data$

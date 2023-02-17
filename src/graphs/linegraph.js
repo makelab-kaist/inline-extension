@@ -24,9 +24,9 @@ const STROKE_DOT = 5;
 const BUFFER_SIZE = 500;
 const buffer = Array(BUFFER_SIZE).fill([]);
 const MIN_TICKS = 10;
-const MAX_TICKS = 500;
+const MAX_TICKS = BUFFER_SIZE;
 const STEP_TICK = 10;
-let ticks = MAX_TICKS / 2;
+let ticks = MAX_TICKS / 5;
 
 const MIN_Y_RESOLUTION = 10;
 let channels = 0;
@@ -47,6 +47,7 @@ socket.on('data', (data) => {
     value: { value, stringValue, outputFormat },
   } = data;
 
+  if (id !== annotationId) return; // not for me
   if (pause) return;
 
   let incomingData = toNumberArray(value);

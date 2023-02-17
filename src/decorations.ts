@@ -157,7 +157,11 @@ class GraphDecoration extends Decoration {
   private root: vscode.Uri;
   private ready: boolean = false;
 
-  constructor(line: number, private graphType: 'histogram' | 'linegraph') {
+  constructor(
+    line: number,
+    private annotationId: string,
+    private graphType: 'histogram' | 'linegraph'
+  ) {
     super(line);
     this.root = getExtensionUri();
   }
@@ -198,6 +202,7 @@ class GraphDecoration extends Decoration {
         </style>
         </head>
         <body>  
+        <script>var annotationId= "${this.annotationId}"</script>
         <script defer  src="${code}"></script>
         </body>
         `;
