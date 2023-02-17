@@ -65,12 +65,8 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
   unsigned long highTime = pulseIn(pin, HIGH);
   unsigned long lowTime = pulseIn(pin, LOW);
   unsigned long dutyCycle = (float)(highTime * 100) / (highTime + lowTime);
-  if (dutyCycle == 0){
-    printValueFormatted(SerialWrapper("0% (correct pin?)"), id, line, index, items);
-  }else{
-    String perc = String(dutyCycle) + "%";
-    printValueFormatted(SerialWrapper(perc), id, line, index, items);
-  }
+  String perc = String(dutyCycle);
+  printValueFormatted(SerialWrapper(perc), id, line, index, items);
 }
 `
 );
@@ -805,5 +801,4 @@ void _Serial_print(char value, uint8_t format, PARAMS)
 ${getCodeParts(functions)}
 
 #endif // __DASH_FUNCTIONS__H__
-
 `;

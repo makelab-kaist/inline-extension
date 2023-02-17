@@ -50,6 +50,13 @@ class Context {
     return exp ? '✅' : '❌';
   }
 
+  // Percentage prettifucation: 0.1 => 10%
+  percentage(input: number): string {
+    if (typeof input !== 'number')
+      throw new Error(`"${input}" is not a number`);
+    return `${(input * 100) | 0}%`;
+  }
+
   // Numeric comparisons
   above(threshold: number): (input: number) => any {
     return function (input: number) {
