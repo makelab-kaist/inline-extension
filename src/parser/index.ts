@@ -1,6 +1,9 @@
 // @ts-ignore
 import * as parser from './grammar';
 // @ts-ignore
+/**
+ * Wrapper for the grammar and expression-grammar parsers
+ */
 import * as expr_parser from './expression-language';
 
 type TextLocation = {

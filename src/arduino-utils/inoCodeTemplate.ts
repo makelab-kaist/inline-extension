@@ -1,3 +1,6 @@
+/**
+ * The instrumented Arduino code (all in one string)
+ */
 export const libCode = `
 
 #ifndef __DASH_FUNCTIONS__H__

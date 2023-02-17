@@ -1,3 +1,6 @@
+/**
+ * The instrumented Arduino code
+ */
 const library = new Map<string, string>();
 
 // Pins

@@ -1,3 +1,6 @@
+/**
+ * VSCode UI utils
+ */
 import * as vscode from 'vscode';
 
 /**
