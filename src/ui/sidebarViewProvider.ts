@@ -1,3 +1,7 @@
+/**
+ * A wrapper for a SideView built with Svelte
+ * The code for the sideview is src/ui/side_view
+ */
 import * as vscode from 'vscode';
 import { createAnnotations } from '../annotations';
 import {
@@ -16,6 +20,7 @@ type Message = {
   [key: string]: string | boolean;
 };
 
+// The SideView provider that should be registered within the extension
 class SideViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'double-cheese.view';
 
@@ -38,6 +43,7 @@ class SideViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
+    // Incoming messages from the sideview
     webviewView.webview.onDidReceiveMessage(
       ({ message }: { message: string }) => {
         switch (message) {

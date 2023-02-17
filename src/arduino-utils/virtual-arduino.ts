@@ -1,3 +1,6 @@
+/**
+ * A class to talk to the Arduino server
+ */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { io, Socket } from 'socket.io-client';
 
