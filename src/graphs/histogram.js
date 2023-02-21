@@ -1,13 +1,21 @@
-// Constants
+// Constants & globals
+// Visuals
 const WINDOW_HEIGHT = 150;
-const MIN_INPUT_RANGE = 20;
-const MIN_BIN_VALUE = 10;
-const BINS = 20;
+const MARGIN = 20;
+const TEXT_SIZE = 15;
+const TEXT_OFFSET = 30;
+const color = '#147df5';
+const highlight = '#ffd300';
 
-// Globals
-let allData = [];
-let binLength = 1;
-let range = 500;
+// Data
+let buffer = new Map();
+
+// Bins
+const MIN_MAX_VALUE = 10;
+const MIN_BINS = 10;
+const STEP = MIN_BINS;
+const MAX_BINS = 100;
+let nbins = MAX_BINS / 2;
 
 // Socket operations
 const socket = io('http://localhost:3300');
@@ -21,80 +29,154 @@ socket.on('data', (data) => {
     value: { value, stringValue, outputFormat },
   } = data;
 
+  if (id !== annotationId) return; // not for me
+
   let incomingData = toNumberArray(value);
-  allData = [...allData, ...incomingData];
+  addToBuffer(incomingData);
 });
 
 // P5.js sketch here
 function setup() {
   createCanvas(windowWidth - 100, WINDOW_HEIGHT);
-  binLength = width / BINS;
-  textAlign(CENTER);
 }
 
 function windowResized() {
   resizeCanvas(windowWidth - 100, WINDOW_HEIGHT);
-  binLength = width / BINS;
 }
 
 function draw() {
   clear();
-  // background(0);
-  // Compute bins
-  const bins = computeBins(allData);
+  background(0);
 
-  // Draw the bins
-  stroke(200);
-  strokeWeight(0.3);
+  const bins = toBins(buffer, nbins);
+  drawBins(bins);
+  drawRanges(bins);
+  drawTooltip(bins);
+}
 
-  const yMax = max([...bins, MIN_BIN_VALUE]);
-  let binsize = (range / BINS) | 0;
+function drawBins(binsData) {
+  if (binsData.length === 0) return;
+  const gap = width / binsData.length;
+  const values = binsData.map((e) => e.counter);
+  const maxVal = Math.max(...values, MIN_MAX_VALUE);
 
-  for (let i = 0; i < bins.length; i++) {
-    let y = height - map(bins[i], 0, yMax, 0, height);
-    fill('#2066D9'); // blue
-    rect(i * binLength, y, binLength, height);
-    line(i * binLength, 0, i * binLength, height);
-    fill(255);
-    textSize(12);
-    text(
-      `[${i * binsize}-${i * binsize + binsize})`,
-      i * binLength + binLength / 2,
-      10
-    );
-    if (bins[i] > 0) {
-      fill('#E8A013'); //yellow
-      textSize(18);
-      text(bins[i], i * binLength + binLength / 2, height - 10);
+  stroke(0);
+  strokeWeight(1);
+  textSize(TEXT_SIZE);
+
+  for (let i = 0; i < binsData.length; i++) {
+    // scaled data
+    const { counter } = binsData[i];
+    const x = i * gap;
+    const y = map(counter, 0, maxVal, 0, height);
+    if (mouseX >= x && mouseX <= x + gap) {
+      fill(highlight);
+    } else {
+      fill(color);
     }
+    rect(x, height - y, gap, height);
+    // lines
+    stroke(100);
+    line(x, 0, x, height);
   }
+}
+
+function drawRanges(binsData) {
+  if (binsData.length === 0) return;
+  // draw ranges
+  let minX = binsData[0].from | 0;
+  let maxX = binsData[binsData.length - 1].to | 0;
+  fill(255);
+  textAlign(LEFT);
+  text(`Min: ${minX} `, MARGIN, MARGIN);
+  textAlign(RIGHT);
+  text(`Max: ${maxX}`, width - MARGIN, MARGIN);
+}
+
+function drawTooltip(binsData) {
+  if (binsData.length === 0) return;
+  const gap = width / binsData.length;
+
+  let index = (mouseX / gap) | 0;
+  if (mouseX < 0) index = 0;
+  if (index >= binsData.length) index = binsData.length - 1;
+  const { counter, from, to } = binsData[index];
+  if (counter == 0) return;
+
+  const label = `${counter} [${from | 0}-${to | 0})`;
+
+  textSize(TEXT_SIZE);
+  let x = mouseX + TEXT_OFFSET;
+  textAlign(LEFT);
+  if (mouseX > width / 2) {
+    x = mouseX - TEXT_OFFSET;
+    textAlign(RIGHT);
+  }
+  const y = mouseY;
+  fill(highlight);
+  noStroke(1);
+
+  text(`${label}`, x, y);
+}
+
+// Control
+function mouseWheel(event) {
+  nbins += event.delta >= 0 ? STEP : -STEP;
+  if (nbins <= MIN_BINS) nbins = MIN_BINS;
+  if (nbins >= MAX_BINS) nbins = MAX_BINS;
 }
 
 function keyPressed() {
-  if (key === 'C' || key === 'c') {
-    allData = [];
+  if (key === ' ') {
+    // SPACE
+    buffer = new Map();
   }
 }
 
-function mouseWheel(event) {
-  range += event.delta >= 0 ? MIN_INPUT_RANGE : -MIN_INPUT_RANGE;
-  if (range <= MIN_INPUT_RANGE) range = MIN_INPUT_RANGE;
-}
-
+// Utils
 function toNumberArray(arr) {
-  return arr.map((e) => Number.parseFloat(e));
+  return arr.map((e) => {
+    const v = Number.parseFloat(e);
+    if (typeof v === 'undefined' || isNaN(v)) return undefined;
+    return v;
+  });
 }
 
-function computeBins(values) {
-  const bins = Array(BINS).fill(0);
-  let binsize = range / BINS;
-  values.forEach((e) => {
-    if (!isNaN(e)) {
-      let bin = (e / binsize) | 0;
-      if (bin >= 0 && bin < bins.length) {
-        bins[bin] += 1;
+function addToBuffer(incomingData) {
+  incomingData.forEach((e) => {
+    if (e !== undefined) {
+      const counter = buffer.get(e);
+      if (counter == undefined) {
+        buffer.set(e, 0);
+      } else {
+        buffer.set(e, counter + 1);
       }
     }
+  });
+}
+
+function toBins(data, nbins) {
+  if (nbins === 0) return [];
+  if (data.size == 0) return [];
+  const values = [...data.keys()];
+  const minvalue = Math.min(...values);
+  const maxvalue = Math.max(...values);
+  const totrange = maxvalue - minvalue;
+  const binrange = totrange / nbins;
+
+  const bins = Array(nbins)
+    .fill(0)
+    .map((e, i) => {
+      return {
+        counter: 0,
+        from: minvalue + i * binrange,
+        to: minvalue + i * binrange + binrange,
+      };
+    });
+
+  [...data].forEach(([key, value], i) => {
+    const index = map(key, minvalue, maxvalue, 0, nbins - 1) | 0;
+    bins[index].counter += value;
   });
   return bins;
 }
