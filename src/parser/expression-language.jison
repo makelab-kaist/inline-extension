@@ -7,6 +7,7 @@
 <<EOF>>                                           { return 'NONE' }
 \s+                                               { /* ignore spaces */ }
 'assert'                                          { return 'ASSERT' }
+'is'                                              { return 'IS' }
 'above'                                           { return 'ABOVE' }
 'below'                                           { return 'BELOW' }
 'between'                                         { return 'BETWEEN' }
@@ -52,6 +53,7 @@ function_sequence
 
 function_call
   : assert_function { $$ = $1 }
+  | is_function { $$ = $1 }
   | threshold_functions { $$ = $1 }
   | filter_function { $$ = $1 }
   | save_function { $$ = $1 }
@@ -64,6 +66,10 @@ function_call
 
 assert_function
   : ASSERT { $$ = 'this.assert' }
+  ;
+
+is_function
+  : IS EXP { $$ = `this.is(${$2})` }
   ;
 
 threshold_functions

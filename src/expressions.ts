@@ -58,6 +58,13 @@ class Context {
     return exp ? '✅' : '❌';
   }
 
+  // Allow pass through if same
+  is(toCompare: any): (input: any) => any {
+    return function (input: any) {
+      return input == toCompare ? input : undefined;
+    };
+  }
+
   // Numeric comparisons
   above(threshold: number): (input: number) => any {
     return function (input: number) {

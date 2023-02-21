@@ -131,6 +131,7 @@ class Annotation {
       result = transpileExpression(expression);
       result = this.variableSubstituions(result, lineValue);
     } catch (err: any) {
+      console.error(err);
       throw new Error('Invalid expression: unable to parse');
     }
     return result;
