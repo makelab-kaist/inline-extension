@@ -2,10 +2,11 @@
 // Visuals
 const WINDOW_HEIGHT = 150;
 const MARGIN = 20;
-const TEXT_SIZE = 15;
+const TEXT_SIZE = 20;
 const TEXT_OFFSET = 30;
 const color = '#147df5';
 const highlight = '#ffd300';
+const textColor = '#ff3a28';
 
 // Data
 let buffer = new Map();
@@ -113,7 +114,7 @@ function drawTooltip(binsData) {
     textAlign(RIGHT);
   }
   const y = mouseY;
-  fill(highlight);
+  fill(textColor);
   noStroke(1);
 
   text(`${label}`, x, y);

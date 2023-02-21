@@ -3,7 +3,7 @@
 const WINDOW_HEIGHT = 150;
 const MARGIN = 20;
 const LEGEND_SIZE = 15;
-const TEXT_SIZE = 15;
+const TEXT_SIZE = 20;
 const TEXT_OFFSET = 50;
 const colors = [
   '#ff3a28',
