@@ -129,7 +129,7 @@ class Annotation {
     try {
       // parse the expression and run it
       result = transpileExpression(expression);
-      result = this.variableSubstituions(result, lineValue);
+      result = this.variableSubstitutions(result, lineValue);
     } catch (err: any) {
       console.error(err);
       throw new Error('Invalid expression: unable to parse');
@@ -138,7 +138,7 @@ class Annotation {
   }
 
   // Run eval in the context for the expression
-  private variableSubstituions(expression: string, current: string): string {
+  private variableSubstitutions(expression: string, current: string): string {
     // $$ means the value we get from the arduino (current)
     let expr = expression.replaceAll('$$', current);
     // all user variables ($) are translated in `this.`
