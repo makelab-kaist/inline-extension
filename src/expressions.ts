@@ -93,14 +93,17 @@ class Context {
   // Filter value
   filter(alpha: number = 1): (input: number) => any {
     return (input: number) => {
+      if (typeof input !== 'number')
+        throw new Error(`"${input}" is not a number`);
+      // Filter it
       if (alpha !== this.filterAlpha) {
         this.filterAlpha = alpha;
         this.fil = new LowPassFilter(this.filterAlpha);
       }
       const res = this.fil.filterWithAlpha(input, alpha);
-      console.log(res);
 
-      return res.toFixed(1);
+      // return res.toFixed(1);
+      return ~~res; // float to int fast convertion
     };
   }
 

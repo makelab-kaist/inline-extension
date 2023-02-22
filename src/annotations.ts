@@ -79,14 +79,14 @@ class Annotation {
     this.sub = data$
       .pipe(
         filter((d) => id === d.id), // filter by id
-        map(({ values }) => values[0]) // get only the first element from arduino
+        filter(({ values }) => values.length > 0)
       )
-      .subscribe((lineValue: string) => {
+      .subscribe(({ values: lineValues }) => {
         try {
           // parsing
           let expressionToEvaluate = this.parseExpression(
             expression,
-            lineValue
+            lineValues
           );
 
           // executing
@@ -123,24 +123,42 @@ class Annotation {
   // Parse an expression
   private parseExpression(
     expression: string,
-    lineValue: string
+    lineValues: string[]
   ): string | never {
     let result = '';
     try {
       // parse the expression and run it
       result = transpileExpression(expression);
-      result = this.variableSubstitutions(result, lineValue);
     } catch (err: any) {
       console.error(err);
       throw new Error('Invalid expression: unable to parse');
     }
+
+    // run the expression (might throw an error)
+    result = this.variableSubstitutions(result, lineValues);
+
     return result;
   }
 
   // Run eval in the context for the expression
-  private variableSubstitutions(expression: string, current: string): string {
+  private variableSubstitutions(
+    expression: string,
+    current: string[]
+  ): string | never {
     // $$ means the value we get from the arduino (current)
-    let expr = expression.replaceAll('$$', current);
+    let expr = expression.replaceAll('$$', current[0]); // I know at least one exists
+
+    // $0, $1... get and then replace all expressions that have value like $[number]
+    const regexp = /\$\d+/g;
+    const substitutions = expr.matchAll(regexp);
+    for (let s of substitutions) {
+      const text = s.toString();
+      const index = parseInt(text.substring(1)); // extract number from $number => number
+      const value = current[index];
+      if (value === undefined) throw new Error(`$${index} does not exist`);
+      expr = expr.replace(text, value);
+    }
+
     // all user variables ($) are translated in `this.`
     // $a => this.a
     return expr.replaceAll('$', 'this.');
