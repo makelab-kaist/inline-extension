@@ -1,0 +1,254 @@
+[
+  {
+    "command": "assert",
+    "description": "returns ✅ if the <b>input</b> expression evaluates to <b>true</b>, otherwise ❌.",
+    "grammar": {
+      "input": "input",
+      "command": "assert",
+      "params": "",
+      "output": "✅ or ❌"
+    },
+    "examples": [
+      {
+        "expression": "// 2 == 2 | assert",
+        "result": "✅"
+      },
+      {
+        "expression": "// 0 | assert",
+        "result": "❌"
+      },
+      {
+        "expression": "// 15 | above 10 | assert",
+        "result": "✅"
+      }
+    ]
+  },
+  {
+    "command": "is",
+    "description": "returns the <b>input</b> expression only if it is equal to <b>value</b>.",
+    "grammar": {
+      "input": "input",
+      "command": "is",
+      "params": "value",
+      "output": "input or None"
+    },
+    "examples": [
+      {
+        "expression": "// 1 | is 1",
+        "result": "1"
+      },
+      {
+        "expression": "// 0 | is 1",
+        "result": "None"
+      },
+      {
+        "expression": "// 'string' | is 'string'",
+        "result": "'string'"
+      }
+    ]
+  },
+  {
+    "command": "above",
+    "description": "returns the <b>input</b> number only if > the <b>threshold</b>.",
+    "grammar": {
+      "input": "input",
+      "command": "above",
+      "params": "threshold",
+      "output": "input or None"
+    },
+    "examples": [
+      {
+        "expression": "// 10 | above 5",
+        "result": "10"
+      },
+      {
+        "expression": "// 10 | above 20",
+        "result": "None"
+      }
+    ]
+  },
+  {
+    "command": "below",
+    "description": "returns the <b>input</b> number only if < the <b>threshold</b>.",
+    "grammar": {
+      "input": "input",
+      "command": "below",
+      "params": "threshold",
+      "output": "input or None"
+    },
+    "examples": [
+      {
+        "expression": "// 10 | below 5",
+        "result": "None"
+      },
+      {
+        "expression": "// 10 | below 20",
+        "result": "20"
+      }
+    ]
+  },
+  {
+    "command": "between",
+    "description": "returns the <b>input</b> number only if <b>low</b> <= input <= <b>up</b>.",
+    "grammar": {
+      "input": "input",
+      "command": "between",
+      "params": "low, up",
+      "output": "input or None"
+    },
+    "examples": [
+      {
+        "expression": "// 10 | between 5, 10",
+        "result": "10"
+      },
+      {
+        "expression": "// 10 | between 20, 30",
+        "result": "None"
+      }
+    ]
+  },
+  {
+    "command": "filter",
+    "description": "returns the <b>input</b> after applying a low-pass filter. The optional parameter is a number between 1 (no filtering) and 0 excluded (infite filter).",
+    "grammar": {
+      "input": "input",
+      "command": "filter",
+      "params": "optional_param",
+      "output": "filtered input"
+    },
+    "examples": [
+      {
+        "expression": "// 10 | filter",
+        "result": "10"
+      },
+      {
+        "expression": "// 10 | filter 0.3",
+        "result": "10"
+      }
+    ]
+  },
+  {
+    "command": "graph",
+    "description": "draw a line graph based on the <b>input</b> number and optional additional numerical values.",
+    "grammar": {
+      "input": "input",
+      "command": "graph",
+      "params": "list values",
+      "output": "[draw linegraph]"
+    },
+    "examples": [
+      {
+        "expression": "// $$ | graph",
+        "result": "[line graph]"
+      },
+      {
+        "expression": "// 10 | graph 0, 100",
+        "result": "[line graph]"
+      }
+    ]
+  },
+  {
+    "command": "hist",
+    "description": "draw a histogram based on the <b>input</b> number and optional additional numerical values.",
+    "grammar": {
+      "input": "input",
+      "command": "hist",
+      "params": "list values",
+      "output": "[draw linegraph]"
+    },
+    "examples": [
+      {
+        "expression": "// $$ | graph",
+        "result": "[histogram]"
+      },
+      {
+        "expression": "// 10 | graph 0, 100",
+        "result": "[histogram]"
+      }
+    ]
+  },
+  {
+    "command": "print",
+    "description": "print on the line the <b>input</b> and optional additional values.",
+    "grammar": {
+      "input": "input",
+      "command": "print",
+      "params": "list values",
+      "output": "input, list values"
+    },
+    "examples": [
+      {
+        "expression": "// 1 | print",
+        "result": "1"
+      },
+      {
+        "expression": "// $$ | print 0, 100",
+        "result": "$$, 0, 100"
+      }
+    ]
+  },
+  {
+    "command": "save",
+    "description": "save the <b>input</b> value in a <b>variable</b>.<br/>Recall the variable using the <b>$</b> operator before the variable name.",
+    "grammar": {
+      "input": "input",
+      "command": "save",
+      "params": "variable name",
+      "output": "input"
+    },
+    "examples": [
+      {
+        "expression": "// 1 | save x",
+        "result": "1"
+      },
+      {
+        "expression": "// $x",
+        "result": "1"
+      }
+    ]
+  },
+  {
+    "command": "log",
+    "description": "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>).",
+    "grammar": {
+      "input": "input",
+      "command": "log",
+      "params": "optional fileName",
+      "output": "input"
+    },
+    "examples": [
+      {
+        "expression": "// $$ | log",
+        "result": "$$"
+      },
+      {
+        "expression": "// $$ | log file.txt",
+        "result": "$$ (in file.txt)"
+      }
+    ]
+  },
+  {
+    "command": "$$",
+    "description": "is the defaul input at a line. It is equivalent to $0. If multiple values are on the same line, use $1, $2, ... to retrieve those. ",
+    "grammar": {
+      "input": "",
+      "command": "$$",
+      "params": "",
+      "output": "$$ (current value)"
+    },
+    "examples": [
+      {
+        "expression": "// $$",
+        "result": "$$ (current value)"
+      },
+      {
+        "expression": "// $0",
+        "result": "$$"
+      },
+      {
+        "expression": "// print $1",
+        "result": "$$, $1"
+      }
+    ]
+  }
+]
