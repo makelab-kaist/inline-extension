@@ -161,7 +161,7 @@
       <SerialMenu {connected} {portName} />
     </div>
 
-    <h2>Help</h2>
+    <h2>Expressions help</h2>
     <Help />
   {/if}
 </main>
