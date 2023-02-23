@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import IconButton from './components/IconButton.svelte';
+  import Help from './Help.svelte';
   import SerialMenu from './SerialMenu.svelte';
 
   // Do not need to acquire the API here, as it is in the html of the provider
@@ -109,13 +110,15 @@
             on:mouseover={() => tooltip('Connect')}
             on:mouseout={noTooltip}
             icon="fa-link"
-            gray={true} />
+            gray={true}
+          />
         {:else}
           <IconButton
             on:click={disconnectSerial}
             on:mouseover={() => tooltip('Disconnect')}
             on:mouseout={noTooltip}
-            icon="fa-link-slash" />
+            icon="fa-link-slash"
+          />
         {/if}
         <IconButton
           on:click={uploadSketch}
@@ -123,23 +126,27 @@
           on:mouseout={noTooltip}
           icon="fa-upload"
           red={needRefresh}
-          green={!needRefresh} />
+          green={!needRefresh}
+        />
         <IconButton
           on:click={refreshAnnotations}
           on:mouseover={() => tooltip('Update annotations')}
           on:mouseout={noTooltip}
-          icon="fa-arrows-spin" />
+          icon="fa-arrows-spin"
+        />
         <IconButton
           on:click={clearAnnotations}
           on:mouseover={() => tooltip('Disable annotations')}
           on:mouseout={noTooltip}
-          icon="fa-eraser" />
+          icon="fa-eraser"
+        />
         <IconButton
           on:click={toggleHighlight}
           on:mouseover={() => tooltip('Toggle line marking')}
           on:mouseout={noTooltip}
           icon="fa-highlighter"
-          gray={!highlight} />
+          gray={!highlight}
+        />
       </div>
       <span>{tooltipText}</span>
     </div>
@@ -149,22 +156,9 @@
 
     <h2>Serial status</h2>
     <SerialMenu {connected} {portName} />
-  
-    <!-- <h2>Help</h2>
 
-    <ul>
-      <li class="mb">💰 $$</li>
-      <li>✅ assert</li>
-      <li>📊 hist</li>
-      <li>📈 plot</li>
-      <li class="mb">🖨 print</li>
-      <li>⬆️ above</li>
-      <li>⬇️ below</li>
-      <li>↕️ between</li>
-      <li class="mb">🧹 filter</li>
-      <li>💾 save</li>
-      <li>⏰ log</li>
-    </ul> -->
+    <h2>Help</h2>
+    <Help />
   {/if}
 </main>
 
@@ -187,18 +181,4 @@
   span {
     font-size: large;
   }
-
-  /* ul{
-    padding: 0px;
-  }
-
-  li {
-    font-size: large;
-    list-style: outside none none;
-    cursor: pointer;
-  }
-
-  .mb {
-    margin-bottom: 7%;
-  } */
 </style>
