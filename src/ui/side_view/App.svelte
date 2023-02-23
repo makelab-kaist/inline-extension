@@ -87,7 +87,9 @@
           break;
         case 'codeDirty':
           needRefresh = event.data.value;
-          console.log(needRefresh);
+          break;
+        case 'reset':
+          reset();
           break;
 
         default:

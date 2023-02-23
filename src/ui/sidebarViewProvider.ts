@@ -77,12 +77,17 @@ class SideViewProvider implements vscode.WebviewViewProvider {
         }
       }
     );
+    this.reset();
   }
 
   public sendMessage(msg: Message) {
     if (this._view) {
       this._view.webview.postMessage(msg);
     }
+  }
+
+  public reset() {
+    this.sendMessage({ message: 'reset' });
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
