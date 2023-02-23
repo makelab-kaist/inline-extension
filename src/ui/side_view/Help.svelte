@@ -16,12 +16,11 @@
 
 {#if current}
   <div class="block">
+    <Grammar {...current.grammar} />
     <p>
+      <code>{current.command}</code>
       {@html current.description}
     </p>
-    <div class="title">Grammar</div>
-
-    <Grammar {...current.grammar} />
 
     <div class="title">Examples</div>
 
@@ -29,6 +28,8 @@
       <Example {expression} {result} />
     {/each}
   </div>
+{:else}
+  <p>Select an item for an explanation.</p>
 {/if}
 
 <style>
@@ -45,6 +46,7 @@
     margin-top: 1.5em;
     font-size: medium;
   }
+
   code {
     font-size: medium;
   }

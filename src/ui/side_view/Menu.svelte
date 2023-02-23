@@ -55,12 +55,17 @@
     <Badge
       on:click={() => toggle('save')}
       active={!active || active == 'save'}
-      color="green">save</Badge
+      color="pink">save</Badge
     >
     <Badge
       on:click={() => toggle('log')}
       active={!active || active == 'log'}
-      color="green">log</Badge
+      color="pink">log</Badge
+    >
+    <Badge
+      on:click={() => toggle('print')}
+      active={!active || active == 'print'}
+      color="green">print</Badge
     >
     <Badge
       on:click={() => toggle('graph')}

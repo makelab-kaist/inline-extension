@@ -97,6 +97,9 @@ var app = (function () {
     function element(name) {
         return document.createElement(name);
     }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
     function text(data) {
         return document.createTextNode(data);
     }
@@ -126,6 +129,44 @@ var app = (function () {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, bubbles, cancelable, detail);
         return e;
+    }
+    class HtmlTag {
+        constructor(is_svg = false) {
+            this.is_svg = false;
+            this.is_svg = is_svg;
+            this.e = this.n = null;
+        }
+        c(html) {
+            this.h(html);
+        }
+        m(html, target, anchor = null) {
+            if (!this.e) {
+                if (this.is_svg)
+                    this.e = svg_element(target.nodeName);
+                else
+                    this.e = element(target.nodeName);
+                this.t = target;
+                this.c(html);
+            }
+            this.i(anchor);
+        }
+        h(html) {
+            this.e.innerHTML = html;
+            this.n = Array.from(this.e.childNodes);
+        }
+        i(anchor) {
+            for (let i = 0; i < this.n.length; i += 1) {
+                insert(this.t, this.n[i], anchor);
+            }
+        }
+        p(html) {
+            this.d();
+            this.h(html);
+            this.i(this.a);
+        }
+        d() {
+            this.n.forEach(detach);
+        }
     }
 
     let current_component;
@@ -6262,11 +6303,12 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr_dev(div, "class", "badge defaultColor svelte-1f634u");
+    			attr_dev(div, "class", "badge defaultColor svelte-i57lhp");
     			toggle_class(div, "blue", /*color*/ ctx[1] === 'blue');
     			toggle_class(div, "red", /*color*/ ctx[1] === 'red');
     			toggle_class(div, "green", /*color*/ ctx[1] === 'green');
     			toggle_class(div, "orange", /*color*/ ctx[1] === 'orange');
+    			toggle_class(div, "pink", /*color*/ ctx[1] === 'pink');
     			toggle_class(div, "disabled", !/*active*/ ctx[0]);
     			add_location(div, file$6, 5, 0, 77);
     		},
@@ -6323,6 +6365,10 @@ var app = (function () {
 
     			if (dirty & /*color*/ 2) {
     				toggle_class(div, "orange", /*color*/ ctx[1] === 'orange');
+    			}
+
+    			if (dirty & /*color*/ 2) {
+    				toggle_class(div, "pink", /*color*/ ctx[1] === 'pink');
     			}
 
     			if (dirty & /*active*/ 1) {
@@ -6447,7 +6493,7 @@ var app = (function () {
     const file$5 = "src/ui/side_view/Menu.svelte";
 
     // (20:4) <Badge       on:click={() => toggle('$$')}       active={!active || active == '$$'}       color="orange">
-    function create_default_slot_10(ctx) {
+    function create_default_slot_11(ctx) {
     	let t;
 
     	const block = {
@@ -6464,7 +6510,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_10.name,
+    		id: create_default_slot_11.name,
     		type: "slot",
     		source: "(20:4) <Badge       on:click={() => toggle('$$')}       active={!active || active == '$$'}       color=\\\"orange\\\">",
     		ctx
@@ -6474,7 +6520,7 @@ var app = (function () {
     }
 
     // (25:4) <Badge       on:click={() => toggle('assert')}       active={!active || active == 'assert'}       color="blue">
-    function create_default_slot_9(ctx) {
+    function create_default_slot_10(ctx) {
     	let t;
 
     	const block = {
@@ -6491,7 +6537,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_9.name,
+    		id: create_default_slot_10.name,
     		type: "slot",
     		source: "(25:4) <Badge       on:click={() => toggle('assert')}       active={!active || active == 'assert'}       color=\\\"blue\\\">",
     		ctx
@@ -6501,7 +6547,7 @@ var app = (function () {
     }
 
     // (30:4) <Badge       on:click={() => toggle('is')}       active={!active || active == 'is'}       color="blue">
-    function create_default_slot_8(ctx) {
+    function create_default_slot_9(ctx) {
     	let t;
 
     	const block = {
@@ -6518,7 +6564,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_8.name,
+    		id: create_default_slot_9.name,
     		type: "slot",
     		source: "(30:4) <Badge       on:click={() => toggle('is')}       active={!active || active == 'is'}       color=\\\"blue\\\">",
     		ctx
@@ -6528,7 +6574,7 @@ var app = (function () {
     }
 
     // (35:4) <Badge       on:click={() => toggle('above')}       active={!active || active == 'above'}       color="red">
-    function create_default_slot_7(ctx) {
+    function create_default_slot_8(ctx) {
     	let t;
 
     	const block = {
@@ -6545,7 +6591,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_7.name,
+    		id: create_default_slot_8.name,
     		type: "slot",
     		source: "(35:4) <Badge       on:click={() => toggle('above')}       active={!active || active == 'above'}       color=\\\"red\\\">",
     		ctx
@@ -6555,7 +6601,7 @@ var app = (function () {
     }
 
     // (40:4) <Badge       on:click={() => toggle('below')}       active={!active || active == 'below'}       color="red">
-    function create_default_slot_6(ctx) {
+    function create_default_slot_7(ctx) {
     	let t;
 
     	const block = {
@@ -6572,7 +6618,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_6.name,
+    		id: create_default_slot_7.name,
     		type: "slot",
     		source: "(40:4) <Badge       on:click={() => toggle('below')}       active={!active || active == 'below'}       color=\\\"red\\\">",
     		ctx
@@ -6582,7 +6628,7 @@ var app = (function () {
     }
 
     // (45:4) <Badge       on:click={() => toggle('between')}       active={!active || active == 'between'}       color="red">
-    function create_default_slot_5(ctx) {
+    function create_default_slot_6(ctx) {
     	let t;
 
     	const block = {
@@ -6599,7 +6645,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_5.name,
+    		id: create_default_slot_6.name,
     		type: "slot",
     		source: "(45:4) <Badge       on:click={() => toggle('between')}       active={!active || active == 'between'}       color=\\\"red\\\">",
     		ctx
@@ -6609,7 +6655,7 @@ var app = (function () {
     }
 
     // (50:4) <Badge       on:click={() => toggle('filter')}       active={!active || active == 'filter'}       color="red">
-    function create_default_slot_4(ctx) {
+    function create_default_slot_5(ctx) {
     	let t;
 
     	const block = {
@@ -6626,7 +6672,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_4.name,
+    		id: create_default_slot_5.name,
     		type: "slot",
     		source: "(50:4) <Badge       on:click={() => toggle('filter')}       active={!active || active == 'filter'}       color=\\\"red\\\">",
     		ctx
@@ -6635,8 +6681,8 @@ var app = (function () {
     	return block;
     }
 
-    // (55:4) <Badge       on:click={() => toggle('save')}       active={!active || active == 'save'}       color="green">
-    function create_default_slot_3(ctx) {
+    // (55:4) <Badge       on:click={() => toggle('save')}       active={!active || active == 'save'}       color="pink">
+    function create_default_slot_4(ctx) {
     	let t;
 
     	const block = {
@@ -6653,17 +6699,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_3.name,
+    		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(55:4) <Badge       on:click={() => toggle('save')}       active={!active || active == 'save'}       color=\\\"green\\\">",
+    		source: "(55:4) <Badge       on:click={() => toggle('save')}       active={!active || active == 'save'}       color=\\\"pink\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (60:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color="green">
-    function create_default_slot_2(ctx) {
+    // (60:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color="pink">
+    function create_default_slot_3(ctx) {
     	let t;
 
     	const block = {
@@ -6680,16 +6726,43 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_2.name,
+    		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(60:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color=\\\"green\\\">",
+    		source: "(60:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color=\\\"pink\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (65:4) <Badge       on:click={() => toggle('graph')}       active={!active || active == 'graph'}       color="green">
+    // (65:4) <Badge       on:click={() => toggle('print')}       active={!active || active == 'print'}       color="green">
+    function create_default_slot_2(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("print");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_2.name,
+    		type: "slot",
+    		source: "(65:4) <Badge       on:click={() => toggle('print')}       active={!active || active == 'print'}       color=\\\"green\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (70:4) <Badge       on:click={() => toggle('graph')}       active={!active || active == 'graph'}       color="green">
     function create_default_slot_1(ctx) {
     	let t;
 
@@ -6709,14 +6782,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(65:4) <Badge       on:click={() => toggle('graph')}       active={!active || active == 'graph'}       color=\\\"green\\\">",
+    		source: "(70:4) <Badge       on:click={() => toggle('graph')}       active={!active || active == 'graph'}       color=\\\"green\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (70:4) <Badge       on:click={() => toggle('hist')}       active={!active || active == 'hist'}       color="green">
+    // (75:4) <Badge       on:click={() => toggle('hist')}       active={!active || active == 'hist'}       color="green">
     function create_default_slot(ctx) {
     	let t;
 
@@ -6736,7 +6809,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(70:4) <Badge       on:click={() => toggle('hist')}       active={!active || active == 'hist'}       color=\\\"green\\\">",
+    		source: "(75:4) <Badge       on:click={() => toggle('hist')}       active={!active || active == 'hist'}       color=\\\"green\\\">",
     		ctx
     	});
 
@@ -6767,13 +6840,15 @@ var app = (function () {
     	let badge9;
     	let t9;
     	let badge10;
+    	let t10;
+    	let badge11;
     	let current;
 
     	badge0 = new Badge({
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == '$$',
     				color: "orange",
-    				$$slots: { default: [create_default_slot_10] },
+    				$$slots: { default: [create_default_slot_11] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6785,7 +6860,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'assert',
     				color: "blue",
-    				$$slots: { default: [create_default_slot_9] },
+    				$$slots: { default: [create_default_slot_10] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6797,7 +6872,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'is',
     				color: "blue",
-    				$$slots: { default: [create_default_slot_8] },
+    				$$slots: { default: [create_default_slot_9] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6809,7 +6884,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'above',
     				color: "red",
-    				$$slots: { default: [create_default_slot_7] },
+    				$$slots: { default: [create_default_slot_8] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6821,7 +6896,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'below',
     				color: "red",
-    				$$slots: { default: [create_default_slot_6] },
+    				$$slots: { default: [create_default_slot_7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6833,7 +6908,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'between',
     				color: "red",
-    				$$slots: { default: [create_default_slot_5] },
+    				$$slots: { default: [create_default_slot_6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6845,7 +6920,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'filter',
     				color: "red",
-    				$$slots: { default: [create_default_slot_4] },
+    				$$slots: { default: [create_default_slot_5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6856,8 +6931,8 @@ var app = (function () {
     	badge7 = new Badge({
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'save',
-    				color: "green",
-    				$$slots: { default: [create_default_slot_3] },
+    				color: "pink",
+    				$$slots: { default: [create_default_slot_4] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6868,8 +6943,8 @@ var app = (function () {
     	badge8 = new Badge({
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'log',
-    				color: "green",
-    				$$slots: { default: [create_default_slot_2] },
+    				color: "pink",
+    				$$slots: { default: [create_default_slot_3] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6879,9 +6954,9 @@ var app = (function () {
 
     	badge9 = new Badge({
     			props: {
-    				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'graph',
+    				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'print',
     				color: "green",
-    				$$slots: { default: [create_default_slot_1] },
+    				$$slots: { default: [create_default_slot_2] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6891,6 +6966,18 @@ var app = (function () {
 
     	badge10 = new Badge({
     			props: {
+    				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'graph',
+    				color: "green",
+    				$$slots: { default: [create_default_slot_1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	badge10.$on("click", /*click_handler_10*/ ctx[12]);
+
+    	badge11 = new Badge({
+    			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'hist',
     				color: "green",
     				$$slots: { default: [create_default_slot] },
@@ -6899,7 +6986,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	badge10.$on("click", /*click_handler_10*/ ctx[12]);
+    	badge11.$on("click", /*click_handler_11*/ ctx[13]);
 
     	const block = {
     		c: function create() {
@@ -6926,6 +7013,8 @@ var app = (function () {
     			create_component(badge9.$$.fragment);
     			t9 = space();
     			create_component(badge10.$$.fragment);
+    			t10 = space();
+    			create_component(badge11.$$.fragment);
     			attr_dev(div0, "class", "container svelte-1tmgab3");
     			add_location(div0, file$5, 18, 2, 421);
     			attr_dev(div1, "class", "flex");
@@ -6958,13 +7047,15 @@ var app = (function () {
     			mount_component(badge9, div0, null);
     			append_dev(div0, t9);
     			mount_component(badge10, div0, null);
+    			append_dev(div0, t10);
+    			mount_component(badge11, div0, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
     			const badge0_changes = {};
     			if (dirty & /*active*/ 1) badge0_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == '$$';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge0_changes.$$scope = { dirty, ctx };
     			}
 
@@ -6972,7 +7063,7 @@ var app = (function () {
     			const badge1_changes = {};
     			if (dirty & /*active*/ 1) badge1_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'assert';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -6980,7 +7071,7 @@ var app = (function () {
     			const badge2_changes = {};
     			if (dirty & /*active*/ 1) badge2_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'is';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge2_changes.$$scope = { dirty, ctx };
     			}
 
@@ -6988,7 +7079,7 @@ var app = (function () {
     			const badge3_changes = {};
     			if (dirty & /*active*/ 1) badge3_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'above';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge3_changes.$$scope = { dirty, ctx };
     			}
 
@@ -6996,7 +7087,7 @@ var app = (function () {
     			const badge4_changes = {};
     			if (dirty & /*active*/ 1) badge4_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'below';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge4_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7004,7 +7095,7 @@ var app = (function () {
     			const badge5_changes = {};
     			if (dirty & /*active*/ 1) badge5_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'between';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge5_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7012,7 +7103,7 @@ var app = (function () {
     			const badge6_changes = {};
     			if (dirty & /*active*/ 1) badge6_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'filter';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge6_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7020,7 +7111,7 @@ var app = (function () {
     			const badge7_changes = {};
     			if (dirty & /*active*/ 1) badge7_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'save';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge7_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7028,27 +7119,35 @@ var app = (function () {
     			const badge8_changes = {};
     			if (dirty & /*active*/ 1) badge8_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'log';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge8_changes.$$scope = { dirty, ctx };
     			}
 
     			badge8.$set(badge8_changes);
     			const badge9_changes = {};
-    			if (dirty & /*active*/ 1) badge9_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'graph';
+    			if (dirty & /*active*/ 1) badge9_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'print';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge9_changes.$$scope = { dirty, ctx };
     			}
 
     			badge9.$set(badge9_changes);
     			const badge10_changes = {};
-    			if (dirty & /*active*/ 1) badge10_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'hist';
+    			if (dirty & /*active*/ 1) badge10_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'graph';
 
-    			if (dirty & /*$$scope*/ 16384) {
+    			if (dirty & /*$$scope*/ 32768) {
     				badge10_changes.$$scope = { dirty, ctx };
     			}
 
     			badge10.$set(badge10_changes);
+    			const badge11_changes = {};
+    			if (dirty & /*active*/ 1) badge11_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'hist';
+
+    			if (dirty & /*$$scope*/ 32768) {
+    				badge11_changes.$$scope = { dirty, ctx };
+    			}
+
+    			badge11.$set(badge11_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -7063,6 +7162,7 @@ var app = (function () {
     			transition_in(badge8.$$.fragment, local);
     			transition_in(badge9.$$.fragment, local);
     			transition_in(badge10.$$.fragment, local);
+    			transition_in(badge11.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
@@ -7077,6 +7177,7 @@ var app = (function () {
     			transition_out(badge8.$$.fragment, local);
     			transition_out(badge9.$$.fragment, local);
     			transition_out(badge10.$$.fragment, local);
+    			transition_out(badge11.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -7092,6 +7193,7 @@ var app = (function () {
     			destroy_component(badge8);
     			destroy_component(badge9);
     			destroy_component(badge10);
+    			destroy_component(badge11);
     		}
     	};
 
@@ -7137,8 +7239,9 @@ var app = (function () {
     	const click_handler_6 = () => toggle('filter');
     	const click_handler_7 = () => toggle('save');
     	const click_handler_8 = () => toggle('log');
-    	const click_handler_9 = () => toggle('graph');
-    	const click_handler_10 = () => toggle('hist');
+    	const click_handler_9 = () => toggle('print');
+    	const click_handler_10 = () => toggle('graph');
+    	const click_handler_11 = () => toggle('hist');
 
     	$$self.$capture_state = () => ({
     		Badge,
@@ -7169,7 +7272,8 @@ var app = (function () {
     		click_handler_7,
     		click_handler_8,
     		click_handler_9,
-    		click_handler_10
+    		click_handler_10,
+    		click_handler_11
     	];
     }
 
@@ -7236,20 +7340,19 @@ var app = (function () {
     			t11 = space();
     			span = element("span");
     			t12 = text(/*output*/ ctx[3]);
-    			attr_dev(b0, "class", "op svelte-1ia6vjy");
     			add_location(b0, file$4, 8, 2, 149);
     			attr_dev(em0, "class", "input svelte-1ia6vjy");
-    			add_location(em0, file$4, 9, 2, 172);
+    			add_location(em0, file$4, 9, 2, 161);
     			attr_dev(b1, "class", "op svelte-1ia6vjy");
-    			add_location(b1, file$4, 10, 2, 205);
+    			add_location(b1, file$4, 10, 2, 194);
     			attr_dev(code, "class", "svelte-1ia6vjy");
-    			add_location(code, file$4, 11, 2, 244);
+    			add_location(code, file$4, 11, 2, 233);
     			attr_dev(em1, "class", "params svelte-1ia6vjy");
-    			add_location(em1, file$4, 12, 2, 269);
+    			add_location(em1, file$4, 12, 2, 258);
     			attr_dev(b2, "class", "op svelte-1ia6vjy");
-    			add_location(b2, file$4, 13, 2, 304);
+    			add_location(b2, file$4, 13, 2, 293);
     			attr_dev(span, "class", "result svelte-1ia6vjy");
-    			add_location(span, file$4, 14, 2, 326);
+    			add_location(span, file$4, 14, 2, 315);
     			attr_dev(p, "class", "expression svelte-1ia6vjy");
     			add_location(p, file$4, 7, 0, 124);
     		},
@@ -7542,12 +7645,12 @@ var app = (function () {
     var commands = [
     	{
     		command: "assert",
-    		description: "<code>assert</code> verifies whether an expression is true. It returns a ✅ if it is <b>true</b> or a ❌ if the expression is <b>false</b>.",
+    		description: "returns ✅ if the <b>input</b> expression evaluates to <b>true</b>, otherwise ❌.",
     		grammar: {
-    			input: "any",
+    			input: "input",
     			command: "assert",
     			params: "",
-    			output: "❌ or ✅"
+    			output: "✅ or ❌"
     		},
     		examples: [
     			{
@@ -7557,6 +7660,238 @@ var app = (function () {
     			{
     				expression: "// 0 | assert",
     				result: "❌"
+    			},
+    			{
+    				expression: "// 15 | above 10 | assert",
+    				result: "✅"
+    			}
+    		]
+    	},
+    	{
+    		command: "is",
+    		description: "returns the <b>input</b> expression only if it is equal to <b>value</b>.",
+    		grammar: {
+    			input: "input",
+    			command: "is",
+    			params: "value",
+    			output: "input or undefined"
+    		},
+    		examples: [
+    			{
+    				expression: "// 1 | is 1",
+    				result: "1"
+    			},
+    			{
+    				expression: "// 0 | is 1",
+    				result: "undefined"
+    			},
+    			{
+    				expression: "// 'string' | is 'string'",
+    				result: "'string'"
+    			}
+    		]
+    	},
+    	{
+    		command: "above",
+    		description: "returns the <b>input</b> number only if > the <b>threshold</b>.",
+    		grammar: {
+    			input: "input",
+    			command: "above",
+    			params: "threshold",
+    			output: "input or undefined"
+    		},
+    		examples: [
+    			{
+    				expression: "// 10 | above 5",
+    				result: "10"
+    			},
+    			{
+    				expression: "// 10 | above 20",
+    				result: "undefined"
+    			}
+    		]
+    	},
+    	{
+    		command: "below",
+    		description: "returns the <b>input</b> number only if < the <b>threshold</b>.",
+    		grammar: {
+    			input: "input",
+    			command: "below",
+    			params: "threshold",
+    			output: "input or undefined"
+    		},
+    		examples: [
+    			{
+    				expression: "// 10 | below 5",
+    				result: "undefined"
+    			},
+    			{
+    				expression: "// 10 | below 20",
+    				result: "20"
+    			}
+    		]
+    	},
+    	{
+    		command: "between",
+    		description: "returns the <b>input</b> number only if <b>low</b> <= input <= <b>up</b>.",
+    		grammar: {
+    			input: "input",
+    			command: "between",
+    			params: "low, up",
+    			output: "input or undefined"
+    		},
+    		examples: [
+    			{
+    				expression: "// 10 | between 5, 10",
+    				result: "10"
+    			},
+    			{
+    				expression: "// 10 | between 20, 30",
+    				result: "undefined"
+    			}
+    		]
+    	},
+    	{
+    		command: "filter",
+    		description: "returns the <b>input</b> after applying a low-pass filter. The optional parameter is a number between 1 (no filtering) and 0 excluded (infite filter).",
+    		grammar: {
+    			input: "input",
+    			command: "filter",
+    			params: "optional_param",
+    			output: "filtered input"
+    		},
+    		examples: [
+    			{
+    				expression: "// 10 | filter",
+    				result: "10"
+    			},
+    			{
+    				expression: "// 10 | filter 0.3",
+    				result: "10"
+    			}
+    		]
+    	},
+    	{
+    		command: "graph",
+    		description: "draw a line graph based on the <b>input</b> number and optional additional numerical values.",
+    		grammar: {
+    			input: "input",
+    			command: "graph",
+    			params: "list values",
+    			output: "[draw linegraph]"
+    		},
+    		examples: [
+    			{
+    				expression: "// $$ | graph",
+    				result: "[line graph]"
+    			},
+    			{
+    				expression: "// 10 | graph 0, 100",
+    				result: "[line graph]"
+    			}
+    		]
+    	},
+    	{
+    		command: "hist",
+    		description: "draw a histogram based on the <b>input</b> number and optional additional numerical values.",
+    		grammar: {
+    			input: "input",
+    			command: "hist",
+    			params: "list values",
+    			output: "[draw linegraph]"
+    		},
+    		examples: [
+    			{
+    				expression: "// $$ | graph",
+    				result: "[histogram]"
+    			},
+    			{
+    				expression: "// 10 | graph 0, 100",
+    				result: "[histogram]"
+    			}
+    		]
+    	},
+    	{
+    		command: "print",
+    		description: "print on the line the <b>input</b> and optional additional values.",
+    		grammar: {
+    			input: "input",
+    			command: "print",
+    			params: "list values",
+    			output: "input, list values"
+    		},
+    		examples: [
+    			{
+    				expression: "// 1 | print",
+    				result: "1"
+    			},
+    			{
+    				expression: "// $$ | print 0, 100",
+    				result: "$$, 0, 100"
+    			}
+    		]
+    	},
+    	{
+    		command: "save",
+    		description: "save the <b>input</b> value in a <b>variable</b>.<br/>Recall the variable using the <b>$</b> operator before the variable name.",
+    		grammar: {
+    			input: "input",
+    			command: "save",
+    			params: "variable name",
+    			output: "input"
+    		},
+    		examples: [
+    			{
+    				expression: "// 1 | save x",
+    				result: "1"
+    			},
+    			{
+    				expression: "// $x",
+    				result: "1"
+    			}
+    		]
+    	},
+    	{
+    		command: "log",
+    		description: "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>).",
+    		grammar: {
+    			input: "input",
+    			command: "log",
+    			params: "optional fileName",
+    			output: "input"
+    		},
+    		examples: [
+    			{
+    				expression: "// $$ | log",
+    				result: "$$"
+    			},
+    			{
+    				expression: "// $$ | log file.txt",
+    				result: "$$ (in file.txt)"
+    			}
+    		]
+    	},
+    	{
+    		command: "$$",
+    		description: "is the defaul input at a line. It is equivalent to $0. If multiple values are on the same line, use $1, $2, ... to retrieve those. ",
+    		grammar: {
+    			input: "",
+    			command: "$$",
+    			params: "",
+    			output: "$$ (current value)"
+    		},
+    		examples: [
+    			{
+    				expression: "// $$",
+    				result: "$$ (current value)"
+    			},
+    			{
+    				expression: "// $0",
+    				result: "$$"
+    			},
+    			{
+    				expression: "// print $1",
+    				result: "$$, $1"
     			}
     		]
     	}
@@ -7572,17 +7907,52 @@ var app = (function () {
     	return child_ctx;
     }
 
+    // (31:0) {:else}
+    function create_else_block$2(ctx) {
+    	let p;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			p.textContent = "Select an item for an explanation.";
+    			add_location(p, file$2, 31, 2, 733);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$2.name,
+    		type: "else",
+    		source: "(31:0) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
     // (17:0) {#if current}
     function create_if_block$2(ctx) {
-    	let div2;
-    	let p;
-    	let raw_value = /*current*/ ctx[0].description + "";
-    	let t0;
-    	let div0;
-    	let t2;
-    	let grammar;
-    	let t3;
     	let div1;
+    	let grammar;
+    	let t0;
+    	let p;
+    	let code;
+    	let t1_value = /*current*/ ctx[0].command + "";
+    	let t1;
+    	let t2;
+    	let html_tag;
+    	let raw_value = /*current*/ ctx[0].description + "";
+    	let t3;
+    	let div0;
     	let t5;
     	let current;
     	const grammar_spread_levels = [/*current*/ ctx[0].grammar];
@@ -7607,55 +7977,59 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			div2 = element("div");
-    			p = element("p");
-    			t0 = space();
-    			div0 = element("div");
-    			div0.textContent = "Grammar";
-    			t2 = space();
-    			create_component(grammar.$$.fragment);
-    			t3 = space();
     			div1 = element("div");
-    			div1.textContent = "Examples";
+    			create_component(grammar.$$.fragment);
+    			t0 = space();
+    			p = element("p");
+    			code = element("code");
+    			t1 = text(t1_value);
+    			t2 = space();
+    			html_tag = new HtmlTag(false);
+    			t3 = space();
+    			div0 = element("div");
+    			div0.textContent = "Examples";
     			t5 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			add_location(p, file$2, 18, 4, 446);
-    			attr_dev(div0, "class", "title svelte-1612bex");
-    			add_location(div0, file$2, 21, 4, 497);
-    			attr_dev(div1, "class", "title svelte-1612bex");
-    			add_location(div1, file$2, 25, 4, 573);
-    			attr_dev(div2, "class", "block svelte-1612bex");
-    			add_location(div2, file$2, 17, 2, 422);
+    			attr_dev(code, "class", "svelte-1pagsod");
+    			add_location(code, file$2, 20, 6, 493);
+    			html_tag.a = null;
+    			add_location(p, file$2, 19, 4, 483);
+    			attr_dev(div0, "class", "title svelte-1pagsod");
+    			add_location(div0, file$2, 24, 4, 572);
+    			attr_dev(div1, "class", "block svelte-1pagsod");
+    			add_location(div1, file$2, 17, 2, 422);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, p);
-    			p.innerHTML = raw_value;
-    			append_dev(div2, t0);
-    			append_dev(div2, div0);
-    			append_dev(div2, t2);
-    			mount_component(grammar, div2, null);
-    			append_dev(div2, t3);
-    			append_dev(div2, div1);
-    			append_dev(div2, t5);
+    			insert_dev(target, div1, anchor);
+    			mount_component(grammar, div1, null);
+    			append_dev(div1, t0);
+    			append_dev(div1, p);
+    			append_dev(p, code);
+    			append_dev(code, t1);
+    			append_dev(p, t2);
+    			html_tag.m(raw_value, p);
+    			append_dev(div1, t3);
+    			append_dev(div1, div0);
+    			append_dev(div1, t5);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div2, null);
+    				each_blocks[i].m(div1, null);
     			}
 
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*current*/ 1) && raw_value !== (raw_value = /*current*/ ctx[0].description + "")) p.innerHTML = raw_value;
     			const grammar_changes = (dirty & /*current*/ 1)
     			? get_spread_update(grammar_spread_levels, [get_spread_object(/*current*/ ctx[0].grammar)])
     			: {};
 
     			grammar.$set(grammar_changes);
+    			if ((!current || dirty & /*current*/ 1) && t1_value !== (t1_value = /*current*/ ctx[0].command + "")) set_data_dev(t1, t1_value);
+    			if ((!current || dirty & /*current*/ 1) && raw_value !== (raw_value = /*current*/ ctx[0].description + "")) html_tag.p(raw_value);
 
     			if (dirty & /*current*/ 1) {
     				each_value = /*current*/ ctx[0].examples;
@@ -7672,7 +8046,7 @@ var app = (function () {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div2, null);
+    						each_blocks[i].m(div1, null);
     					}
     				}
 
@@ -7706,7 +8080,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(div1);
     			destroy_component(grammar);
     			destroy_each(each_blocks, detaching);
     		}
@@ -7723,7 +8097,7 @@ var app = (function () {
     	return block;
     }
 
-    // (28:4) {#each current.examples as { expression, result }}
+    // (27:4) {#each current.examples as { expression, result }}
     function create_each_block(ctx) {
     	let example;
     	let current;
@@ -7768,7 +8142,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(28:4) {#each current.examples as { expression, result }}",
+    		source: "(27:4) {#each current.examples as { expression, result }}",
     		ctx
     	});
 
@@ -7778,17 +8152,28 @@ var app = (function () {
     function create_fragment$2(ctx) {
     	let menu;
     	let t;
+    	let current_block_type_index;
+    	let if_block;
     	let if_block_anchor;
     	let current;
     	menu = new Menu({ $$inline: true });
     	menu.$on("selection", /*select*/ ctx[1]);
-    	let if_block = /*current*/ ctx[0] && create_if_block$2(ctx);
+    	const if_block_creators = [create_if_block$2, create_else_block$2];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*current*/ ctx[0]) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
     	const block = {
     		c: function create() {
     			create_component(menu.$$.fragment);
     			t = space();
-    			if (if_block) if_block.c();
+    			if_block.c();
     			if_block_anchor = empty();
     		},
     		l: function claim(nodes) {
@@ -7797,32 +8182,35 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			mount_component(menu, target, anchor);
     			insert_dev(target, t, anchor);
-    			if (if_block) if_block.m(target, anchor);
+    			if_blocks[current_block_type_index].m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (/*current*/ ctx[0]) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
 
-    					if (dirty & /*current*/ 1) {
-    						transition_in(if_block, 1);
-    					}
-    				} else {
-    					if_block = create_if_block$2(ctx);
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    				}
-    			} else if (if_block) {
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
     				group_outros();
 
-    				transition_out(if_block, 1, 1, () => {
-    					if_block = null;
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
     				});
 
     				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				} else {
+    					if_block.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
     			}
     		},
     		i: function intro(local) {
@@ -7839,7 +8227,7 @@ var app = (function () {
     		d: function destroy(detaching) {
     			destroy_component(menu, detaching);
     			if (detaching) detach_dev(t);
-    			if (if_block) if_block.d(detaching);
+    			if_blocks[current_block_type_index].d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
     		}
     	};

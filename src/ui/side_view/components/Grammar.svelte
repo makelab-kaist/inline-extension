@@ -6,7 +6,7 @@
 </script>
 
 <p class="expression">
-  <b class="op">//</b>
+  <b>//</b>
   <em class="input">{input}</em>
   <b class="op">{input ? '|' : ''}</b>
   <code>{command}</code>
