@@ -101,7 +101,7 @@
   {#if !state.initialized}
     <button on:click={configureConnection}>Initialize Serial</button>
   {:else}
-    <h2>Menu:</h2>
+    <h2>Menu</h2>
     <div class="container">
       <div class="flex">
         {#if !connected}
@@ -154,8 +154,10 @@
     <button on:click={uploadRelease}>Upload Release</button>
     <button on:click={reset}>Reset</button>
 
-    <h2>Serial status</h2>
-    <SerialMenu {connected} {portName} />
+    <!-- Serial status -->
+    <div class="mtb">
+      <SerialMenu {connected} {portName} />
+    </div>
 
     <h2>Help</h2>
     <Help />
@@ -180,5 +182,10 @@
 
   span {
     font-size: large;
+  }
+
+  .mtb {
+    margin-top: 1em;
+    margin-bottom: 2em;
   }
 </style>

@@ -11,7 +11,7 @@
       <i>{portName}</i>
     </div>
   {:else}
-    <b>Not connected</b>
+    <b>Serial <em>not</em> connected</b>
   {/if}
 </div>
 
