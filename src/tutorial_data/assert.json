@@ -1,0 +1,20 @@
+{
+  "command": "assert",
+  "description": "<code>assert</code> verifies whether an expression is true. It returns a ✅ if it is <b>true</b> or a ❌ if the expression is <b>false</b>.",
+  "grammar": {
+    "input": "any",
+    "command": "assert",
+    "params": "",
+    "output": "❌ or ✅"
+  },
+  "examples": [
+    {
+      "expression": "// 2 == 2 | assert",
+      "result": "✅"
+    },
+    {
+      "expression": "// 0 | assert",
+      "result": "❌"
+    }
+  ]
+}
