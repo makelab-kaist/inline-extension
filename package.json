@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/makinteract/double-cheese"
   },
-  "version": "0.0.1",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.63.0"
   },
@@ -105,7 +105,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run build && npm run compile_grammar && npm run compile_expression_grammar && npm run build_svelte",
     "build": "tsc -p ./ && npm run build_svelte && npm run compile_grammar && npm run compile_expression_grammar",
     "watch": "tsc -watch -p ./",
     "check_license": "npx license-checker --summary",
