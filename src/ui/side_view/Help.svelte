@@ -1,38 +1,35 @@
 <script>
   import Menu from './Menu.svelte';
-  import Textfield from './components/Textfield.svelte';
   import Grammar from './components/Grammar.svelte';
   import Example from './components/Example.svelte';
+  import commands from './data/commands.json';
+
+  let current = undefined;
 
   function select(event) {
-    console.log(event.detail);
+    const selection = event.detail;
+    current = commands.find(({ command }) => command === selection);
   }
-
-  let grammar = {
-    input: 'any',
-    command: 'assert',
-    params: '',
-    output: '❌ or ✅',
-  };
 </script>
 
 <Menu on:selection={select} />
 
-<div class="block">
-  <p>
-    <code>assert</code> verifies whether an expression is true. It returns a ✅
-    if it is <b>true</b> or a ❌ if the expression is
-    <b>false</b>.
-  </p>
-  <div class="title">Grammar</div>
+{#if current}
+  <div class="block">
+    <p>
+      {@html current.description}
+    </p>
+    <div class="title">Grammar</div>
 
-  <Grammar {...grammar} />
+    <Grammar {...current.grammar} />
 
-  <div class="title">Examples</div>
+    <div class="title">Examples</div>
 
-  <Example expression="// 2 == 2 | assert" result="✅" />
-  <Example expression="// 0 | assert" result="❌" />
-</div>
+    {#each current.examples as { expression, result }}
+      <Example {expression} {result} />
+    {/each}
+  </div>
+{/if}
 
 <style>
   .title {

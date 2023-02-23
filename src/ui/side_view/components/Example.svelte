@@ -20,13 +20,13 @@
 <style>
   p {
     display: flex;
-
     margin: 0px;
     margin-bottom: 0.2em;
   }
 
   .expression {
     background-color: black;
+    align-items: center;
     color: grey;
     padding: 0.5em;
     flex-grow: 4;
