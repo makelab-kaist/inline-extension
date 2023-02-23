@@ -7674,7 +7674,7 @@ var app = (function () {
     			input: "input",
     			command: "is",
     			params: "value",
-    			output: "input or undefined"
+    			output: "input or None"
     		},
     		examples: [
     			{
@@ -7683,7 +7683,7 @@ var app = (function () {
     			},
     			{
     				expression: "// 0 | is 1",
-    				result: "undefined"
+    				result: "None"
     			},
     			{
     				expression: "// 'string' | is 'string'",
@@ -7698,7 +7698,7 @@ var app = (function () {
     			input: "input",
     			command: "above",
     			params: "threshold",
-    			output: "input or undefined"
+    			output: "input or None"
     		},
     		examples: [
     			{
@@ -7707,7 +7707,7 @@ var app = (function () {
     			},
     			{
     				expression: "// 10 | above 20",
-    				result: "undefined"
+    				result: "None"
     			}
     		]
     	},
@@ -7718,12 +7718,12 @@ var app = (function () {
     			input: "input",
     			command: "below",
     			params: "threshold",
-    			output: "input or undefined"
+    			output: "input or None"
     		},
     		examples: [
     			{
     				expression: "// 10 | below 5",
-    				result: "undefined"
+    				result: "None"
     			},
     			{
     				expression: "// 10 | below 20",
@@ -7738,7 +7738,7 @@ var app = (function () {
     			input: "input",
     			command: "between",
     			params: "low, up",
-    			output: "input or undefined"
+    			output: "input or None"
     		},
     		examples: [
     			{
@@ -7747,7 +7747,7 @@ var app = (function () {
     			},
     			{
     				expression: "// 10 | between 20, 30",
-    				result: "undefined"
+    				result: "None"
     			}
     		]
     	},
