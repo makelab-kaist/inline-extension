@@ -14,6 +14,7 @@
   class:green={color === 'green'}
   class:orange={color === 'orange'}
   class:pink={color === 'pink'}
+  class:purple={color === 'purple'}
   class:disabled={!active}
 >
   <slot />
@@ -52,6 +53,9 @@
   }
   .pink {
     background-color: palevioletred;
+  }
+  .purple {
+    background-color: purple;
   }
 
   .disabled {

@@ -77,6 +77,11 @@
       active={!active || active == 'hist'}
       color="green">hist</Badge
     >
+    <Badge
+      on:click={() => toggle('lambda')}
+      active={!active || active == 'lambda'}
+      color="purple">lambda</Badge
+    >
   </div>
 </div>
 

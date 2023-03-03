@@ -228,6 +228,22 @@
     ]
   },
   {
+    "command": "lambda",
+    "description": "takes an input and map it with a function to an output.",
+    "grammar": {
+      "input": "input",
+      "command": "lambda",
+      "params": "function (x) => x'",
+      "output": "mapped input x'"
+    },
+    "examples": [
+      {
+        "expression": "// $$ | lambda x => x*2",
+        "result": "$$*2"
+      }
+    ]
+  },
+  {
     "command": "$$",
     "description": "is the defaul input at a line. It is equivalent to $0. If multiple values are on the same line, use $1, $2, ... to retrieve those. ",
     "grammar": {
