@@ -47,11 +47,11 @@
       active={!active || active == 'between'}
       color="red">between</Badge
     >
-    <Badge
+    <!-- <Badge
       on:click={() => toggle('filter')}
       active={!active || active == 'filter'}
       color="red">filter</Badge
-    >
+    > -->
     <Badge
       on:click={() => toggle('save')}
       active={!active || active == 'save'}
