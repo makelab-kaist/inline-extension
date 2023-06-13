@@ -6794,13 +6794,13 @@ var app = (function () {
     	return block;
     }
 
-    // (80:4) <Badge       on:click={() => toggle('lambda')}       active={!active || active == 'lambda'}       color="purple">
+    // (80:4) <Badge       on:click={() => toggle('map')}       active={!active || active == 'map'}       color="purple">
     function create_default_slot(ctx) {
     	let t;
 
     	const block = {
     		c: function create() {
-    			t = text("lambda");
+    			t = text("map");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, t, anchor);
@@ -6814,7 +6814,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(80:4) <Badge       on:click={() => toggle('lambda')}       active={!active || active == 'lambda'}       color=\\\"purple\\\">",
+    		source: "(80:4) <Badge       on:click={() => toggle('map')}       active={!active || active == 'map'}       color=\\\"purple\\\">",
     		ctx
     	});
 
@@ -6983,7 +6983,7 @@ var app = (function () {
 
     	badge11 = new Badge({
     			props: {
-    				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'lambda',
+    				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'map',
     				color: "purple",
     				$$slots: { default: [create_default_slot] },
     				$$scope: { ctx }
@@ -7146,7 +7146,7 @@ var app = (function () {
 
     			badge10.$set(badge10_changes);
     			const badge11_changes = {};
-    			if (dirty & /*active*/ 1) badge11_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'lambda';
+    			if (dirty & /*active*/ 1) badge11_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'map';
 
     			if (dirty & /*$$scope*/ 32768) {
     				badge11_changes.$$scope = { dirty, ctx };
@@ -7246,7 +7246,7 @@ var app = (function () {
     	const click_handler_8 = () => toggle('print');
     	const click_handler_9 = () => toggle('graph');
     	const click_handler_10 = () => toggle('hist');
-    	const click_handler_11 = () => toggle('lambda');
+    	const click_handler_11 = () => toggle('map');
 
     	$$self.$capture_state = () => ({
     		Badge,
@@ -7877,17 +7877,17 @@ var app = (function () {
     		]
     	},
     	{
-    		command: "lambda",
+    		command: "map",
     		description: "takes an input and map it with a function to an output.",
     		grammar: {
     			input: "input",
-    			command: "lambda",
+    			command: "map",
     			params: "function (x) => x'",
     			output: "mapped input x'"
     		},
     		examples: [
     			{
-    				expression: "// $$ | lambda x => x*2",
+    				expression: "// $$ | map x => x*2",
     				result: "$$*2"
     			}
     		]

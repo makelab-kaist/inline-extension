@@ -228,17 +228,17 @@
     ]
   },
   {
-    "command": "lambda",
+    "command": "map",
     "description": "takes an input and map it with a function to an output.",
     "grammar": {
       "input": "input",
-      "command": "lambda",
+      "command": "map",
       "params": "function (x) => x'",
       "output": "mapped input x'"
     },
     "examples": [
       {
-        "expression": "// $$ | lambda x => x*2",
+        "expression": "// $$ | map x => x*2",
         "result": "$$*2"
       }
     ]

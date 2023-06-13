@@ -685,7 +685,7 @@ case 15: return 8
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:is\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:filter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:lambda\b)/,/^(?:[^|]+)/,/^(?:\|)/],
+rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:is\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:filter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:map\b)/,/^(?:[^|]+)/,/^(?:\|)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
 });
 return lexer;

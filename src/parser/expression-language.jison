@@ -17,7 +17,7 @@
 'graph'                                           { return 'GRAPH' }
 'hist'                                            { return 'HIST' }
 'log'                                             { return 'LOG' }
-'lambda'                                          { return 'LAMBDA' }
+'map'                                             { return 'LAMBDA' }
 [^|]+                                             { return 'EXP' }
 '|'                                               { return 'THEN' }
 
