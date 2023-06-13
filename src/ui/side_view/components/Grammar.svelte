@@ -21,7 +21,8 @@
   }
 
   .expression {
-    background-color: black;
+    background-color: rgb(200, 200, 200);
+    align-items: center;
     color: yellow;
     padding: 0.5em;
   }
@@ -32,11 +33,11 @@
   }
 
   .input {
-    color: grey;
+    color: rgb(90, 90, 90);
   }
 
   .params {
-    color: grey;
+    color: rgb(90, 90, 90);
   }
 
   .op {
