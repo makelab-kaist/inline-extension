@@ -19,6 +19,7 @@ const colors = [
 ];
 const STROKE_LINE = 1;
 const STROKE_DOT = 5;
+const bgColor = '#eeeeee';
 
 // Data
 const BUFFER_SIZE = 500;
@@ -66,7 +67,7 @@ function windowResized() {
 
 function draw() {
   clear();
-  background(0);
+  background(bgColor);
 
   // draw 0 axis
   drawAxis();
@@ -159,7 +160,7 @@ function drawMouseShade() {
   const gap = width / (ticks - 1);
   const index = Math.floor((mouseX - gap / 2) / gap);
   noStroke();
-  fill(255, 255, 255, 50);
+  fill(255, 255, 255, 100);
   rect(index * gap + gap / 2, 0, gap, height);
 }
 

@@ -1,13 +1,13 @@
 {
   "name": "double-cheese",
-  "displayName": "double-cheese",
+  "displayName": "inline",
   "publisher": "MAKinteract",
   "description": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/makinteract/double-cheese"
   },
-  "version": "0.2.0",
+  "version": "0.2.1",
   "engines": {
     "vscode": "^1.63.0"
   },
@@ -27,49 +27,49 @@
         {
           "type": "webview",
           "id": "double-cheese.view",
-          "name": "Double-Cheese Playground"
+          "name": "Inline Playground"
         }
       ]
     },
     "commands": [
       {
         "command": "double-cheese.configureConnection",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Configure and connect to serial"
       },
       {
         "command": "double-cheese.configureBoard",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Select an Arduino board"
       },
       {
         "command": "double-cheese.connect",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Connect to serial"
       },
       {
         "command": "double-cheese.disconnect",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Disconnect from serial"
       },
       {
         "command": "double-cheese.compileUpload",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Compile and upload sketch"
       },
       {
         "command": "double-cheese.clearAnnotations",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Remove annotations //? from code"
       },
       {
         "command": "double-cheese.toggleHighlight",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Toggle highlight"
       },
       {
         "command": "double-cheese.changeServer",
-        "category": "doublecheese",
+        "category": "inline",
         "title": "Change server"
       }
     ],

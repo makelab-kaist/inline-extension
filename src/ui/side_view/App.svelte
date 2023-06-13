@@ -83,7 +83,8 @@
           connected = false;
           break;
         case 'toggleHighlight':
-          highlight = event.data.highlight;
+          highlight = event.data.hl;
+          console.log(highlight);
           break;
         case 'codeDirty':
           needRefresh = event.data.value;

@@ -7,6 +7,7 @@ const TEXT_OFFSET = 30;
 const color = '#147df5';
 const highlight = '#ffd300';
 const textColor = '#ff3a28';
+const bgColor = '#eee';
 
 // Data
 let buffer = new Map();
@@ -47,7 +48,7 @@ function windowResized() {
 
 function draw() {
   clear();
-  background(0);
+  background(bgColor);
 
   const bins = toBins(buffer, nbins);
   drawBins(bins);
@@ -87,7 +88,7 @@ function drawRanges(binsData) {
   // draw ranges
   let minX = binsData[0].from | 0;
   let maxX = binsData[binsData.length - 1].to | 0;
-  fill(255);
+  fill(textColor);
   textAlign(LEFT);
   text(`Min: ${minX} `, MARGIN, MARGIN);
   textAlign(RIGHT);
