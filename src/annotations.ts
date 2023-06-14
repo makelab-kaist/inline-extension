@@ -31,6 +31,8 @@ export function createAnnotations() {
     ({ id, line, expression }: ExpressionQuery) =>
       new Annotation(id, line, expression, data$)
   );
+  // clearing the context of expression everytime we refresh
+  ExpressionEngine.getInstance().clear();
 }
 
 // Check whether there is any annotation active
@@ -88,17 +90,17 @@ class Annotation {
             expression,
             lineValues
           );
+          console.log(expressionToEvaluate);
 
           // executing
           let resultToShow =
             ExpressionEngine.getInstance().evalExpression(expressionToEvaluate);
 
-          // Update decorations
+          // update decorations
           this.updateDecorations(resultToShow);
 
-          // MODIFY HERE
+          // broadcast to the graphs
           broadcastToWebviews(id, resultToShow);
-          // END MODIFY HERE
         } catch (err: any) {
           this.textDec.decorate({
             contentText: err.message,

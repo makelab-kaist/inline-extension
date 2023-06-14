@@ -72,12 +72,12 @@
   }
 */
 var expressionLanguage = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,18],$V1=[1,19],$V2=[1,20],$V3=[1,21],$V4=[1,22],$V5=[1,23],$V6=[1,24],$V7=[1,25],$V8=[1,26],$V9=[1,7],$Va=[1,8],$Vb=[1,9],$Vc=[1,31],$Vd=[4,8],$Ve=[1,46],$Vf=[4,8,31];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,21],$V1=[1,22],$V2=[1,29],$V3=[1,30],$V4=[1,23],$V5=[1,24],$V6=[1,25],$V7=[1,26],$V8=[1,27],$V9=[1,28],$Va=[1,31],$Vb=[1,32],$Vc=[1,7],$Vd=[1,8],$Ve=[1,9],$Vf=[1,37],$Vg=[4,8],$Vh=[1,55],$Vi=[4,8,37];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"EXP":6,"output_functions":7,"THEN":8,"function_sequence":9,"function_call":10,"assert_function":11,"is_function":12,"threshold_functions":13,"filter_function":14,"save_function":15,"log_function":16,"lambda_function":17,"ASSERT":18,"IS":19,"ABOVE":20,"BELOW":21,"BETWEEN":22,"list":23,"FILTER":24,"SAVE":25,"LOG":26,"LAMBDA":27,"PRINT":28,"GRAPH":29,"HIST":30,",":31,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"NONE",6:"EXP",8:"THEN",18:"ASSERT",19:"IS",20:"ABOVE",21:"BELOW",22:"BETWEEN",24:"FILTER",25:"SAVE",26:"LOG",27:"LAMBDA",28:"PRINT",29:"GRAPH",30:"HIST",31:","},
-productions_: [0,[3,1],[3,2],[5,1],[5,1],[5,3],[5,3],[5,5],[5,1],[5,3],[9,1],[9,3],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[11,1],[12,2],[13,2],[13,2],[13,2],[14,1],[14,2],[15,2],[16,1],[16,2],[17,2],[7,1],[7,2],[7,1],[7,2],[7,1],[7,2],[23,1],[23,3]],
+symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"EXP":6,"output_functions":7,"THEN":8,"function_sequence":9,"function_call":10,"assert_function":11,"is_function":12,"threshold_functions":13,"lpfilter_function":14,"save_function":15,"log_function":16,"count_function":17,"add_function":18,"map_function":19,"filter_function":20,"ASSERT":21,"IS":22,"COUNT":23,"ADD":24,"ABOVE":25,"BELOW":26,"BETWEEN":27,"list":28,"LPFILTER":29,"SAVE":30,"LOG":31,"MAP":32,"FILTER":33,"PRINT":34,"GRAPH":35,"HIST":36,",":37,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"NONE",6:"EXP",8:"THEN",21:"ASSERT",22:"IS",23:"COUNT",24:"ADD",25:"ABOVE",26:"BELOW",27:"BETWEEN",29:"LPFILTER",30:"SAVE",31:"LOG",32:"MAP",33:"FILTER",34:"PRINT",35:"GRAPH",36:"HIST",37:","},
+productions_: [0,[3,1],[3,2],[5,1],[5,1],[5,3],[5,3],[5,5],[5,1],[5,3],[9,1],[9,3],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[11,1],[12,2],[17,2],[18,2],[13,2],[13,2],[13,2],[14,1],[14,2],[15,2],[16,1],[16,2],[19,2],[20,2],[7,1],[7,2],[7,1],[7,2],[7,1],[7,2],[28,1],[28,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -116,67 +116,76 @@ break;
 case 11:
  this.$ = $$[$0-2] + ',' + $$[$0] 
 break;
-case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 36:
+case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 42:
  this.$ = $$[$0] 
 break;
-case 19:
+case 22:
  this.$ = 'this.assert' 
 break;
-case 20:
+case 23:
  this.$ = `this.is(${$$[$0]})` 
 break;
-case 21:
- this.$ = `this.above(${$$[$0]})` 
-break;
-case 22:
- this.$ = `this.below(${$$[$0]})` 
-break;
-case 23:
- this.$ = `this.between(${$$[$0]})` 
-break;
 case 24:
- this.$ = 'this.filter()' 
+ this.$ = `this.count(\\'${$$[$0]}\\')` 
 break;
 case 25:
- this.$ = `this.filter(${$$[$0]})` 
+ this.$ = `this.add(\\'${$$[$0]}\\')` 
 break;
 case 26:
- this.$ = `this.save(\\'${$$[$0]}\\')` 
+ this.$ = `this.above(${$$[$0]})` 
 break;
 case 27:
- this.$ = `this.log()` 
+ this.$ = `this.below(${$$[$0]})` 
 break;
 case 28:
- this.$ = `this.log(\\'${$$[$0]}\\')` 
+ this.$ = `this.between(${$$[$0]})` 
 break;
 case 29:
- this.$= `this.lambda(${$$[$0]})`
+ this.$ = 'this.lpfilter()' 
 break;
 case 30:
- this.$ = `this.output(\\'inline\\')()` 
+ this.$ = `this.lpfilter(${$$[$0]})` 
 break;
 case 31:
- this.$ = `this.output(\\'inline\\')(${$$[$0]})` 
+ this.$ = `this.save(\\'${$$[$0]}\\')` 
 break;
 case 32:
- this.$ = `this.output(\\'linegraph\\')()` 
+ this.$ = `this.log()` 
 break;
 case 33:
- this.$ = `this.output(\\'linegraph\\')(${$$[$0]})` 
+ this.$ = `this.log(\\'${$$[$0]}\\')` 
 break;
 case 34:
- this.$ = `this.output(\\'histogram\\')()` 
+ this.$= `this.map(${$$[$0]})`
 break;
 case 35:
- this.$ = `this.output(\\'histogram\\')(${$$[$0]})` 
+ this.$= `this.filter(${$$[$0]})`
+break;
+case 36:
+ this.$ = `this.output(\\'inline\\')()` 
 break;
 case 37:
+ this.$ = `this.output(\\'inline\\')(${$$[$0]})` 
+break;
+case 38:
+ this.$ = `this.output(\\'linegraph\\')()` 
+break;
+case 39:
+ this.$ = `this.output(\\'linegraph\\')(${$$[$0]})` 
+break;
+case 40:
+ this.$ = `this.output(\\'histogram\\')()` 
+break;
+case 41:
+ this.$ = `this.output(\\'histogram\\')(${$$[$0]})` 
+break;
+case 43:
  this.$ = $$[$0-2] + ',' + $$[$0-1] 
 break;
 }
 },
-table: [{3:1,4:[1,2],5:3,6:[1,4],7:5,9:6,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:$V0,19:$V1,20:$V2,21:$V3,22:$V4,24:$V5,25:$V6,26:$V7,27:$V8,28:$V9,29:$Va,30:$Vb},{1:[3]},{1:[2,1]},{4:[1,27]},{4:[2,3],8:[1,28]},{4:[2,4]},{4:[2,8],8:[1,29]},{4:[2,30],6:$Vc,23:30},{4:[2,32],6:$Vc,23:32},{4:[2,34],6:$Vc,23:33},o($Vd,[2,10]),o($Vd,[2,12]),o($Vd,[2,13]),o($Vd,[2,14]),o($Vd,[2,15]),o($Vd,[2,16]),o($Vd,[2,17]),o($Vd,[2,18]),o($Vd,[2,19]),{6:[1,34]},{6:[1,35]},{6:[1,36]},{6:$Vc,23:37},o($Vd,[2,24],{6:[1,38]}),{6:[1,39]},o($Vd,[2,27],{6:[1,40]}),{6:[1,41]},{1:[2,2]},{7:42,9:43,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:$V0,19:$V1,20:$V2,21:$V3,22:$V4,24:$V5,25:$V6,26:$V7,27:$V8,28:$V9,29:$Va,30:$Vb},{7:44,10:45,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:$V0,19:$V1,20:$V2,21:$V3,22:$V4,24:$V5,25:$V6,26:$V7,27:$V8,28:$V9,29:$Va,30:$Vb},{4:[2,31],31:$Ve},o($Vf,[2,36]),{4:[2,33],31:$Ve},{4:[2,35],31:$Ve},o($Vd,[2,20]),o($Vd,[2,21]),o($Vd,[2,22]),o($Vd,[2,23],{31:$Ve}),o($Vd,[2,25]),o($Vd,[2,26]),o($Vd,[2,28]),o($Vd,[2,29]),{4:[2,5]},{4:[2,6],8:[1,47]},{4:[2,9]},o($Vd,[2,11]),{6:[1,48]},{7:49,10:45,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:$V0,19:$V1,20:$V2,21:$V3,22:$V4,24:$V5,25:$V6,26:$V7,27:$V8,28:$V9,29:$Va,30:$Vb},o($Vf,[2,37]),{4:[2,7]}],
-defaultActions: {2:[2,1],5:[2,4],27:[2,2],42:[2,5],44:[2,9],49:[2,7]},
+table: [{3:1,4:[1,2],5:3,6:[1,4],7:5,9:6,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:$V0,22:$V1,23:$V2,24:$V3,25:$V4,26:$V5,27:$V6,29:$V7,30:$V8,31:$V9,32:$Va,33:$Vb,34:$Vc,35:$Vd,36:$Ve},{1:[3]},{1:[2,1]},{4:[1,33]},{4:[2,3],8:[1,34]},{4:[2,4]},{4:[2,8],8:[1,35]},{4:[2,36],6:$Vf,28:36},{4:[2,38],6:$Vf,28:38},{4:[2,40],6:$Vf,28:39},o($Vg,[2,10]),o($Vg,[2,12]),o($Vg,[2,13]),o($Vg,[2,14]),o($Vg,[2,15]),o($Vg,[2,16]),o($Vg,[2,17]),o($Vg,[2,18]),o($Vg,[2,19]),o($Vg,[2,20]),o($Vg,[2,21]),o($Vg,[2,22]),{6:[1,40]},{6:[1,41]},{6:[1,42]},{6:$Vf,28:43},o($Vg,[2,29],{6:[1,44]}),{6:[1,45]},o($Vg,[2,32],{6:[1,46]}),{6:[1,47]},{6:[1,48]},{6:[1,49]},{6:[1,50]},{1:[2,2]},{7:51,9:52,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:$V0,22:$V1,23:$V2,24:$V3,25:$V4,26:$V5,27:$V6,29:$V7,30:$V8,31:$V9,32:$Va,33:$Vb,34:$Vc,35:$Vd,36:$Ve},{7:53,10:54,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:$V0,22:$V1,23:$V2,24:$V3,25:$V4,26:$V5,27:$V6,29:$V7,30:$V8,31:$V9,32:$Va,33:$Vb,34:$Vc,35:$Vd,36:$Ve},{4:[2,37],37:$Vh},o($Vi,[2,42]),{4:[2,39],37:$Vh},{4:[2,41],37:$Vh},o($Vg,[2,23]),o($Vg,[2,26]),o($Vg,[2,27]),o($Vg,[2,28],{37:$Vh}),o($Vg,[2,30]),o($Vg,[2,31]),o($Vg,[2,33]),o($Vg,[2,24]),o($Vg,[2,25]),o($Vg,[2,34]),o($Vg,[2,35]),{4:[2,5]},{4:[2,6],8:[1,56]},{4:[2,9]},o($Vg,[2,11]),{6:[1,57]},{7:58,10:54,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:$V0,22:$V1,23:$V2,24:$V3,25:$V4,26:$V5,27:$V6,29:$V7,30:$V8,31:$V9,32:$Va,33:$Vb,34:$Vc,35:$Vd,36:$Ve},o($Vi,[2,43]),{4:[2,7]}],
+defaultActions: {2:[2,1],5:[2,4],33:[2,2],51:[2,5],53:[2,9],58:[2,7]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -655,38 +664,44 @@ case 0: return 4
 break;
 case 1: /* ignore spaces */ 
 break;
-case 2: return 18 
+case 2: return 21 
 break;
-case 3: return 19 
+case 3: return 23 
 break;
-case 4: return 20 
+case 4: return 24 
 break;
-case 5: return 21 
+case 5: return 22 
 break;
-case 6: return 22 
+case 6: return 25 
 break;
-case 7: return 24 
+case 7: return 26 
 break;
-case 8: return 25 
+case 8: return 27 
 break;
-case 9: return 28 
+case 9: return 29 
 break;
-case 10: return 29 
+case 10: return 30 
 break;
-case 11: return 30 
+case 11: return 34 
 break;
-case 12: return 26 
+case 12: return 35 
 break;
-case 13: return 27 
+case 13: return 36 
 break;
-case 14: return 6 
+case 14: return 31 
 break;
-case 15: return 8 
+case 15: return 32 
+break;
+case 16: return 33 
+break;
+case 17: return 6 
+break;
+case 18: return 8 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:is\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:filter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:map\b)/,/^(?:[^|]+)/,/^(?:\|)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:count\b)/,/^(?:add\b)/,/^(?:is\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:lpfilter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:map\b)/,/^(?:filter\b)/,/^(?:[^|]+)/,/^(?:\|)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"inclusive":true}}
 });
 return lexer;
 })();

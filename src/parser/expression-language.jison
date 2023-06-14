@@ -7,17 +7,20 @@
 <<EOF>>                                           { return 'NONE' }
 \s+                                               { /* ignore spaces */ }
 'assert'                                          { return 'ASSERT' }
+'count'                                           { return 'COUNT' }
+'add'                                             { return 'ADD' }
 'is'                                              { return 'IS' }
 'above'                                           { return 'ABOVE' }
 'below'                                           { return 'BELOW' }
 'between'                                         { return 'BETWEEN' }
-'filter'                                          { return 'FILTER' }
+'lpfilter'                                        { return 'LPFILTER' } /* Not used */
 'save'                                            { return 'SAVE' }
 'print'                                           { return 'PRINT' }
 'graph'                                           { return 'GRAPH' }
 'hist'                                            { return 'HIST' }
 'log'                                             { return 'LOG' }
-'map'                                             { return 'LAMBDA' }
+'map'                                             { return 'MAP' }
+'filter'                                          { return 'FILTER' }
 [^|]+                                             { return 'EXP' }
 '|'                                               { return 'THEN' }
 
@@ -55,10 +58,13 @@ function_call
   : assert_function { $$ = $1 }
   | is_function { $$ = $1 }
   | threshold_functions { $$ = $1 }
-  | filter_function { $$ = $1 }
+  | lpfilter_function { $$ = $1 }
   | save_function { $$ = $1 }
   | log_function { $$ = $1 }
-  | lambda_function { $$ = $1 }
+  | count_function { $$ = $1 }
+  | add_function { $$ = $1 }
+  | map_function { $$ = $1 }
+  | filter_function { $$ = $1 }
   ;
 
 
@@ -72,15 +78,23 @@ is_function
   : IS EXP { $$ = `this.is(${$2})` }
   ;
 
+count_function
+  : COUNT EXP { $$ = `this.count(\\'${$2}\\')` }
+  ;
+
+add_function
+  : ADD EXP { $$ = `this.add(\\'${$2}\\')` }
+  ;
+
 threshold_functions
   : ABOVE EXP { $$ = `this.above(${$2})` }
   | BELOW EXP { $$ = `this.below(${$2})` }
   | BETWEEN list { $$ = `this.between(${$2})` }
   ;
 
-filter_function
-  : FILTER { $$ = 'this.filter()' }
-  | FILTER EXP { $$ = `this.filter(${$2})` } 
+lpfilter_function
+  : LPFILTER { $$ = 'this.lpfilter()' }
+  | LPFILTER EXP { $$ = `this.lpfilter(${$2})` } 
   ;
 
 save_function
@@ -92,8 +106,12 @@ log_function
   | LOG EXP { $$ = `this.log(\\'${$2}\\')` }
   ;
 
-lambda_function
-  : LAMBDA EXP { $$= `this.lambda(${$2})`}
+map_function
+  : MAP EXP { $$= `this.map(${$2})`}
+  ;
+
+filter_function
+  : FILTER EXP { $$= `this.filter(${$2})`}
   ;
 
 // must be at the end. Default is print

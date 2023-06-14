@@ -41,11 +41,13 @@ export class ExpressionEngine {
 class Context {
   private fil!: LowPassFilter;
   private filterAlpha: number = 0;
+  private counter: number = 0;
 
   // Create a new context and initialize it
   constructor() {
     this.filterAlpha = 1;
     this.fil = new LowPassFilter(this.filterAlpha);
+    this.counter = 0;
   }
 
   // pipe utility to run the following functions
@@ -61,7 +63,7 @@ class Context {
   // Allow pass through if same
   is(toCompare: any): (input: any) => any {
     return function (input: any) {
-      return input == toCompare ? input : undefined;
+      return input == toCompare ? input : undefined; // == is loose on purpose
     };
   }
 
@@ -91,7 +93,7 @@ class Context {
   }
 
   // Filter value
-  filter(alpha: number = 1): (input: number) => any {
+  lpfilter(alpha: number = 1): (input: number) => any {
     return (input: number) => {
       if (typeof input !== 'number')
         throw new Error(`"${input}" is not a number`);
@@ -112,6 +114,27 @@ class Context {
     return (input: any) => {
       (this as any)[`${variableName.trim()}`] = input;
       return input;
+    };
+  }
+
+  // count
+  count(counter: string): (input: number) => number {
+    return (input: number): number => {
+      const counters = this as any;
+      if (!counters[`${counter.trim()}`]) counters[`${counter.trim()}`] = 0;
+      if (input) counters[`${counter.trim()}`] += 1;
+      return counters[`${counter.trim()}`];
+    };
+  }
+
+  // count
+  add(accumulator: string): (input: number) => number {
+    return (input: number): number => {
+      const counters = this as any;
+      if (!counters[`${accumulator.trim()}`])
+        counters[`${accumulator.trim()}`] = 0;
+      counters[`${accumulator.trim()}`] += input;
+      return counters[`${accumulator.trim()}`];
     };
   }
 
@@ -160,9 +183,15 @@ class Context {
   }
 
   // One function to support plugging a function
-  lambda(fn: (inputParam: any) => any): (input: any) => any {
+  map(fn: (inputParam: any) => any): (input: any) => any {
     return (input: any) => {
       return fn(input);
+    };
+  }
+
+  filter(fn: (inputParam: any) => any): (input: any) => any {
+    return (input: any) => {
+      return fn(input) ? input : undefined;
     };
   }
 }
