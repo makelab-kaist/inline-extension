@@ -2,6 +2,7 @@
   "name": "double-cheese",
   "displayName": "inline",
   "publisher": "MAKinteract",
+  "icon": "images/icon.png",
   "description": "",
   "repository": {
     "type": "git",
