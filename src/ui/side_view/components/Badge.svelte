@@ -52,7 +52,7 @@
     background-color: rgb(235, 112, 5);
   }
   .pink {
-    background-color: palevioletred;
+    background-color: plum;
   }
   .purple {
     background-color: purple;
