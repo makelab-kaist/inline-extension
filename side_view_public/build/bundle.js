@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -6498,7 +6498,7 @@ var app = (function () {
     const file$5 = "src/ui/side_view/Menu.svelte";
 
     // (103:4) <Badge       on:click={() => toggle('assert')}       active={!active || active == 'assert'}       color="blue">
-    function create_default_slot_15(ctx) {
+    function create_default_slot_16(ctx) {
     	let t;
 
     	const block = {
@@ -6515,7 +6515,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_15.name,
+    		id: create_default_slot_16.name,
     		type: "slot",
     		source: "(103:4) <Badge       on:click={() => toggle('assert')}       active={!active || active == 'assert'}       color=\\\"blue\\\">",
     		ctx
@@ -6525,7 +6525,7 @@ var app = (function () {
     }
 
     // (108:4) <Badge       on:click={() => toggle('is')}       active={!active || active == 'is'}       color="blue">
-    function create_default_slot_14(ctx) {
+    function create_default_slot_15(ctx) {
     	let t;
 
     	const block = {
@@ -6542,7 +6542,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_14.name,
+    		id: create_default_slot_15.name,
     		type: "slot",
     		source: "(108:4) <Badge       on:click={() => toggle('is')}       active={!active || active == 'is'}       color=\\\"blue\\\">",
     		ctx
@@ -6552,7 +6552,7 @@ var app = (function () {
     }
 
     // (116:4) <Badge       on:click={() => toggle('above')}       active={!active || active == 'above'}       color="red">
-    function create_default_slot_13(ctx) {
+    function create_default_slot_14(ctx) {
     	let t;
 
     	const block = {
@@ -6569,7 +6569,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_13.name,
+    		id: create_default_slot_14.name,
     		type: "slot",
     		source: "(116:4) <Badge       on:click={() => toggle('above')}       active={!active || active == 'above'}       color=\\\"red\\\">",
     		ctx
@@ -6579,7 +6579,7 @@ var app = (function () {
     }
 
     // (121:4) <Badge       on:click={() => toggle('below')}       active={!active || active == 'below'}       color="red">
-    function create_default_slot_12(ctx) {
+    function create_default_slot_13(ctx) {
     	let t;
 
     	const block = {
@@ -6596,7 +6596,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_12.name,
+    		id: create_default_slot_13.name,
     		type: "slot",
     		source: "(121:4) <Badge       on:click={() => toggle('below')}       active={!active || active == 'below'}       color=\\\"red\\\">",
     		ctx
@@ -6606,7 +6606,7 @@ var app = (function () {
     }
 
     // (126:4) <Badge       on:click={() => toggle('between')}       active={!active || active == 'between'}       color="red">
-    function create_default_slot_11(ctx) {
+    function create_default_slot_12(ctx) {
     	let t;
 
     	const block = {
@@ -6623,7 +6623,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_11.name,
+    		id: create_default_slot_12.name,
     		type: "slot",
     		source: "(126:4) <Badge       on:click={() => toggle('between')}       active={!active || active == 'between'}       color=\\\"red\\\">",
     		ctx
@@ -6633,7 +6633,7 @@ var app = (function () {
     }
 
     // (134:4) <Badge       on:click={() => toggle('save')}       active={!active || active == 'save'}       color="pink">
-    function create_default_slot_10(ctx) {
+    function create_default_slot_11(ctx) {
     	let t;
 
     	const block = {
@@ -6650,7 +6650,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_10.name,
+    		id: create_default_slot_11.name,
     		type: "slot",
     		source: "(134:4) <Badge       on:click={() => toggle('save')}       active={!active || active == 'save'}       color=\\\"pink\\\">",
     		ctx
@@ -6660,7 +6660,7 @@ var app = (function () {
     }
 
     // (139:4) <Badge       on:click={() => toggle('count')}       active={!active || active == 'count'}       color="pink">
-    function create_default_slot_9(ctx) {
+    function create_default_slot_10(ctx) {
     	let t;
 
     	const block = {
@@ -6677,7 +6677,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_9.name,
+    		id: create_default_slot_10.name,
     		type: "slot",
     		source: "(139:4) <Badge       on:click={() => toggle('count')}       active={!active || active == 'count'}       color=\\\"pink\\\">",
     		ctx
@@ -6687,7 +6687,7 @@ var app = (function () {
     }
 
     // (144:4) <Badge       on:click={() => toggle('add')}       active={!active || active == 'add'}       color="pink">
-    function create_default_slot_8(ctx) {
+    function create_default_slot_9(ctx) {
     	let t;
 
     	const block = {
@@ -6704,7 +6704,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_8.name,
+    		id: create_default_slot_9.name,
     		type: "slot",
     		source: "(144:4) <Badge       on:click={() => toggle('add')}       active={!active || active == 'add'}       color=\\\"pink\\\">",
     		ctx
@@ -6714,7 +6714,7 @@ var app = (function () {
     }
 
     // (152:4) <Badge       on:click={() => toggle('print')}       active={!active || active == 'print'}       color="green">
-    function create_default_slot_7(ctx) {
+    function create_default_slot_8(ctx) {
     	let t;
 
     	const block = {
@@ -6731,7 +6731,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_7.name,
+    		id: create_default_slot_8.name,
     		type: "slot",
     		source: "(152:4) <Badge       on:click={() => toggle('print')}       active={!active || active == 'print'}       color=\\\"green\\\">",
     		ctx
@@ -6741,7 +6741,7 @@ var app = (function () {
     }
 
     // (157:4) <Badge       on:click={() => toggle('graph')}       active={!active || active == 'graph'}       color="green">
-    function create_default_slot_6(ctx) {
+    function create_default_slot_7(ctx) {
     	let t;
 
     	const block = {
@@ -6758,7 +6758,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_6.name,
+    		id: create_default_slot_7.name,
     		type: "slot",
     		source: "(157:4) <Badge       on:click={() => toggle('graph')}       active={!active || active == 'graph'}       color=\\\"green\\\">",
     		ctx
@@ -6768,7 +6768,7 @@ var app = (function () {
     }
 
     // (162:4) <Badge       on:click={() => toggle('hist')}       active={!active || active == 'hist'}       color="green">
-    function create_default_slot_5(ctx) {
+    function create_default_slot_6(ctx) {
     	let t;
 
     	const block = {
@@ -6785,7 +6785,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_5.name,
+    		id: create_default_slot_6.name,
     		type: "slot",
     		source: "(162:4) <Badge       on:click={() => toggle('hist')}       active={!active || active == 'hist'}       color=\\\"green\\\">",
     		ctx
@@ -6795,7 +6795,7 @@ var app = (function () {
     }
 
     // (167:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color="green">
-    function create_default_slot_4(ctx) {
+    function create_default_slot_5(ctx) {
     	let t;
 
     	const block = {
@@ -6812,7 +6812,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_4.name,
+    		id: create_default_slot_5.name,
     		type: "slot",
     		source: "(167:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color=\\\"green\\\">",
     		ctx
@@ -6822,7 +6822,7 @@ var app = (function () {
     }
 
     // (175:4) <Badge       on:click={() => toggle('map')}       active={!active || active == 'map'}       color="purple">
-    function create_default_slot_3(ctx) {
+    function create_default_slot_4(ctx) {
     	let t;
 
     	const block = {
@@ -6839,7 +6839,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_3.name,
+    		id: create_default_slot_4.name,
     		type: "slot",
     		source: "(175:4) <Badge       on:click={() => toggle('map')}       active={!active || active == 'map'}       color=\\\"purple\\\">",
     		ctx
@@ -6849,7 +6849,7 @@ var app = (function () {
     }
 
     // (180:4) <Badge       on:click={() => toggle('filter')}       active={!active || active == 'filter'}       color="purple">
-    function create_default_slot_2(ctx) {
+    function create_default_slot_3(ctx) {
     	let t;
 
     	const block = {
@@ -6866,7 +6866,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_2.name,
+    		id: create_default_slot_3.name,
     		type: "slot",
     		source: "(180:4) <Badge       on:click={() => toggle('filter')}       active={!active || active == 'filter'}       color=\\\"purple\\\">",
     		ctx
@@ -6876,7 +6876,7 @@ var app = (function () {
     }
 
     // (188:4) <Badge       on:click={() => toggle('$$')}       active={!active || active == '$$'}       color="orange">
-    function create_default_slot_1(ctx) {
+    function create_default_slot_2(ctx) {
     	let t;
 
     	const block = {
@@ -6893,7 +6893,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1.name,
+    		id: create_default_slot_2.name,
     		type: "slot",
     		source: "(188:4) <Badge       on:click={() => toggle('$$')}       active={!active || active == '$$'}       color=\\\"orange\\\">",
     		ctx
@@ -6903,7 +6903,7 @@ var app = (function () {
     }
 
     // (193:4) <Badge       on:click={() => toggle('$x')}       active={!active || active == '$x'}       color="orange">
-    function create_default_slot(ctx) {
+    function create_default_slot_1(ctx) {
     	let t;
 
     	const block = {
@@ -6920,9 +6920,36 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot.name,
+    		id: create_default_slot_1.name,
     		type: "slot",
     		source: "(193:4) <Badge       on:click={() => toggle('$x')}       active={!active || active == '$x'}       color=\\\"orange\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (198:4) <Badge       on:click={() => toggle('$0')}       active={!active || active == '$0'}       color="orange">
+    function create_default_slot(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("$0");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot.name,
+    		type: "slot",
+    		source: "(198:4) <Badge       on:click={() => toggle('$0')}       active={!active || active == '$0'}       color=\\\"orange\\\">",
     		ctx
     	});
 
@@ -6980,13 +7007,15 @@ var app = (function () {
     	let badge14;
     	let t26;
     	let badge15;
+    	let t27;
+    	let badge16;
     	let current;
 
     	badge0 = new Badge({
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'assert',
     				color: "blue",
-    				$$slots: { default: [create_default_slot_15] },
+    				$$slots: { default: [create_default_slot_16] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -6998,7 +7027,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'is',
     				color: "blue",
-    				$$slots: { default: [create_default_slot_14] },
+    				$$slots: { default: [create_default_slot_15] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7010,7 +7039,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'above',
     				color: "red",
-    				$$slots: { default: [create_default_slot_13] },
+    				$$slots: { default: [create_default_slot_14] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7022,7 +7051,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'below',
     				color: "red",
-    				$$slots: { default: [create_default_slot_12] },
+    				$$slots: { default: [create_default_slot_13] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7034,7 +7063,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'between',
     				color: "red",
-    				$$slots: { default: [create_default_slot_11] },
+    				$$slots: { default: [create_default_slot_12] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7046,7 +7075,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'save',
     				color: "pink",
-    				$$slots: { default: [create_default_slot_10] },
+    				$$slots: { default: [create_default_slot_11] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7058,7 +7087,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'count',
     				color: "pink",
-    				$$slots: { default: [create_default_slot_9] },
+    				$$slots: { default: [create_default_slot_10] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7070,7 +7099,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'add',
     				color: "pink",
-    				$$slots: { default: [create_default_slot_8] },
+    				$$slots: { default: [create_default_slot_9] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7082,7 +7111,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'print',
     				color: "green",
-    				$$slots: { default: [create_default_slot_7] },
+    				$$slots: { default: [create_default_slot_8] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7094,7 +7123,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'graph',
     				color: "green",
-    				$$slots: { default: [create_default_slot_6] },
+    				$$slots: { default: [create_default_slot_7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7106,7 +7135,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'hist',
     				color: "green",
-    				$$slots: { default: [create_default_slot_5] },
+    				$$slots: { default: [create_default_slot_6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7118,7 +7147,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'log',
     				color: "green",
-    				$$slots: { default: [create_default_slot_4] },
+    				$$slots: { default: [create_default_slot_5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7130,7 +7159,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'map',
     				color: "purple",
-    				$$slots: { default: [create_default_slot_3] },
+    				$$slots: { default: [create_default_slot_4] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7142,7 +7171,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'filter',
     				color: "purple",
-    				$$slots: { default: [create_default_slot_2] },
+    				$$slots: { default: [create_default_slot_3] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7154,7 +7183,7 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == '$$',
     				color: "orange",
-    				$$slots: { default: [create_default_slot_1] },
+    				$$slots: { default: [create_default_slot_2] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7166,13 +7195,25 @@ var app = (function () {
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == '$x',
     				color: "orange",
-    				$$slots: { default: [create_default_slot] },
+    				$$slots: { default: [create_default_slot_1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
     	badge15.$on("click", /*click_handler_15*/ ctx[17]);
+
+    	badge16 = new Badge({
+    			props: {
+    				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == '$0',
+    				color: "orange",
+    				$$slots: { default: [create_default_slot] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	badge16.$on("click", /*click_handler_16*/ ctx[18]);
 
     	const block = {
     		c: function create() {
@@ -7232,6 +7273,8 @@ var app = (function () {
     			create_component(badge14.$$.fragment);
     			t26 = space();
     			create_component(badge15.$$.fragment);
+    			t27 = space();
+    			create_component(badge16.$$.fragment);
     			attr_dev(h30, "class", "svelte-n4gaq7");
     			add_location(h30, file$5, 100, 2, 2563);
     			attr_dev(div0, "class", "container svelte-n4gaq7");
@@ -7313,13 +7356,15 @@ var app = (function () {
     			mount_component(badge14, div5, null);
     			append_dev(div5, t26);
     			mount_component(badge15, div5, null);
+    			append_dev(div5, t27);
+    			mount_component(badge16, div5, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
     			const badge0_changes = {};
     			if (dirty & /*active*/ 1) badge0_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'assert';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge0_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7327,7 +7372,7 @@ var app = (function () {
     			const badge1_changes = {};
     			if (dirty & /*active*/ 1) badge1_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'is';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7335,7 +7380,7 @@ var app = (function () {
     			const badge2_changes = {};
     			if (dirty & /*active*/ 1) badge2_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'above';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge2_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7343,7 +7388,7 @@ var app = (function () {
     			const badge3_changes = {};
     			if (dirty & /*active*/ 1) badge3_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'below';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge3_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7351,7 +7396,7 @@ var app = (function () {
     			const badge4_changes = {};
     			if (dirty & /*active*/ 1) badge4_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'between';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge4_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7359,7 +7404,7 @@ var app = (function () {
     			const badge5_changes = {};
     			if (dirty & /*active*/ 1) badge5_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'save';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge5_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7367,7 +7412,7 @@ var app = (function () {
     			const badge6_changes = {};
     			if (dirty & /*active*/ 1) badge6_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'count';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge6_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7375,7 +7420,7 @@ var app = (function () {
     			const badge7_changes = {};
     			if (dirty & /*active*/ 1) badge7_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'add';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge7_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7383,7 +7428,7 @@ var app = (function () {
     			const badge8_changes = {};
     			if (dirty & /*active*/ 1) badge8_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'print';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge8_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7391,7 +7436,7 @@ var app = (function () {
     			const badge9_changes = {};
     			if (dirty & /*active*/ 1) badge9_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'graph';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge9_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7399,7 +7444,7 @@ var app = (function () {
     			const badge10_changes = {};
     			if (dirty & /*active*/ 1) badge10_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'hist';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge10_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7407,7 +7452,7 @@ var app = (function () {
     			const badge11_changes = {};
     			if (dirty & /*active*/ 1) badge11_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'log';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge11_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7415,7 +7460,7 @@ var app = (function () {
     			const badge12_changes = {};
     			if (dirty & /*active*/ 1) badge12_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'map';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge12_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7423,7 +7468,7 @@ var app = (function () {
     			const badge13_changes = {};
     			if (dirty & /*active*/ 1) badge13_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == 'filter';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge13_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7431,7 +7476,7 @@ var app = (function () {
     			const badge14_changes = {};
     			if (dirty & /*active*/ 1) badge14_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == '$$';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge14_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7439,11 +7484,19 @@ var app = (function () {
     			const badge15_changes = {};
     			if (dirty & /*active*/ 1) badge15_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == '$x';
 
-    			if (dirty & /*$$scope*/ 524288) {
+    			if (dirty & /*$$scope*/ 1048576) {
     				badge15_changes.$$scope = { dirty, ctx };
     			}
 
     			badge15.$set(badge15_changes);
+    			const badge16_changes = {};
+    			if (dirty & /*active*/ 1) badge16_changes.active = !/*active*/ ctx[0] || /*active*/ ctx[0] == '$0';
+
+    			if (dirty & /*$$scope*/ 1048576) {
+    				badge16_changes.$$scope = { dirty, ctx };
+    			}
+
+    			badge16.$set(badge16_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -7463,6 +7516,7 @@ var app = (function () {
     			transition_in(badge13.$$.fragment, local);
     			transition_in(badge14.$$.fragment, local);
     			transition_in(badge15.$$.fragment, local);
+    			transition_in(badge16.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
@@ -7482,6 +7536,7 @@ var app = (function () {
     			transition_out(badge13.$$.fragment, local);
     			transition_out(badge14.$$.fragment, local);
     			transition_out(badge15.$$.fragment, local);
+    			transition_out(badge16.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -7502,6 +7557,7 @@ var app = (function () {
     			destroy_component(badge13);
     			destroy_component(badge14);
     			destroy_component(badge15);
+    			destroy_component(badge16);
     		}
     	};
 
@@ -7554,6 +7610,7 @@ var app = (function () {
     	const click_handler_13 = () => toggle('filter');
     	const click_handler_14 = () => toggle('$$');
     	const click_handler_15 = () => toggle('$x');
+    	const click_handler_16 = () => toggle('$0');
 
     	$$self.$capture_state = () => ({
     		Badge,
@@ -7589,7 +7646,8 @@ var app = (function () {
     		click_handler_12,
     		click_handler_13,
     		click_handler_14,
-    		click_handler_15
+    		click_handler_15,
+    		click_handler_16
     	];
     }
 
@@ -8168,6 +8226,38 @@ var app = (function () {
     		]
     	},
     	{
+    		command: "count",
+    		description: "increment a counter if <b>input</b> is defined, and store it in a <b>variable</b>.<br/>Recall the variable using the <b>$</b> operator before the variable name.",
+    		grammar: {
+    			input: "input",
+    			command: "count",
+    			params: "variable name",
+    			output: "counter"
+    		},
+    		examples: [
+    			{
+    				expression: "// count x",
+    				result: "1...2...3..."
+    			}
+    		]
+    	},
+    	{
+    		command: "add",
+    		description: "accumulate <b>input</b> if defined in a <b>variable</b>.<br/>Recall the variable using the <b>$</b> operator before the variable name.",
+    		grammar: {
+    			input: "input",
+    			command: "add",
+    			params: "variable name",
+    			output: "add"
+    		},
+    		examples: [
+    			{
+    				expression: "// count x",
+    				result: "[x+= input]"
+    			}
+    		]
+    	},
+    	{
     		command: "log",
     		description: "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>).",
     		grammar: {
@@ -8244,6 +8334,38 @@ var app = (function () {
     			{
     				expression: "// print $1",
     				result: "$$, $1"
+    			}
+    		]
+    	},
+    	{
+    		command: "$x",
+    		description: "The variable x.",
+    		grammar: {
+    			input: "",
+    			command: "$x",
+    			params: "",
+    			output: "$x (value of x)"
+    		},
+    		examples: [
+    			{
+    				expression: "// $x",
+    				result: "[some value]"
+    			}
+    		]
+    	},
+    	{
+    		command: "$0",
+    		description: "The positional value in the line. In case of multiple expressions you can refer to each value of $$ as $0, $1, $2...",
+    		grammar: {
+    			input: "",
+    			command: "$0",
+    			params: "",
+    			output: "$0 (same as $$)"
+    		},
+    		examples: [
+    			{
+    				expression: "// $0",
+    				result: "same as $$"
     			}
     		]
     	}

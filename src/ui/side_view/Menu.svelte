@@ -195,6 +195,11 @@
       active={!active || active == '$x'}
       color="orange">$x</Badge
     >
+    <Badge
+      on:click={() => toggle('$0')}
+      active={!active || active == '$0'}
+      color="orange">$0</Badge
+    >
   </div>
 </div>
 

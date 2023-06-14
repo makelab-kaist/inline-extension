@@ -108,21 +108,21 @@
     ]
   },
   {
-    "command": "filter",
+    "command": "lpfilter",
     "description": "returns the <b>input</b> after applying a low-pass filter. The optional parameter is a number between 1 (no filtering) and 0 excluded (infite filter).",
     "grammar": {
       "input": "input",
-      "command": "filter",
+      "command": "lpfilter",
       "params": "optional_param",
       "output": "filtered input"
     },
     "examples": [
       {
-        "expression": "// 10 | filter",
+        "expression": "// 10 | lpfilter",
         "result": "10"
       },
       {
-        "expression": "// 10 | filter 0.3",
+        "expression": "// 10 | lpfilter 0.3",
         "result": "10"
       }
     ]
@@ -208,6 +208,38 @@
     ]
   },
   {
+    "command": "count",
+    "description": "increment a counter if <b>input</b> is defined, and store it in a <b>variable</b>.<br/>Recall the variable using the <b>$</b> operator before the variable name.",
+    "grammar": {
+      "input": "input",
+      "command": "count",
+      "params": "variable name",
+      "output": "counter"
+    },
+    "examples": [
+      {
+        "expression": "// count x",
+        "result": "1...2...3..."
+      }
+    ]
+  },
+  {
+    "command": "add",
+    "description": "accumulate <b>input</b> if defined in a <b>variable</b>.<br/>Recall the variable using the <b>$</b> operator before the variable name.",
+    "grammar": {
+      "input": "input",
+      "command": "add",
+      "params": "variable name",
+      "output": "add"
+    },
+    "examples": [
+      {
+        "expression": "// count x",
+        "result": "[x+= input]"
+      }
+    ]
+  },
+  {
     "command": "log",
     "description": "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>).",
     "grammar": {
@@ -233,13 +265,33 @@
     "grammar": {
       "input": "input",
       "command": "map",
-      "params": "function (x) => x'",
+      "params": "function x => x'",
       "output": "mapped input x'"
     },
     "examples": [
       {
         "expression": "// $$ | map x => x*2",
         "result": "$$*2"
+      }
+    ]
+  },
+  {
+    "command": "filter",
+    "description": "takes an input and return is the fiterl function returns true",
+    "grammar": {
+      "input": "input",
+      "command": "filter",
+      "params": "function x => true'",
+      "output": "input or undefined'"
+    },
+    "examples": [
+      {
+        "expression": "// 12 | filter x => x%2==0",
+        "result": "12"
+      },
+      {
+        "expression": "// 13 | filter x => x % 2 == 0",
+        "result": "None"
       }
     ]
   },
@@ -264,6 +316,38 @@
       {
         "expression": "// print $1",
         "result": "$$, $1"
+      }
+    ]
+  },
+  {
+    "command": "$x",
+    "description": "The variable x.",
+    "grammar": {
+      "input": "",
+      "command": "$x",
+      "params": "",
+      "output": "$x (value of x)"
+    },
+    "examples": [
+      {
+        "expression": "// $x",
+        "result": "[some value]"
+      }
+    ]
+  },
+  {
+    "command": "$0",
+    "description": "The positional value in the line. In case of multiple expressions you can refer to each value of $$ as $0, $1, $2...",
+    "grammar": {
+      "input": "",
+      "command": "$0",
+      "params": "",
+      "output": "$0 (same as $$)"
+    },
+    "examples": [
+      {
+        "expression": "// $0",
+        "result": "same as $$"
       }
     ]
   }
