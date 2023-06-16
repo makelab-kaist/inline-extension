@@ -167,7 +167,7 @@
     <Badge
       on:click={() => toggle('log')}
       active={!active || active == 'log'}
-      color="green">log</Badge
+      color="lightgreen">log</Badge
     >
   </div>
   <h3>Advanced</h3>

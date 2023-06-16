@@ -12,6 +12,7 @@
   class:blue={color === 'blue'}
   class:red={color === 'red'}
   class:green={color === 'green'}
+  class:lightgreen={color === 'lightgreen'}
   class:orange={color === 'orange'}
   class:pink={color === 'pink'}
   class:purple={color === 'purple'}
@@ -47,6 +48,9 @@
   }
   .green {
     background-color: green;
+  }
+  .lightgreen {
+    background-color: rgb(23, 197, 55);
   }
   .orange {
     background-color: rgb(235, 112, 5);

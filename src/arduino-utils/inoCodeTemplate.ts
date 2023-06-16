@@ -421,6 +421,12 @@ int _toUpperCase(int c, PARAMS)
 
 // Serial
 
+void _Serial_begin(unsigned long value, PARAMS)
+{
+  Serial.begin(115200);
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
+
 void _Serial_print(int value, PARAMS)
 {
   printValueFormatted(SerialWrapper(value), id, line, index, items);

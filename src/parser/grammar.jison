@@ -61,6 +61,7 @@
 'toUpperCase'                                     { return 'FN_NAME' }
 
 // Serial
+'Serial.begin'                                    { return 'FN_NAME' }
 'Serial.print'                                    { return 'FN_NAME' }
 'Serial.println'                                  { return 'FN_NAME' }
 

@@ -6303,10 +6303,11 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			if (default_slot) default_slot.c();
-    			attr_dev(div, "class", "badge defaultColor svelte-pnb0ms");
+    			attr_dev(div, "class", "badge defaultColor svelte-zjvr3m");
     			toggle_class(div, "blue", /*color*/ ctx[1] === 'blue');
     			toggle_class(div, "red", /*color*/ ctx[1] === 'red');
     			toggle_class(div, "green", /*color*/ ctx[1] === 'green');
+    			toggle_class(div, "lightgreen", /*color*/ ctx[1] === 'lightgreen');
     			toggle_class(div, "orange", /*color*/ ctx[1] === 'orange');
     			toggle_class(div, "pink", /*color*/ ctx[1] === 'pink');
     			toggle_class(div, "purple", /*color*/ ctx[1] === 'purple');
@@ -6362,6 +6363,10 @@ var app = (function () {
 
     			if (dirty & /*color*/ 2) {
     				toggle_class(div, "green", /*color*/ ctx[1] === 'green');
+    			}
+
+    			if (dirty & /*color*/ 2) {
+    				toggle_class(div, "lightgreen", /*color*/ ctx[1] === 'lightgreen');
     			}
 
     			if (dirty & /*color*/ 2) {
@@ -6794,7 +6799,7 @@ var app = (function () {
     	return block;
     }
 
-    // (167:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color="green">
+    // (167:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color="lightgreen">
     function create_default_slot_5(ctx) {
     	let t;
 
@@ -6814,7 +6819,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(167:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color=\\\"green\\\">",
+    		source: "(167:4) <Badge       on:click={() => toggle('log')}       active={!active || active == 'log'}       color=\\\"lightgreen\\\">",
     		ctx
     	});
 
@@ -7146,7 +7151,7 @@ var app = (function () {
     	badge11 = new Badge({
     			props: {
     				active: !/*active*/ ctx[0] || /*active*/ ctx[0] == 'log',
-    				color: "green",
+    				color: "lightgreen",
     				$$slots: { default: [create_default_slot_5] },
     				$$scope: { ctx }
     			},
@@ -7292,13 +7297,13 @@ var app = (function () {
     			attr_dev(div3, "class", "container svelte-n4gaq7");
     			add_location(div3, file$5, 150, 2, 3806);
     			attr_dev(h34, "class", "svelte-n4gaq7");
-    			add_location(h34, file$5, 172, 2, 4364);
+    			add_location(h34, file$5, 172, 2, 4369);
     			attr_dev(div4, "class", "container svelte-n4gaq7");
-    			add_location(div4, file$5, 173, 2, 4384);
+    			add_location(div4, file$5, 173, 2, 4389);
     			attr_dev(h35, "class", "svelte-n4gaq7");
-    			add_location(h35, file$5, 185, 2, 4684);
+    			add_location(h35, file$5, 185, 2, 4689);
     			attr_dev(div5, "class", "container svelte-n4gaq7");
-    			add_location(div5, file$5, 186, 2, 4705);
+    			add_location(div5, file$5, 186, 2, 4710);
     			attr_dev(div6, "class", "flex");
     			add_location(div6, file$5, 17, 0, 400);
     		},
@@ -8147,7 +8152,7 @@ var app = (function () {
     	},
     	{
     		command: "graph",
-    		description: "draw a line graph based on the <b>input</b> number and optional additional numerical values.",
+    		description: "draw a line graph based on the <b>input</b> number and optional additional numerical values. Other commands <b>cannot</b> be chained after this output command.",
     		grammar: {
     			input: "input",
     			command: "graph",
@@ -8167,7 +8172,7 @@ var app = (function () {
     	},
     	{
     		command: "hist",
-    		description: "draw a histogram based on the <b>input</b> number and optional additional numerical values.",
+    		description: "draw a histogram based on the <b>input</b> number and optional additional numerical values. Other commands <b>cannot</b> be chained after this output command.",
     		grammar: {
     			input: "input",
     			command: "hist",
@@ -8187,7 +8192,7 @@ var app = (function () {
     	},
     	{
     		command: "print",
-    		description: "print on the line the <b>input</b> and optional additional values.",
+    		description: "print on the line the <b>input</b> and optional additional values. Other commands <b>cannot</b> be chained after this output command.",
     		grammar: {
     			input: "input",
     			command: "print",
@@ -8259,7 +8264,7 @@ var app = (function () {
     	},
     	{
     		command: "log",
-    		description: "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>).",
+    		description: "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>). Other commands <b>can</b> be chained to this one.",
     		grammar: {
     			input: "input",
     			command: "log",

@@ -772,7 +772,11 @@ void printValueFormatted(const SerialWrapper &value, PARAMS)
     Serial.print(",");
 }
 
-
+void _Serial_begin(unsigned long value, PARAMS)
+{
+  Serial.begin(115200);
+  printValueFormatted(SerialWrapper(value), id, line, index, items);
+}
 
 void _Serial_print(int value, PARAMS)
 {
