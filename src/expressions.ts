@@ -61,9 +61,9 @@ class Context {
   }
 
   // Allow pass through if same
-  is(toCompare: any): (input: any) => any {
-    return function (input: any) {
-      return input == toCompare ? input : undefined; // == is loose on purpose
+  is(toCompare: any): (input: any) => boolean {
+    return function (input: any): boolean {
+      return input == toCompare; // == is loose on purpose
     };
   }
 

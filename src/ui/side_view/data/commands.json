@@ -25,21 +25,21 @@
   },
   {
     "command": "is",
-    "description": "returns the <b>input</b> expression only if it is equal to <b>value</b>.",
+    "description": "checks whether <b>input</b> is equal or not to <b>value</b>.",
     "grammar": {
       "input": "input",
       "command": "is",
       "params": "value",
-      "output": "input or None"
+      "output": "true or false"
     },
     "examples": [
       {
         "expression": "// 1 | is 1",
-        "result": "1"
+        "result": "true"
       },
       {
         "expression": "// 0 | is 1",
-        "result": "None"
+        "result": "false"
       },
       {
         "expression": "// 'string' | is 'string'",

@@ -98,7 +98,7 @@
       color="orange">$$</Badge
     >
   </div> -->
-  <h3>Identity</h3>
+  <h3>Identity tests</h3>
   <div class="container">
     <Badge
       on:click={() => toggle('assert')}
@@ -111,7 +111,7 @@
       color="blue">is</Badge
     >
   </div>
-  <h3>Range</h3>
+  <h3>Thresholds</h3>
   <div class="container">
     <Badge
       on:click={() => toggle('above')}
