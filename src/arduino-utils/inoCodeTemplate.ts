@@ -48,7 +48,9 @@ public:
       Serial.print(d);
       break;
     case STRING:
+      Serial.print("\\"");
       Serial.print(s);
+      Serial.print("\\"");
       break;
     }
   }
@@ -131,6 +133,12 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
 }
 
 // Time
+
+void _delay(unsigned long ms, PARAMS)
+{
+  printValueFormatted(SerialWrapper(ms), id, line, index, items);
+  delay(ms);
+}
 
 unsigned long _millis(PARAMS)
 {

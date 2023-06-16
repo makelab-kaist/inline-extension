@@ -77,6 +77,17 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
 // Time
 
 library.set(
+  'delay',
+  `
+void _delay(unsigned long ms, PARAMS)
+{
+  printValueFormatted(SerialWrapper(ms), id, line, index, items);
+  delay(ms);
+}
+`
+);
+
+library.set(
   'millis',
   `
 unsigned long _millis(PARAMS)
@@ -725,7 +736,9 @@ public:
       Serial.print(d);
       break;
     case STRING:
+      Serial.print("\\"");
       Serial.print(s);
+      Serial.print("\\"");
       break;
     }
   }
@@ -758,6 +771,8 @@ void printValueFormatted(const SerialWrapper &value, PARAMS)
   else
     Serial.print(",");
 }
+
+
 
 void _Serial_print(int value, PARAMS)
 {

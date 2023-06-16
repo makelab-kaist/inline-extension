@@ -19,6 +19,7 @@
 'analogWrite'                                     { return 'FN_NAME' }
 
 // Time
+'delay'                                           { return 'FN_NAME' }
 'millis'                                          { return 'FN_NAME' }
 'micros'                                          { return 'FN_NAME' }
 'pulseIn'                                         { return 'FN_NAME' }
@@ -83,9 +84,9 @@
 
 ///////////// end ARDUINO KEYWORDS
 
-\s*'('                                               { return '(' }
-')'                                               { return ')' }
-.                                                 { return 'ANY' }
+\s*'('                                              { return '(' }
+')'                                                 { return ')' }
+.                                                   { return 'ANY' }
 
 /lex
 %{
