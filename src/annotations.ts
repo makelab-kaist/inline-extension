@@ -90,7 +90,7 @@ class Annotation {
             expression,
             lineValues
           );
-          console.log(expressionToEvaluate, expression, lineValues);
+          // console.log(expressionToEvaluate, expression, lineValues);
 
           // executing
           let resultToShow =

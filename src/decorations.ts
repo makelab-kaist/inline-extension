@@ -161,7 +161,7 @@ class WebViewDecoration extends Decoration {
 }
 
 // A decoration for a graph
-// The graph code (p5.js) are in the src/graphs folder
+// The graph code (p5.js) are in the graphs folder (root level)
 class GraphDecoration extends Decoration {
   private inset!: vscode.WebviewEditorInset;
   private root: vscode.Uri;
@@ -191,13 +191,13 @@ class GraphDecoration extends Decoration {
     );
 
     const p5lib = this.inset.webview.asWebviewUri(
-      vscode.Uri.joinPath(this.root, 'src/graphs/p5.js')
+      vscode.Uri.joinPath(this.root, 'graphs/p5.js')
     );
     const iolib = this.inset.webview.asWebviewUri(
-      vscode.Uri.joinPath(this.root, 'src/graphs/socket.io.min.js')
+      vscode.Uri.joinPath(this.root, 'graphs/socket.io.min.js')
     );
     const code = this.inset.webview.asWebviewUri(
-      vscode.Uri.joinPath(this.root, `src/graphs/${this.graphType}.js`)
+      vscode.Uri.joinPath(this.root, `graphs/${this.graphType}.js`)
     );
 
     if (this.inset)
