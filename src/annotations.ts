@@ -80,21 +80,40 @@ class Annotation {
     // Filted and subscribe
     this.sub = data$
       .pipe(
-        filter((d) => id === d.id), // filter by id
+        filter((d) => line === d.line), // filter by id
         filter(({ values }) => values.length > 0)
       )
-      .subscribe(({ values: lineValues }) => {
-        try {
-          // parsing
-          let expressionToEvaluate = this.parseExpression(
-            expression,
-            lineValues
-          );
-          // console.log(expressionToEvaluate, expression, lineValues);
+      .subscribe(({ id: receivedID, values: lineValues }) => {
+        // if (receivedID !== id) {
+        //   this.textDec.decorate({
+        //     contentText: 'Reload required',
+        //     color: 'red',
+        //   });
+        //   return;
+        // }
 
-          // executing
-          let resultToShow =
-            ExpressionEngine.getInstance().evalExpression(expressionToEvaluate);
+        try {
+          let resultToShow: any = {
+            stringValue: 'Reload required',
+            outputFormat: 'inline' as const,
+            value: [],
+          };
+
+          // Line still valid? then compute the result to show
+          if (receivedID === id) {
+            // parsing
+            let expressionToEvaluate = this.parseExpression(
+              expression,
+              lineValues
+            );
+            // console.log(expressionToEvaluate, expression, lineValues);
+
+            // executing
+            resultToShow =
+              ExpressionEngine.getInstance().evalExpression(
+                expressionToEvaluate
+              );
+          }
 
           // update decorations
           this.updateDecorations(resultToShow);
