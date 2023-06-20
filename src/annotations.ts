@@ -84,23 +84,16 @@ class Annotation {
         filter(({ values }) => values.length > 0)
       )
       .subscribe(({ id: receivedID, values: lineValues }) => {
-        // if (receivedID !== id) {
-        //   this.textDec.decorate({
-        //     contentText: 'Reload required',
-        //     color: 'red',
-        //   });
-        //   return;
-        // }
-
         try {
-          let resultToShow: any = {
-            stringValue: 'Reload required',
-            outputFormat: 'inline' as const,
-            value: [],
-          };
-
-          // Line still valid? then compute the result to show
-          if (receivedID === id) {
+          // if the line is not valid, show that a reload is required
+          if (receivedID !== id) {
+            this.textDec.decorate({
+              contentText: 'Reload required',
+              color: 'red',
+            });
+          }
+          // the line is valid
+          else {
             // parsing
             let expressionToEvaluate = this.parseExpression(
               expression,
@@ -109,17 +102,20 @@ class Annotation {
             // console.log(expressionToEvaluate, expression, lineValues);
 
             // executing
-            resultToShow =
+            let resultToShow =
               ExpressionEngine.getInstance().evalExpression(
                 expressionToEvaluate
               );
+
+            // update decorations
+            this.updateDecorations(resultToShow);
+            // broadcast to the graphs
+            broadcastToWebviews(id, resultToShow);
           }
 
-          // update decorations
-          this.updateDecorations(resultToShow);
-
-          // broadcast to the graphs
-          broadcastToWebviews(id, resultToShow);
+          // highlight decoration for all
+          if (highlightOn) this.highlightDec.decorate(500);
+          //
         } catch (err: any) {
           this.textDec.decorate({
             contentText: err.message,
@@ -200,7 +196,5 @@ class Annotation {
     if (resultToShow.outputFormat === 'linegraph') {
       this.linegraph.decorate();
     }
-    // highlight
-    if (highlightOn) this.highlightDec.decorate(500);
   }
 }
