@@ -27,3 +27,15 @@ The first time run the command **Preferences: Configure Runtime Arguments** as i
 6. Enjoy it!
 
 ![](/images/screenshot.png)
+
+## Instructions for development
+
+1. Clone this repository and `cd` into it.
+
+2. Install dependencies with `npm install`.
+
+3. Run the _Arduino-server_ as explained above.
+
+4. Run the command `npm run dev` and then press `F5` from any of the typescript files to test the extension.
+
+5. Enjoy!
