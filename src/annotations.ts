@@ -88,7 +88,7 @@ class Annotation {
           // if the line is not valid, show that a reload is required
           if (receivedID !== id) {
             this.textDec.decorate({
-              contentText: 'Reload required',
+              contentText: 'Upload required',
               color: 'red',
             });
           }

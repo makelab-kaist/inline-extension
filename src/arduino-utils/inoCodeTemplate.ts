@@ -128,8 +128,9 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
   unsigned long highTime = pulseIn(pin, HIGH);
   unsigned long lowTime = pulseIn(pin, LOW);
   unsigned long dutyCycle = (float)(highTime * 100) / (highTime + lowTime);
-  String perc = String(dutyCycle);
-  printValueFormatted(SerialWrapper(perc), id, line, index, items);
+  // String perc = String(dutyCycle);
+  // printValueFormatted(SerialWrapper(perc), id, line, index, items);
+  printValueFormatted(SerialWrapper(dutyCycle), id, line, index, items);
 }
 
 // Time

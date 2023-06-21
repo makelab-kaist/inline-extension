@@ -18,7 +18,7 @@ import {
   toggleHighlight,
 } from './extension';
 import { SideViewProvider } from './ui/sidebarViewProvider';
-import { createAnnotations } from './annotations';
+import { createAnnotations, clearAnnotations } from './annotations';
 
 export async function activate(context: vscode.ExtensionContext) {
   // Connect to server before we start
@@ -103,10 +103,14 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // If code is modified we need to check if it is still valid
-vscode.workspace.onDidChangeTextDocument(isCodeValid);
+vscode.workspace.onDidChangeTextDocument(() =>{
+  isCodeValid();
+  clearAnnotations();
+});
 
 vscode.window.onDidChangeActiveTextEditor(() => {
-  // console.log('editor changed');
+  //console.log('editor changed');
+  clearAnnotations();
 });
 
 vscode.workspace.onDidCloseTextDocument(() => {
