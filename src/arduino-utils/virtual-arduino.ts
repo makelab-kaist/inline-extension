@@ -84,7 +84,7 @@ export class VirtualArduino {
     return new Promise((resolve, reject) => {
       if (!this.socket) reject([]); // no boards available
 
-      this.socket.emit('listBoards');
+      this.socket.emit('listBoards');      
       this.socket.on('listBoardsData', ({ message, success }: ArduinoAck) => {
         if (success) resolve(message as string[]);
         else reject('No port found');
