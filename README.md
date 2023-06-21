@@ -39,3 +39,17 @@ The first time run the command **Preferences: Configure Runtime Arguments** as i
 4. Run the command `npm run dev` and then press `F5` from any of the typescript files to test the extension.
 
 5. Enjoy!
+
+### Parser
+
+Parsing is done with [jison](https://gerhobbelt.github.io/jison/docs/).
+
+To allow the js file to be used in typescript, you might need to enable JS in `tsconfig.json` this way.
+
+```json
+{
+  "compilerOptions": {
+    "allowJs": true
+  }
+}
+```
