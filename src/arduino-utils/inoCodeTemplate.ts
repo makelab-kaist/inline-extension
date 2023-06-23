@@ -122,7 +122,10 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
 {
   analogWrite(pin, value);
   if (value == 255){
-    printValueFormatted(SerialWrapper("100"), id, line, index, items);
+    printValueFormatted(SerialWrapper(100), id, line, index, items);
+    return;
+  }else if (value == 0){
+    printValueFormatted(SerialWrapper(0), id, line, index, items);
     return;
   }
   unsigned long highTime = pulseIn(pin, HIGH);
