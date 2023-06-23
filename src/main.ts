@@ -103,14 +103,16 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // If code is modified we need to check if it is still valid
-vscode.workspace.onDidChangeTextDocument(() =>{
+vscode.workspace.onDidChangeTextDocument((e) =>{
   isCodeValid();
-  clearAnnotations();
+  const fileChanged= e.document.fileName;
+  if (fileChanged.endsWith('.ino')){ // only stops for source code
+    clearAnnotations();
+  }  
 });
 
 vscode.window.onDidChangeActiveTextEditor(() => {
-  //console.log('editor changed');
-  clearAnnotations();
+  // console.log('editor changed');
 });
 
 vscode.workspace.onDidCloseTextDocument(() => {

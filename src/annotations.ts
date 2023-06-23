@@ -17,6 +17,7 @@ import { transpileExpression } from './parser';
 // Globals
 let annotations: Annotation[] = [];
 let highlightOn: boolean = true;
+const DEFAULT_MESSAGE: string = "...";
 
 // Annotations main control functions
 
@@ -72,7 +73,7 @@ class Annotation {
     this.highlightDec = new HighlightDecoration(line);
     this.textDec = new TextDecoration(line);
     this.textDec.decorate({
-      contentText: 'None',
+      contentText: DEFAULT_MESSAGE , 
     });
     this.histogram = new GraphDecoration(line, id, 'histogram');
     this.linegraph = new GraphDecoration(line, id, 'linegraph');
