@@ -182,6 +182,14 @@ class Context {
     };
   }
 
+   // onvert to voltage
+   volt(voltReference: number = 5): (input: number) => any {
+    return function (input: any) {
+      const mapping:number = parseFloat ((input/1024 * voltReference).toFixed(2));
+      return mapping;
+    };
+  }
+
   // One function to support plugging a function
   map(fn: (inputParam: any) => any): (input: any) => any {
     return (input: any) => {

@@ -169,6 +169,11 @@
       active={!active || active == 'log'}
       color="lightgreen">log</Badge
     >
+    <Badge
+      on:click={() => toggle('volt')}
+      active={!active || active == 'volt'}
+      color="lightgreen">volt</Badge
+    >
   </div>
   <h3>Advanced</h3>
   <div class="container">

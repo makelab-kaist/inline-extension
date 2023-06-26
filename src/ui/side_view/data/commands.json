@@ -260,6 +260,26 @@
     ]
   },
   {
+    "command": "volt",
+    "description": "Show the analog input in Volt. Other commands <b>cannot</b> be chained to this one.",
+    "grammar": {
+      "input": "input",
+      "command": "volt",
+      "params": "optional reference voltage",
+      "output": "convertion to Volt"
+    },
+    "examples": [
+      {
+        "expression": "// 1024 | volt",
+        "result": "5"
+      },
+      {
+        "expression": "// 1024 | volt 3",
+        "result": "3"
+      }
+    ]
+  },
+  {
     "command": "map",
     "description": "takes an input and map it with a function to an output.",
     "grammar": {

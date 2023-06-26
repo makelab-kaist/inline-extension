@@ -19,6 +19,7 @@
 'graph'                                           { return 'GRAPH' }
 'hist'                                            { return 'HIST' }
 'log'                                             { return 'LOG' }
+'volt'                                            { return 'VOLT' }
 'map'                                             { return 'MAP' }
 'filter'                                          { return 'FILTER' }
 [^|]+                                             { return 'EXP' }
@@ -61,6 +62,7 @@ function_call
   | lpfilter_function { $$ = $1 }
   | save_function { $$ = $1 }
   | log_function { $$ = $1 }
+  | volt_function { $$ = $1 }
   | count_function { $$ = $1 }
   | add_function { $$ = $1 }
   | map_function { $$ = $1 }
@@ -104,6 +106,11 @@ save_function
 log_function
   : LOG { $$ = `this.log()` }
   | LOG EXP { $$ = `this.log(\\'${$2}\\')` }
+  ;
+
+volt_function
+  : VOLT { $$ = `this.volt()` }
+  | VOLT EXP { $$ = `this.volt(\\'${$2}\\')` }
   ;
 
 map_function
