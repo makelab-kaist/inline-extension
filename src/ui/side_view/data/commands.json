@@ -158,11 +158,11 @@
     },
     "examples": [
       {
-        "expression": "// $$ | graph",
+        "expression": "// $$ | hist",
         "result": "[histogram]"
       },
       {
-        "expression": "// 10 | graph 0, 100",
+        "expression": "// 10 | hist 0, 100",
         "result": "[histogram]"
       }
     ]
