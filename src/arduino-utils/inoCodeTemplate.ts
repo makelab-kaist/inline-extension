@@ -120,6 +120,7 @@ int _analogRead(uint8_t pin, PARAMS)
 
 void _analogWrite(uint8_t pin, int value, PARAMS)
 {
+  analogWrite(pin, value);
   if (value == 0){
     printValueFormatted(SerialWrapper(0), id, line, index, items);
     return;
@@ -127,7 +128,6 @@ void _analogWrite(uint8_t pin, int value, PARAMS)
     printValueFormatted(SerialWrapper(100), id, line, index, items);
     return;
   } 
-  analogWrite(pin, value);
   unsigned long highTime = pulseIn(pin, HIGH);
   unsigned long lowTime = pulseIn(pin, LOW);
   unsigned long dutyCycle = (float)(highTime * 100) / (highTime + lowTime);
