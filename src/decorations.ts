@@ -206,7 +206,9 @@ class GraphDecoration extends Decoration {
         <script src="${p5lib}"></script>
         <script src="${iolib}"></script>
         <style>
-       
+        body {
+          margin-top: 1%;
+        }
         </style>
         </head>
         <body>  
@@ -214,9 +216,6 @@ class GraphDecoration extends Decoration {
         <script defer  src="${code}"></script>
         </body>
         `;
-        // body {
-        //   margin-top: 1%;
-        // }
   }
 
   dispose(): void {
