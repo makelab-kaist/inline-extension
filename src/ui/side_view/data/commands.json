@@ -42,8 +42,8 @@
         "result": "false"
       },
       {
-        "expression": "// 'string' | is 'string'",
-        "result": "'string'"
+        "expression": "// \"string\" | is \"string\"",
+        "result": "\"string\""
       }
     ]
   },
@@ -297,12 +297,12 @@
   },
   {
     "command": "filter",
-    "description": "takes an input and return is the fiterl function returns true",
+    "description": "takes an input and return is the filter function returns true",
     "grammar": {
       "input": "input",
       "command": "filter",
-      "params": "function x => true'",
-      "output": "input or undefined'"
+      "params": "function x => true",
+      "output": "input or undefined"
     },
     "examples": [
       {
