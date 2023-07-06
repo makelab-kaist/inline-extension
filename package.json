@@ -121,6 +121,7 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "@types/crypto-js": "^4.1.1",
     "@types/glob": "^7.1.4",
     "@types/jest": "^27.0.3",
     "@types/mocha": "^9.0.0",
@@ -151,6 +152,7 @@
     "rxjs": "^7.8.0",
     "sirv-cli": "^1.0.0",
     "socket.io": "^4.6.0",
-    "socket.io-client": "^4.4.0"
+    "socket.io-client": "^4.4.0",
+    "web-tree-sitter": "^0.20.8"
   }
 }

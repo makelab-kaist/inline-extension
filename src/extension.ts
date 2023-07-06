@@ -45,8 +45,9 @@ function getExtensionPath(): string {
   return getExtension()?.extensionPath;
 }
 
-function getExtensionUri(): vscode.Uri {
-  return vscode.Uri.file(getExtensionPath());
+function getExtensionUri(...pathSegments: string[]): vscode.Uri {
+  const uri = vscode.Uri.file(getExtensionPath());
+  return vscode.Uri.joinPath(uri, ...pathSegments);
 }
 
 // Configure step-by-step the connection to the Virtual Arduino

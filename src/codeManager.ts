@@ -2,11 +2,11 @@
  * Manger used to generate code or extract ExpressionQueries
  */
 import * as vscode from 'vscode';
-import * as parser from './parser/index';
+import * as parser from './parser';
 // Library with code generated depending on which functions are called
 import { generateLibraryCode } from './arduino-utils/arduino-library';
 // Library with all the instrumented code, regardless of the usage
-// import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whoole library
+// import { libCode } from './arduino-lib/inoCodeTemplate'; // import the whole library
 
 // This the data with a query of the form: // [Expression] ?
 export type ExpressionQuery = {
@@ -61,6 +61,9 @@ export class CodeManager {
       const editorLine = line - 1; // adjust -1 because vscode editor lines starts at 1
       const text = lines[editorLine];
       const newText = this.generateCodeForLine(id, line, text, data);
+
+      console.log(newText);
+
       lines[editorLine] = newText;
       // add function used
       functionsUsed.push(...data.map((fn) => fn.function!));
@@ -126,7 +129,9 @@ export class CodeManager {
     code: string | undefined = undefined
   ): parser.LineData[] {
     if (!code) code = this.getCurrentCode();
-    const lines: parser.LineData[] = parser.getParsedData(code);
+    const lines: parser.LineData[] = parser.treeSitterGetParseData(code);
+
+    // const lines: parser.LineData[] = parser.getParsedData(code);
 
     // remap
     return (
@@ -162,12 +167,16 @@ export class CodeManager {
       // Serial.print and Serial.println have a dot, that should be replaced with a dash
       if (funcName!.includes('.')) funcName = funcName!.replace('.', '_');
 
+      console.log(funcName);
+
       let newFuncCall = `_${funcName}(${args},"${id}",${line},${index},${items}`;
       if (args === '') {
         // no args
         newFuncCall = `_${funcName}("${id}",${line},${index},${items}`;
       }
-      result = result.substring(0, s) + newFuncCall + result.substring(e);
+      result = text.substring(0, s) + newFuncCall + text.substring(e);
+      console.log('line => ', result);
+
       index--;
     }
 
