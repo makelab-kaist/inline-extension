@@ -159,6 +159,7 @@ export class CodeManager {
 
     const items = data.length;
     let index = items;
+    let delta = 0;
 
     for (let { function: funcName, args, location } of data.reverse()) {
       const s = location.startCol;
@@ -174,12 +175,14 @@ export class CodeManager {
         // no args
         newFuncCall = `_${funcName}("${id}",${line},${index},${items}`;
       }
-      result = text.substring(0, s) + newFuncCall + text.substring(e);
-      console.log('line => ', result);
+      result = result.substring(0, s) + newFuncCall + result.substring(e);
+      delta = result.length - text.length + 1;
 
       index--;
+      console.log(result);
     }
 
+    console.log('rsult ', result);
     return result;
   }
 }
