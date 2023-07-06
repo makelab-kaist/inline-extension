@@ -566,6 +566,12 @@ void _tone(uint8_t pin, unsigned int frequency, PARAMS)
   _tone(pin, frequency, 0, id, line, index, items);
 }
 
+void _noTone(uint8_t pin, PARAMS)
+{
+  noTone(pin);
+  printValueFormatted(SerialWrapper(0), id, line, index, items);
+}
+
 #endif // __DASH_FUNCTIONS__H__
 
 `;

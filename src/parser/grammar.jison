@@ -82,6 +82,7 @@
 'shiftIn'                                         { return 'FN_NAME' }
 'shiftOut'                                        { return 'FN_NAME' }
 'tone'                                            { return 'FN_NAME' }
+'noTone'                                          { return 'FN_NAME' }
 
 ///////////// end ARDUINO KEYWORDS
 

@@ -679,6 +679,17 @@ void _tone(uint8_t pin, unsigned int frequency, PARAMS)
 `
 );
 
+library.set(
+  'noTone',
+  `
+void _noTone(uint8_t pin, PARAMS)
+{
+  noTone(pin);
+  printValueFormatted(SerialWrapper(0), id, line, index, items);
+}
+`
+);
+
 function getCodeParts(functions: string[]) {
   let code = '';
   for (const fun of functions) {
