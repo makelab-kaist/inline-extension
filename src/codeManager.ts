@@ -62,8 +62,6 @@ export class CodeManager {
       const text = lines[editorLine];
       const newText = this.generateCodeForLine(id, line, text, data);
 
-      console.log(newText);
-
       lines[editorLine] = newText;
       // add function used
       functionsUsed.push(...data.map((fn) => fn.function!));
@@ -131,6 +129,7 @@ export class CodeManager {
     if (!code) code = this.getCurrentCode();
     const lines: parser.LineData[] = parser.treeSitterGetParseData(code);
 
+    // Use this line below for the custom parser wrote with Jison
     // const lines: parser.LineData[] = parser.getParsedData(code);
 
     // remap
@@ -161,28 +160,18 @@ export class CodeManager {
     let index = items;
     let delta = 0;
 
-    for (let { function: funcName, args, location } of data.reverse()) {
-      const s = location.startCol;
-      const e = location.endCol - 1;
-
-      // Serial.print and Serial.println have a dot, that should be replaced with a dash
-      if (funcName!.includes('.')) funcName = funcName!.replace('.', '_');
-
-      console.log(funcName);
-
-      let newFuncCall = `_${funcName}(${args},"${id}",${line},${index},${items}`;
+    for (let { function: funcName, args, location, signature } of data) {
+      let newFuncCall = `_${funcName}(${args},"${id}",${line},${index},${items})`;
       if (args === '') {
         // no args
-        newFuncCall = `_${funcName}("${id}",${line},${index},${items}`;
+        newFuncCall = `_${funcName}("${id}",${line},${index},${items})`;
       }
-      result = result.substring(0, s) + newFuncCall + result.substring(e);
-      delta = result.length - text.length + 1;
+      result = result.replace(signature!, newFuncCall);
+      if (funcName!.includes('.')) result = result.replaceAll('.', '_');
 
       index--;
-      console.log(result);
     }
 
-    console.log('rsult ', result);
     return result;
   }
 }

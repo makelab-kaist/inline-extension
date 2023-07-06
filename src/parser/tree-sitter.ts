@@ -21,17 +21,20 @@ export function treeSitterGetParseData(code: string): LineData[] {
   let lineData: LineData[] = [];
 
   try {
+    // Functions and Queries
     const all = [
       ...treeSitterParseFunctions(code),
       ...treeSitterParseQuery(code),
     ];
 
+    // Unique line numbers
     const lines = [
       ...new Set(
         all.map(({ location }) => location.line).sort((a, b) => a - b)
       ),
     ];
 
+    // Package the data per line
     lines.forEach((line) => {
       const data = all.filter(({ location }) => location.line === line);
       const names = data
@@ -53,6 +56,7 @@ export function treeSitterGetParseData(code: string): LineData[] {
   return lineData;
 }
 
+// Extract function data using treesitter query
 function treeSitterParseFunctions(code: string) {
   const tree = parser.parse(code);
   const query = parser.getLanguage().query(
@@ -95,6 +99,7 @@ function treeSitterParseFunctions(code: string) {
   return data;
 }
 
+// Extract annotation //? data using treesitter query
 function treeSitterParseQuery(code: string) {
   const tree = parser.parse(code);
   const query = parser.getLanguage().query(
