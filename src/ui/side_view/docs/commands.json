@@ -230,11 +230,11 @@
       "input": "input",
       "command": "add",
       "params": "variable name",
-      "output": "add"
+      "output": "accumulator"
     },
     "examples": [
       {
-        "expression": "// count x",
+        "expression": "// add x",
         "result": "[x+= input]"
       }
     ]

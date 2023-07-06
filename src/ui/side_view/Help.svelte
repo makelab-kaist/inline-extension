@@ -2,7 +2,7 @@
   import Menu from './Menu.svelte';
   import Grammar from './components/Grammar.svelte';
   import Example from './components/Example.svelte';
-  import commands from './data/commands.json';
+  import commands from './docs/commands.json';
 
   let current = undefined;
 
