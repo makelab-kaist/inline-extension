@@ -157,8 +157,7 @@ export class CodeManager {
     let result = text;
 
     const items = data.length;
-    let index = items;
-    let delta = 0;
+    let index = 1;
 
     for (let { function: funcName, args, location, signature } of data) {
       let newFuncCall = `_${funcName}(${args},"${id}",${line},${index},${items})`;
@@ -169,7 +168,7 @@ export class CodeManager {
       result = result.replace(signature!, newFuncCall);
       if (funcName!.includes('.')) result = result.replaceAll('.', '_');
 
-      index--;
+      index++;
     }
 
     return result;
