@@ -797,16 +797,18 @@ case 58: return 13
 break;
 case 59: return 13 
 break;
-case 60: return 14 
+case 60: return 13 
 break;
-case 61: return 16 
+case 61: return 14 
 break;
-case 62: return 18 
+case 62: return 16 
+break;
+case 63: return 18 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:delay\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:pulseIn\b)/,/^(?:random\b)/,/^(?:map\b)/,/^(?:min\b)/,/^(?:max\b)/,/^(?:abs\b)/,/^(?:round\b)/,/^(?:radians\b)/,/^(?:degrees\b)/,/^(?:sq\b)/,/^(?:sqrt\b)/,/^(?:constrain\b)/,/^(?:cos\b)/,/^(?:sin\b)/,/^(?:tan\b)/,/^(?:isAlphaNumeric\b)/,/^(?:isAlpha\b)/,/^(?:isAscii\b)/,/^(?:isWhitespace\b)/,/^(?:isControl\b)/,/^(?:isDigit\b)/,/^(?:isGraph\b)/,/^(?:isLowerCase\b)/,/^(?:isPrintable\b)/,/^(?:isPunct\b)/,/^(?:isSpace\b)/,/^(?:isUpperCase\b)/,/^(?:isHexadecimalDigit\b)/,/^(?:toAscii\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:Serial\.begin\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:bit\b)/,/^(?:bitClear\b)/,/^(?:bitRead\b)/,/^(?:bitSet\b)/,/^(?:bitToggle\b)/,/^(?:bitWrite\b)/,/^(?:lowByte\b)/,/^(?:highByte\b)/,/^(?:shiftIn\b)/,/^(?:shiftOut\b)/,/^(?:tone\b)/,/^(?:noTone\b)/,/^(?:\s*\()/,/^(?:\))/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:[\r\n]+)/,/^(?:\/\/.*\?)/,/^(?:\/\/.*)/,/^(?:\/\*[.\s\S]*\*\/)/,/^(?:pinMode\b)/,/^(?:digitalRead\b)/,/^(?:digitalWrite\b)/,/^(?:analogRead\b)/,/^(?:analogWrite\b)/,/^(?:delay\b)/,/^(?:millis\b)/,/^(?:micros\b)/,/^(?:pulseIn\b)/,/^(?:random\b)/,/^(?:randomSeed\b)/,/^(?:map\b)/,/^(?:min\b)/,/^(?:max\b)/,/^(?:abs\b)/,/^(?:round\b)/,/^(?:radians\b)/,/^(?:degrees\b)/,/^(?:sq\b)/,/^(?:sqrt\b)/,/^(?:constrain\b)/,/^(?:cos\b)/,/^(?:sin\b)/,/^(?:tan\b)/,/^(?:isAlphaNumeric\b)/,/^(?:isAlpha\b)/,/^(?:isAscii\b)/,/^(?:isWhitespace\b)/,/^(?:isControl\b)/,/^(?:isDigit\b)/,/^(?:isGraph\b)/,/^(?:isLowerCase\b)/,/^(?:isPrintable\b)/,/^(?:isPunct\b)/,/^(?:isSpace\b)/,/^(?:isUpperCase\b)/,/^(?:isHexadecimalDigit\b)/,/^(?:toAscii\b)/,/^(?:toLowerCase\b)/,/^(?:toUpperCase\b)/,/^(?:Serial\.begin\b)/,/^(?:Serial\.print\b)/,/^(?:Serial\.println\b)/,/^(?:random\b)/,/^(?:bit\b)/,/^(?:bitClear\b)/,/^(?:bitRead\b)/,/^(?:bitSet\b)/,/^(?:bitToggle\b)/,/^(?:bitWrite\b)/,/^(?:lowByte\b)/,/^(?:highByte\b)/,/^(?:shiftIn\b)/,/^(?:shiftOut\b)/,/^(?:tone\b)/,/^(?:noTone\b)/,/^(?:\s*\()/,/^(?:\))/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63],"inclusive":true}}
 });
 return lexer;
 })();

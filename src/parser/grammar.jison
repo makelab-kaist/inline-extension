@@ -26,6 +26,7 @@
 
 // Random
 'random'                                          { return 'FN_NAME' }
+'randomSeed'                                      { return 'FN_NAME' }
 'map'                                             { return 'FN_NAME' }
 
 // Math

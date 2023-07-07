@@ -151,6 +151,18 @@ long _random(long minvalue, long maxvalue, PARAMS)
 );
 
 library.set(
+  'randomSeed',
+  `
+long _randomSeed(unsigned long seed, PARAMS)
+{
+  randomSeed(seed);
+  printValueFormatted(SerialWrapper(seed), id, line, index, items);
+}
+
+`
+);
+
+library.set(
   'map',
   `
 long _map(long x, long in_min, long in_max, long out_min, long out_max, PARAMS)

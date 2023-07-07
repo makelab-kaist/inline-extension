@@ -188,6 +188,12 @@ long _random(long minvalue, long maxvalue, PARAMS)
   return r;
 }
 
+long _randomSeed(unsigned long seed, PARAMS)
+{
+  randomSeed(seed);
+  printValueFormatted(SerialWrapper(seed), id, line, index, items);
+}
+
 long _map(long x, long in_min, long in_max, long out_min, long out_max, PARAMS)
 {
   long m = map(x, in_min, in_max, out_min, out_max);
