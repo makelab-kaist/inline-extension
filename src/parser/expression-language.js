@@ -72,12 +72,12 @@
   }
 */
 var expressionLanguage = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,22],$V1=[1,23],$V2=[1,31],$V3=[1,32],$V4=[1,24],$V5=[1,25],$V6=[1,26],$V7=[1,27],$V8=[1,28],$V9=[1,29],$Va=[1,30],$Vb=[1,33],$Vc=[1,34],$Vd=[1,7],$Ve=[1,8],$Vf=[1,9],$Vg=[1,39],$Vh=[4,8],$Vi=[1,58],$Vj=[4,8,39];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,24],$V1=[1,25],$V2=[1,33],$V3=[1,34],$V4=[1,35],$V5=[1,36],$V6=[1,26],$V7=[1,27],$V8=[1,28],$V9=[1,29],$Va=[1,30],$Vb=[1,31],$Vc=[1,32],$Vd=[1,37],$Ve=[1,38],$Vf=[1,7],$Vg=[1,8],$Vh=[1,9],$Vi=[1,43],$Vj=[4,8],$Vk=[1,64],$Vl=[4,8,43];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"EXP":6,"output_functions":7,"THEN":8,"function_sequence":9,"function_call":10,"assert_function":11,"is_function":12,"threshold_functions":13,"lpfilter_function":14,"save_function":15,"log_function":16,"volt_function":17,"count_function":18,"add_function":19,"map_function":20,"filter_function":21,"ASSERT":22,"IS":23,"COUNT":24,"ADD":25,"ABOVE":26,"BELOW":27,"BETWEEN":28,"list":29,"LPFILTER":30,"SAVE":31,"LOG":32,"VOLT":33,"MAP":34,"FILTER":35,"PRINT":36,"GRAPH":37,"HIST":38,",":39,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"NONE",6:"EXP",8:"THEN",22:"ASSERT",23:"IS",24:"COUNT",25:"ADD",26:"ABOVE",27:"BELOW",28:"BETWEEN",30:"LPFILTER",31:"SAVE",32:"LOG",33:"VOLT",34:"MAP",35:"FILTER",36:"PRINT",37:"GRAPH",38:"HIST",39:","},
-productions_: [0,[3,1],[3,2],[5,1],[5,1],[5,3],[5,3],[5,5],[5,1],[5,3],[9,1],[9,3],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[11,1],[12,2],[18,2],[19,2],[13,2],[13,2],[13,2],[14,1],[14,2],[15,2],[16,1],[16,2],[17,1],[17,2],[20,2],[21,2],[7,1],[7,2],[7,1],[7,2],[7,1],[7,2],[29,1],[29,3]],
+symbols_: {"error":2,"result":3,"NONE":4,"primary_expression":5,"EXP":6,"output_functions":7,"THEN":8,"function_sequence":9,"function_call":10,"assert_function":11,"is_function":12,"threshold_functions":13,"lpfilter_function":14,"save_function":15,"log_function":16,"volt_function":17,"count_function":18,"min_function":19,"max_function":20,"add_function":21,"map_function":22,"filter_function":23,"ASSERT":24,"IS":25,"COUNT":26,"MIN":27,"MAX":28,"ADD":29,"ABOVE":30,"BELOW":31,"BETWEEN":32,"list":33,"LPFILTER":34,"SAVE":35,"LOG":36,"VOLT":37,"MAP":38,"FILTER":39,"PRINT":40,"GRAPH":41,"HIST":42,",":43,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"NONE",6:"EXP",8:"THEN",24:"ASSERT",25:"IS",26:"COUNT",27:"MIN",28:"MAX",29:"ADD",30:"ABOVE",31:"BELOW",32:"BETWEEN",34:"LPFILTER",35:"SAVE",36:"LOG",37:"VOLT",38:"MAP",39:"FILTER",40:"PRINT",41:"GRAPH",42:"HIST",43:","},
+productions_: [0,[3,1],[3,2],[5,1],[5,1],[5,3],[5,3],[5,5],[5,1],[5,3],[9,1],[9,3],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,1],[11,1],[12,2],[18,2],[19,2],[20,2],[21,2],[13,2],[13,2],[13,2],[14,1],[14,2],[15,2],[16,1],[16,2],[17,1],[17,2],[22,2],[23,2],[7,1],[7,2],[7,1],[7,2],[7,1],[7,2],[33,1],[33,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -116,82 +116,88 @@ break;
 case 11:
  this.$ = $$[$0-2] + ',' + $$[$0] 
 break;
-case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 22: case 45:
+case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 24: case 49:
  this.$ = $$[$0] 
 break;
-case 23:
+case 25:
  this.$ = 'this.assert' 
 break;
-case 24:
+case 26:
  this.$ = `this.is(${$$[$0]})` 
 break;
-case 25:
+case 27:
  this.$ = `this.count(\\'${$$[$0]}\\')` 
 break;
-case 26:
- this.$ = `this.add(\\'${$$[$0]}\\')` 
-break;
-case 27:
- this.$ = `this.above(${$$[$0]})` 
-break;
 case 28:
- this.$ = `this.below(${$$[$0]})` 
+ this.$ = `this.min(\\'${$$[$0]}\\')` 
 break;
 case 29:
- this.$ = `this.between(${$$[$0]})` 
+ this.$ = `this.max(\\'${$$[$0]}\\')` 
 break;
 case 30:
- this.$ = 'this.lpfilter()' 
+ this.$ = `this.add(\\'${$$[$0]}\\')` 
 break;
 case 31:
- this.$ = `this.lpfilter(${$$[$0]})` 
+ this.$ = `this.above(${$$[$0]})` 
 break;
 case 32:
- this.$ = `this.save(\\'${$$[$0]}\\')` 
+ this.$ = `this.below(${$$[$0]})` 
 break;
 case 33:
- this.$ = `this.log()` 
+ this.$ = `this.between(${$$[$0]})` 
 break;
 case 34:
- this.$ = `this.log(\\'${$$[$0]}\\')` 
+ this.$ = 'this.lpfilter()' 
 break;
 case 35:
- this.$ = `this.volt()` 
+ this.$ = `this.lpfilter(${$$[$0]})` 
 break;
 case 36:
- this.$ = `this.volt(\\'${$$[$0]}\\')` 
+ this.$ = `this.save(\\'${$$[$0]}\\')` 
 break;
 case 37:
- this.$= `this.map(${$$[$0]})`
+ this.$ = `this.log()` 
 break;
 case 38:
- this.$= `this.filter(${$$[$0]})`
+ this.$ = `this.log(\\'${$$[$0]}\\')` 
 break;
 case 39:
- this.$ = `this.output(\\'inline\\')()` 
+ this.$ = `this.volt()` 
 break;
 case 40:
- this.$ = `this.output(\\'inline\\')(${$$[$0]})` 
+ this.$ = `this.volt(\\'${$$[$0]}\\')` 
 break;
 case 41:
- this.$ = `this.output(\\'linegraph\\')()` 
+ this.$= `this.map(${$$[$0]})`
 break;
 case 42:
- this.$ = `this.output(\\'linegraph\\')(${$$[$0]})` 
+ this.$= `this.filter(${$$[$0]})`
 break;
 case 43:
- this.$ = `this.output(\\'histogram\\')()` 
+ this.$ = `this.output(\\'inline\\')()` 
 break;
 case 44:
- this.$ = `this.output(\\'histogram\\')(${$$[$0]})` 
+ this.$ = `this.output(\\'inline\\')(${$$[$0]})` 
+break;
+case 45:
+ this.$ = `this.output(\\'linegraph\\')()` 
 break;
 case 46:
+ this.$ = `this.output(\\'linegraph\\')(${$$[$0]})` 
+break;
+case 47:
+ this.$ = `this.output(\\'histogram\\')()` 
+break;
+case 48:
+ this.$ = `this.output(\\'histogram\\')(${$$[$0]})` 
+break;
+case 50:
  this.$ = $$[$0-2] + ',' + $$[$0-1] 
 break;
 }
 },
-table: [{3:1,4:[1,2],5:3,6:[1,4],7:5,9:6,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:$V0,23:$V1,24:$V2,25:$V3,26:$V4,27:$V5,28:$V6,30:$V7,31:$V8,32:$V9,33:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{1:[3]},{1:[2,1]},{4:[1,35]},{4:[2,3],8:[1,36]},{4:[2,4]},{4:[2,8],8:[1,37]},{4:[2,39],6:$Vg,29:38},{4:[2,41],6:$Vg,29:40},{4:[2,43],6:$Vg,29:41},o($Vh,[2,10]),o($Vh,[2,12]),o($Vh,[2,13]),o($Vh,[2,14]),o($Vh,[2,15]),o($Vh,[2,16]),o($Vh,[2,17]),o($Vh,[2,18]),o($Vh,[2,19]),o($Vh,[2,20]),o($Vh,[2,21]),o($Vh,[2,22]),o($Vh,[2,23]),{6:[1,42]},{6:[1,43]},{6:[1,44]},{6:$Vg,29:45},o($Vh,[2,30],{6:[1,46]}),{6:[1,47]},o($Vh,[2,33],{6:[1,48]}),o($Vh,[2,35],{6:[1,49]}),{6:[1,50]},{6:[1,51]},{6:[1,52]},{6:[1,53]},{1:[2,2]},{7:54,9:55,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:$V0,23:$V1,24:$V2,25:$V3,26:$V4,27:$V5,28:$V6,30:$V7,31:$V8,32:$V9,33:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{7:56,10:57,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:$V0,23:$V1,24:$V2,25:$V3,26:$V4,27:$V5,28:$V6,30:$V7,31:$V8,32:$V9,33:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{4:[2,40],39:$Vi},o($Vj,[2,45]),{4:[2,42],39:$Vi},{4:[2,44],39:$Vi},o($Vh,[2,24]),o($Vh,[2,27]),o($Vh,[2,28]),o($Vh,[2,29],{39:$Vi}),o($Vh,[2,31]),o($Vh,[2,32]),o($Vh,[2,34]),o($Vh,[2,36]),o($Vh,[2,25]),o($Vh,[2,26]),o($Vh,[2,37]),o($Vh,[2,38]),{4:[2,5]},{4:[2,6],8:[1,59]},{4:[2,9]},o($Vh,[2,11]),{6:[1,60]},{7:61,10:57,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:$V0,23:$V1,24:$V2,25:$V3,26:$V4,27:$V5,28:$V6,30:$V7,31:$V8,32:$V9,33:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},o($Vj,[2,46]),{4:[2,7]}],
-defaultActions: {2:[2,1],5:[2,4],35:[2,2],54:[2,5],56:[2,9],61:[2,7]},
+table: [{3:1,4:[1,2],5:3,6:[1,4],7:5,9:6,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:22,23:23,24:$V0,25:$V1,26:$V2,27:$V3,28:$V4,29:$V5,30:$V6,31:$V7,32:$V8,34:$V9,35:$Va,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf,41:$Vg,42:$Vh},{1:[3]},{1:[2,1]},{4:[1,39]},{4:[2,3],8:[1,40]},{4:[2,4]},{4:[2,8],8:[1,41]},{4:[2,43],6:$Vi,33:42},{4:[2,45],6:$Vi,33:44},{4:[2,47],6:$Vi,33:45},o($Vj,[2,10]),o($Vj,[2,12]),o($Vj,[2,13]),o($Vj,[2,14]),o($Vj,[2,15]),o($Vj,[2,16]),o($Vj,[2,17]),o($Vj,[2,18]),o($Vj,[2,19]),o($Vj,[2,20]),o($Vj,[2,21]),o($Vj,[2,22]),o($Vj,[2,23]),o($Vj,[2,24]),o($Vj,[2,25]),{6:[1,46]},{6:[1,47]},{6:[1,48]},{6:$Vi,33:49},o($Vj,[2,34],{6:[1,50]}),{6:[1,51]},o($Vj,[2,37],{6:[1,52]}),o($Vj,[2,39],{6:[1,53]}),{6:[1,54]},{6:[1,55]},{6:[1,56]},{6:[1,57]},{6:[1,58]},{6:[1,59]},{1:[2,2]},{7:60,9:61,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:22,23:23,24:$V0,25:$V1,26:$V2,27:$V3,28:$V4,29:$V5,30:$V6,31:$V7,32:$V8,34:$V9,35:$Va,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf,41:$Vg,42:$Vh},{7:62,10:63,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:22,23:23,24:$V0,25:$V1,26:$V2,27:$V3,28:$V4,29:$V5,30:$V6,31:$V7,32:$V8,34:$V9,35:$Va,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf,41:$Vg,42:$Vh},{4:[2,44],43:$Vk},o($Vl,[2,49]),{4:[2,46],43:$Vk},{4:[2,48],43:$Vk},o($Vj,[2,26]),o($Vj,[2,31]),o($Vj,[2,32]),o($Vj,[2,33],{43:$Vk}),o($Vj,[2,35]),o($Vj,[2,36]),o($Vj,[2,38]),o($Vj,[2,40]),o($Vj,[2,27]),o($Vj,[2,28]),o($Vj,[2,29]),o($Vj,[2,30]),o($Vj,[2,41]),o($Vj,[2,42]),{4:[2,5]},{4:[2,6],8:[1,65]},{4:[2,9]},o($Vj,[2,11]),{6:[1,66]},{7:67,10:63,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20,21:21,22:22,23:23,24:$V0,25:$V1,26:$V2,27:$V3,28:$V4,29:$V5,30:$V6,31:$V7,32:$V8,34:$V9,35:$Va,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf,41:$Vg,42:$Vh},o($Vl,[2,50]),{4:[2,7]}],
+defaultActions: {2:[2,1],5:[2,4],39:[2,2],60:[2,5],62:[2,9],67:[2,7]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -670,46 +676,50 @@ case 0: return 4
 break;
 case 1: /* ignore spaces */ 
 break;
-case 2: return 22 
+case 2: return 24 
 break;
-case 3: return 24 
+case 3: return 26 
 break;
-case 4: return 25 
+case 4: return 27 
 break;
-case 5: return 23 
+case 5: return 28 
 break;
-case 6: return 26 
+case 6: return 29 
 break;
-case 7: return 27 
+case 7: return 25 
 break;
-case 8: return 28 
+case 8: return 30 
 break;
-case 9: return 30 
+case 9: return 31 
 break;
-case 10: return 31 
+case 10: return 32 
 break;
-case 11: return 36 
+case 11: return 34 
 break;
-case 12: return 37 
+case 12: return 35 
 break;
-case 13: return 38 
+case 13: return 40 
 break;
-case 14: return 32 
+case 14: return 41 
 break;
-case 15: return 33 
+case 15: return 42 
 break;
-case 16: return 34 
+case 16: return 36 
 break;
-case 17: return 35 
+case 17: return 37 
 break;
-case 18: return 6 
+case 18: return 38 
 break;
-case 19: return 8 
+case 19: return 39 
+break;
+case 20: return 6 
+break;
+case 21: return 8 
 break;
 }
 },
-rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:count\b)/,/^(?:add\b)/,/^(?:is\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:lpfilter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:volt\b)/,/^(?:map\b)/,/^(?:filter\b)/,/^(?:[^|]+)/,/^(?:\|)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],"inclusive":true}}
+rules: [/^(?:$)/,/^(?:\s+)/,/^(?:assert\b)/,/^(?:count\b)/,/^(?:min\b)/,/^(?:max\b)/,/^(?:add\b)/,/^(?:is\b)/,/^(?:above\b)/,/^(?:below\b)/,/^(?:between\b)/,/^(?:lpfilter\b)/,/^(?:save\b)/,/^(?:print\b)/,/^(?:graph\b)/,/^(?:hist\b)/,/^(?:log\b)/,/^(?:volt\b)/,/^(?:map\b)/,/^(?:filter\b)/,/^(?:[^|]+)/,/^(?:\|)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21],"inclusive":true}}
 });
 return lexer;
 })();

@@ -146,6 +146,16 @@
       active={!active || active == 'add'}
       color="pink">add</Badge
     >
+    <Badge
+      on:click={() => toggle('min')}
+      active={!active || active == 'min'}
+      color="pink">min</Badge
+    >
+    <Badge
+      on:click={() => toggle('max')}
+      active={!active || active == 'max'}
+      color="pink">max</Badge
+    >
   </div>
   <h3>Ouput</h3>
   <div class="container">

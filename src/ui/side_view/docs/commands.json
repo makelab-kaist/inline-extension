@@ -240,6 +240,38 @@
     ]
   },
   {
+    "command": "min",
+    "description": "store the min <b>input</b> in a <b>variable</b>.",
+    "grammar": {
+      "input": "input",
+      "command": "min",
+      "params": "variable name",
+      "output": "min input"
+    },
+    "examples": [
+      {
+        "expression": "// min x",
+        "result": "the minimum input so far"
+      }
+    ]
+  },
+  {
+    "command": "max",
+    "description": "store the max <b>input</b> in a <b>variable</b>.",
+    "grammar": {
+      "input": "input",
+      "command": "max",
+      "params": "variable name",
+      "output": "max input"
+    },
+    "examples": [
+      {
+        "expression": "// max x",
+        "result": "the maximum input so far"
+      }
+    ]
+  },
+  {
     "command": "log",
     "description": "log the <b>input</b> value to a file (specify name or default is <b>logs.txt</b>). Other commands <b>can</b> be chained to this one.",
     "grammar": {

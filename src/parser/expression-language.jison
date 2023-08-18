@@ -8,6 +8,8 @@
 \s+                                               { /* ignore spaces */ }
 'assert'                                          { return 'ASSERT' }
 'count'                                           { return 'COUNT' }
+'min'                                             { return 'MIN' }
+'max'                                             { return 'MAX' }
 'add'                                             { return 'ADD' }
 'is'                                              { return 'IS' }
 'above'                                           { return 'ABOVE' }
@@ -64,6 +66,8 @@ function_call
   | log_function { $$ = $1 }
   | volt_function { $$ = $1 }
   | count_function { $$ = $1 }
+  | min_function { $$ = $1 }
+  | max_function { $$ = $1 }
   | add_function { $$ = $1 }
   | map_function { $$ = $1 }
   | filter_function { $$ = $1 }
@@ -82,6 +86,14 @@ is_function
 
 count_function
   : COUNT EXP { $$ = `this.count(\\'${$2}\\')` }
+  ;
+
+min_function
+  : MIN EXP { $$ = `this.min(\\'${$2}\\')` }
+  ;
+
+max_function
+  : MAX EXP { $$ = `this.max(\\'${$2}\\')` }
   ;
 
 add_function

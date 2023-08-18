@@ -121,7 +121,8 @@ class Context {
   count(counter: string): (input: number) => number {
     return (input: number): number => {
       const counters = this as any;
-      if (!counters[`${counter.trim()}`]) counters[`${counter.trim()}`] = 0;
+      if (counters[`${counter.trim()}`] === undefined)
+        counters[`${counter.trim()}`] = 0;
       if (input) counters[`${counter.trim()}`] += 1;
       return counters[`${counter.trim()}`];
     };
@@ -131,7 +132,7 @@ class Context {
   add(accumulator: string): (input: number) => number {
     return (input: number): number => {
       const counters = this as any;
-      if (!counters[`${accumulator.trim()}`])
+      if (counters[`${accumulator.trim()}`] === undefined)
         counters[`${accumulator.trim()}`] = 0;
       counters[`${accumulator.trim()}`] += input;
       return counters[`${accumulator.trim()}`];
@@ -182,10 +183,12 @@ class Context {
     };
   }
 
-   // onvert to voltage
-   volt(voltReference: number = 5): (input: number) => any {
+  // onvert to voltage
+  volt(voltReference: number = 5): (input: number) => any {
     return function (input: any) {
-      const mapping:number = parseFloat ((input/1024 * voltReference).toFixed(2));
+      const mapping: number = parseFloat(
+        ((input / 1024) * voltReference).toFixed(2)
+      );
       return mapping;
     };
   }
@@ -200,6 +203,29 @@ class Context {
   filter(fn: (inputParam: any) => any): (input: any) => any {
     return (input: any) => {
       return fn(input) ? input : undefined;
+    };
+  }
+
+  // min and max
+  min(varname: string): (input: number) => number {
+    return (input: number): number => {
+      const mins = this as any;
+      if (mins[`${varname.trim()}`] === undefined)
+        mins[`${varname.trim()}`] = Number.MAX_VALUE;
+      const result = Math.min(mins[`${varname.trim()}`], input);
+      mins[`${varname.trim()}`] = result;
+      return result;
+    };
+  }
+
+  max(varname: string): (input: number) => number {
+    return (input: number): number => {
+      const maxs = this as any;
+      if (maxs[`${varname.trim()}`] === undefined)
+        maxs[`${varname.trim()}`] = Number.MIN_VALUE;
+      const result = Math.max(maxs[`${varname.trim()}`], input);
+      maxs[`${varname.trim()}`] = result;
+      return result;
     };
   }
 }
