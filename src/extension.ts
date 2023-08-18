@@ -32,7 +32,7 @@ function registerSideView(_sideView: SideViewProvider) {
 // Handle data that comes from the Arduino
 function onSerialData(data: string) {
   if (data.charAt(0) !== '$') return; // Data from Arduino should starts with '$'
-  const [id, line, ...values] = data.slice(1).split(','); // e.g., $b4999c,9,1
+  const [id, line, ...values] = data.slice(1).split('\t'); // e.g., $b4999c,9,1
   data$.next({ id, line: +line, values }); // broadcast to subscribers with rxjs
 }
 

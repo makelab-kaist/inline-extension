@@ -778,9 +778,9 @@ void printValueFormatted(const SerialWrapper &value, PARAMS)
   {
     Serial.print("$");
     Serial.print(id);
-    Serial.print(",");
+    Serial.print("\t");
     Serial.print(line);
-    Serial.print(",");
+    Serial.print("\t");
   }
 
   value.print();
@@ -791,7 +791,7 @@ void printValueFormatted(const SerialWrapper &value, PARAMS)
     delay(PAUSE);
   }
   else
-    Serial.print(",");
+    Serial.print("\t");
 }
 
 void _Serial_begin(unsigned long value, PARAMS)
