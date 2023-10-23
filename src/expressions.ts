@@ -214,7 +214,7 @@ class Context {
         mins[`${varname.trim()}`] = Number.MAX_VALUE;
       const result = Math.min(mins[`${varname.trim()}`], input);
       mins[`${varname.trim()}`] = result;
-      return result;
+      return input;
     };
   }
 
@@ -225,7 +225,7 @@ class Context {
         maxs[`${varname.trim()}`] = Number.MIN_VALUE;
       const result = Math.max(maxs[`${varname.trim()}`], input);
       maxs[`${varname.trim()}`] = result;
-      return result;
+      return input;
     };
   }
 }
