@@ -1,6 +1,6 @@
 # Inline extension for VSCode
 
-Extension developed for research purposes. Reach out to [makelab-kaist](https://makelab-kaist.kaist.ac.kr) if interested to know more.
+Extension developed for research purposes. Reach out to [Make Lab at KAIST](https://make.kaist.ac.kr) if interested to know more.
 
 ## Instructions for installations
 
@@ -34,7 +34,7 @@ The first time run the command **Preferences: Configure Runtime Arguments** as i
 
 2. Install dependencies with `npm install`.
 
-3. Run the _Arduino-server_ as explained above.
+3. Run the _inline-server_ as explained above.
 
 4. Run the command `npm run dev` and then press `F5` from any of the typescript files to test the extension.
 
