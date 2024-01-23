@@ -1,14 +1,14 @@
 {
   "name": "inline",
   "displayName": "inline",
-  "publisher": "MAKinteract",
+  "publisher": "makelab-kaist",
   "icon": "images/icon.png",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/makinteract/inline"
+    "url": "https://github.com/makelab-kaist/inline"
   },
-  "version": "0.2.7",
+  "version": "0.2.8",
   "engines": {
     "vscode": "^1.63.0"
   },
