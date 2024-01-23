@@ -1,4 +1,4 @@
-# Inline extension for VSCode (code name _double-cheese_)
+# Inline extension for VSCode
 
 Extension developed for research purposes. Reach out to [MAKinteract](https://makinteract.kaist.ac.kr) if interested to know more.
 
@@ -10,13 +10,13 @@ The first time run the command **Preferences: Configure Runtime Arguments** as i
 
 ```json
     "enable-proposed-api": [
-        "MAKinteract.double-cheese"
+        "MAKinteract.inline"
     ],
 ```
 
 2. Install the [arduino-server](https://github.com/makinteract/arduino-server) and run it in the background (locally or on another machine). The Arduino board should be physically connected to the machine running the _Arduino-server_.
 
-3. Clone this repository or simply download the latest release of the extension (something like `double-cheese-x.x.x.vsix`). You can download the extension from the Extensions tab => `...` menu => Install from VSIX.
+3. Clone this repository or simply download the latest release of the extension (something like `inline-x.x.x.vsix`). You can download the extension from the Extensions tab => `...` menu => Install from VSIX.
 
 ![](/images/vsix_install.png)
 

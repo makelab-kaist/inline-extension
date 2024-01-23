@@ -38,49 +38,40 @@ export async function activate(context: vscode.ExtensionContext) {
   // First time config
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'double-cheese.configureConnection',
+      'inline.configureConnection',
       configureConnection
     )
   );
 
   // Choose a board
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'double-cheese.configureBoard',
-      configureBoard
-    )
+    vscode.commands.registerCommand('inline.configureBoard', configureBoard)
   );
 
   // Connect to the serial port
   context.subscriptions.push(
-    vscode.commands.registerCommand('double-cheese.connect', connectSerial)
+    vscode.commands.registerCommand('inline.connect', connectSerial)
   );
 
   // Disconnect from serial port
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'double-cheese.disconnect',
-      disconnectSerial
-    )
+    vscode.commands.registerCommand('inline.disconnect', disconnectSerial)
   );
 
   // Pick a different server
   context.subscriptions.push(
-    vscode.commands.registerCommand('double-cheese.changeServer', changeServer)
+    vscode.commands.registerCommand('inline.changeServer', changeServer)
   );
 
   // Compile and Upload the Arduino sketch with instrumented code
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'double-cheese.compileUpload',
-      compileAndUpload
-    )
+    vscode.commands.registerCommand('inline.compileUpload', compileAndUpload)
   );
 
   // Compile and Upload the Arduino sketch with clean code
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'double-cheese.compileUploadRelease',
+      'inline.compileUploadRelease',
       compileAndUploadRelease
     )
   );
@@ -88,27 +79,25 @@ export async function activate(context: vscode.ExtensionContext) {
   // Clear all annotations
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'double-cheese.clearAnnotations',
+      'inline.clearAnnotations',
       removeAnnotationsFromCode
     )
   );
 
   // Toggle highlight
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'double-cheese.toggleHighlight',
-      toggleHighlight
-    )
+    vscode.commands.registerCommand('inline.toggleHighlight', toggleHighlight)
   );
 }
 
 // If code is modified we need to check if it is still valid
-vscode.workspace.onDidChangeTextDocument((e) =>{
+vscode.workspace.onDidChangeTextDocument((e) => {
   isCodeValid();
-  const fileChanged= e.document.fileName;
-  if (fileChanged.endsWith('.ino')){ // only stops for source code
+  const fileChanged = e.document.fileName;
+  if (fileChanged.endsWith('.ino')) {
+    // only stops for source code
     clearAnnotations();
-  }  
+  }
 });
 
 vscode.window.onDidChangeActiveTextEditor(() => {

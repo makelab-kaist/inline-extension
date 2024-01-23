@@ -1,12 +1,12 @@
 {
-  "name": "double-cheese",
+  "name": "inline",
   "displayName": "inline",
   "publisher": "MAKinteract",
   "icon": "images/icon.png",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/makinteract/double-cheese"
+    "url": "https://github.com/makinteract/inline"
   },
   "version": "0.2.7",
   "engines": {
@@ -27,49 +27,49 @@
       "explorer": [
         {
           "type": "webview",
-          "id": "double-cheese.view",
+          "id": "inline.view",
           "name": "Inline Playground"
         }
       ]
     },
     "commands": [
       {
-        "command": "double-cheese.configureConnection",
+        "command": "inline.configureConnection",
         "category": "inline",
         "title": "Configure and connect to serial"
       },
       {
-        "command": "double-cheese.configureBoard",
+        "command": "inline.configureBoard",
         "category": "inline",
         "title": "Select an Arduino board"
       },
       {
-        "command": "double-cheese.connect",
+        "command": "inline.connect",
         "category": "inline",
         "title": "Connect to serial"
       },
       {
-        "command": "double-cheese.disconnect",
+        "command": "inline.disconnect",
         "category": "inline",
         "title": "Disconnect from serial"
       },
       {
-        "command": "double-cheese.compileUpload",
+        "command": "inline.compileUpload",
         "category": "inline",
         "title": "Compile and upload sketch"
       },
       {
-        "command": "double-cheese.clearAnnotations",
+        "command": "inline.clearAnnotations",
         "category": "inline",
         "title": "Remove annotations //? from code"
       },
       {
-        "command": "double-cheese.toggleHighlight",
+        "command": "inline.toggleHighlight",
         "category": "inline",
         "title": "Toggle highlight"
       },
       {
-        "command": "double-cheese.changeServer",
+        "command": "inline.changeServer",
         "category": "inline",
         "title": "Change server"
       }

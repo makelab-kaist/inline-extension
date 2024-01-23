@@ -22,7 +22,7 @@ type Message = {
 
 // The SideView provider that should be registered within the extension
 class SideViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = 'double-cheese.view';
+  public static readonly viewType = 'inline.view';
 
   private _view?: vscode.WebviewView;
 

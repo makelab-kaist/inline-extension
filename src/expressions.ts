@@ -70,16 +70,16 @@ class Context {
   // Numeric comparisons
   above(threshold: number): (input: number) => any {
     return function (input: number) {
-      if (typeof input !== 'number')
-        throw new Error(`"${input}" is not a number`);
+      if (typeof input !== 'number') return undefined;
+      // throw new Error(`"${input}" is not a number`);
       return input > threshold ? input : undefined;
     };
   }
 
   below(threshold: number): (input: number) => any {
     return function (input: number) {
-      if (typeof input !== 'number')
-        throw new Error(`"${input}" is not a number`);
+      if (typeof input !== 'number') return undefined;
+      // throw new Error(`"${input}" is not a number`);
       return input < threshold ? input : undefined;
     };
   }

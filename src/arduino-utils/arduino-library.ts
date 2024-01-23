@@ -670,11 +670,17 @@ library.set(
 long getFrequency(int pin)
 {
   // the more sample, the more accurate, yet slower
-#define SAMPLES 3
-  long freq = 0;
-  for (unsigned int j = 0; j < SAMPLES; j++)
-    freq += 500000 / pulseIn(pin, HIGH, 250000);
-  return freq / SAMPLES;
+
+  long highTime=pulseIn(pin,HIGH);  //read high time
+  long lowTime=pulseIn(pin,LOW);    //read low time
+  long period = highTime+lowTime; // Period = Ton + Toff
+  return 1000000/period;       //getting frequency with totalTime is in Micro seconds
+
+//#define SAMPLES 3
+  //long freq = 0;
+  //for (unsigned int j = 0; j < SAMPLES; j++)
+    //freq += 500000 / pulseIn(pin, HIGH, 250000);
+  //return freq / SAMPLES;
 }
 
 void _tone(uint8_t pin, unsigned int frequency, unsigned long duration, PARAMS)
