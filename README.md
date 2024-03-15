@@ -53,3 +53,15 @@ To allow the js file to be used in typescript, you might need to enable JS in `t
   }
 }
 ```
+
+## Expression language
+
+Here a table from the paper with the expression language capabilities:
+
+![](./images/expressions-table.png)
+
+## Reference
+
+📝 Andrea Bianchi, Zhi Lin Yap, Punn Lertjaturaphat, Austin Henley, Kongpyung (Justin) Moon, and Yoonji Kim. 2024. **Inline Visualization and Manipulation of Real-Time Hardware Log for Supporting Debugging of Embedded Programs**. To appear in Proceedings of the ACM Hum.-Comput. Interact. _EICS ‘24_.
+
+Porject page [link](https://make.kaist.ac.kr/project/inline-2024).
